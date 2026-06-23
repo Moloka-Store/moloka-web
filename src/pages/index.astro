@@ -1,22 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 import Card from '../components/Card.astro';
+import { getProductos, aCard } from '../lib/productos.js';
 
-// Productos de EJEMPLO (de momento). En el siguiente paso este array vendrá
-// de Supabase (tabla web_productos), leído aquí mismo en el build.
-const PRODUS = [
-  { nm:'Eleven (Hospital Gown) #511', fr:'Stranger Things', rar:'vaulted', disp:'inmediato', precio:24.99, c1:'#a78bfa', slug:'eleven-hospital-gown-511' },
-  { nm:"Iron Man 'I Am Iron Man' #580", fr:'Marvel', rar:'excl', disp:'inmediato', precio:34.99, c1:'#fb923c', slug:'iron-man-i-am-iron-man-580' },
-  { nm:'Goku Super Saiyan #1491', fr:'Dragon Ball', rar:'chase', disp:'pedido', precio:29.99, c1:'#fbbf24', slug:'goku-super-saiyan-1491' },
-  { nm:'Harry Potter (Yule Ball) #90', fr:'Harry Potter', rar:'vaulted', disp:'inmediato', precio:19.99, c1:'#60a5fa', slug:'harry-potter-yule-ball-90' },
-  { nm:'Stitch con helado #1233', fr:'Disney', rar:'chase', disp:'reserva', precio:17.99, c1:'#34d399', slug:'stitch-helado-1233' },
-  { nm:'Luffy Gear 5 #1271', fr:'Anime', rar:'excl', disp:'inmediato', precio:39.99, c1:'#f472b6', slug:'luffy-gear-5-1271' },
-  { nm:'Dancing Groot #65', fr:'Marvel', rar:'vaulted', disp:'pedido', precio:22.50, c1:'#a3e635', slug:'dancing-groot-65' },
-  { nm:'Vegeta Ultra Ego #1361', fr:'Dragon Ball', rar:'chase', disp:'agotado', precio:27.99, c1:'#818cf8', slug:'vegeta-ultra-ego-1361' },
-];
-
-// Los agotados NO se muestran (decisión firme).
-const novedades = PRODUS.filter((p) => p.disp !== 'agotado');
+// Lee los productos reales de Supabase EN EL BUILD (pasados por la fábrica).
+// Si no hubiera conexión, getProductos() devuelve [] y la web no se rompe.
+const filas = await getProductos();
+const novedades = filas
+  .map(aCard)
+  .filter((p) => p.disp !== 'agotado'); // los agotados no se muestran
 ---
 
 <Base>
@@ -48,14 +40,14 @@ const novedades = PRODUS.filter((p) => p.disp !== 'agotado');
 
     <section id="nov">
       <div class="sec-head">
-        <h2>Novedades <span class="spark">✦</span>
+        <h2>Novedades <span class="spark">&#10022;</span>
           <span class="sub">Lo último que ha entrado en el almacén</span>
         </h2>
-        <a href="/funko" class="seeall">Ver todo →</a>
+        <a href="/funko" class="seeall">Ver todo &#8594;</a>
       </div>
-      <div class="grid">
-        {novedades.map((p) => <Card p={p} />)}
-      </div>
+      {novedades.length > 0
+        ? <div class="grid">{novedades.map((p) => <Card p={p} />)}</div>
+        : <p style="color:var(--ink-soft);padding:30px 0">Estamos preparando las primeras piezas. Vuelve pronto.</p>}
     </section>
 
   </main>
