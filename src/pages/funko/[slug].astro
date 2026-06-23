@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getProductosFull, aFicha } from '../../lib/productos.js';
+
+// Genera UNA página estática por cada producto de la fábrica (en el build).
+export async function getStaticPaths() {
+  const filas = await getProductosFull();
+  return filas.map((row) => ({ params: { slug: row.slug }, props: { p: aFicha(row) } }));
+}
+const { p } = Astro.props;
+
+const DISP = { inmediato:['Disponible','d-now'], pedido:['Bajo pedido','d-order'], reserva:['Reserva','d-pre'], agotado:['Agotado','d-out'] };
+const RAR  = { chase:['CHASE','r-chase'], vaulted:['VAULTED','r-vaulted'], excl:['EXCLUSIVO','r-excl'] };
+const BTN  = { inmediato:['Añadir a la cesta',''], pedido:['Encargar','order'], reserva:['Reservar','pre'], agotado:['Avísame cuando llegue','out'] };
+
+const [dl, dc] = DISP[p.disp] ?? DISP.inmediato;
+const [rl, rc] = p.rar ? (RAR[p.rar] ?? ['','']) : ['',''];
+const [bl, bc] = BTN[p.disp] ?? BTN.inmediato;
+const precioFmt = p.precio != null ? p.precio.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €' : null;
+const fotos = p.fotos.length ? p.fotos : [null];
+const metaDesc = `${p.nm}${p.fr ? ' de ' + p.fr : ''}. Coleccionable original con envío desde España — Moloka Store.`;
+---
+
+<Base title={`${p.titulo} | Moloka Store`} description={metaDesc}>
+  <main class="wrap ficha">
+
+    <nav class="migas" aria-label="migas de pan">
+      <a href="/">Inicio</a> <span>/</span>
+      <a href="/funko">Funko</a> <span>/</span>
+      <b>{p.nm}</b>
+    </nav>
+
+    <div class="ficha-grid">
+
+      <section class="galeria">
+        <div class="foto-grande">
+          {fotos[0]
+            ? <img id="fotoBig" src={fotos[0]} alt={p.nm} />
+            : <div class="sinfoto">Sin imagen</div>}
+        </div>
+        {fotos.length > 1 &&
+          <div class="minis">
+            {fotos.map((f, i) => (
+              <button class={`mini ${i === 0 ? 'on' : ''}`} data-src={f} type="button" aria-label={`Foto ${i + 1}`}>
+                <img src={f} alt="" loading="lazy" />
+              </button>
+            ))}
+          </div>}
+      </section>
+
+      <section class="info">
+        <div class="info-top">
+          <span class="fr">{p.fr}</span>
+          {rl && <span class={`rar ${rc}`}>{rl}</span>}
+        </div>
+
+        <h1>{p.nm}</h1>
+
+        <span class={`estado ${dc}`}><i></i>{dl}</span>
+
+        {precioFmt
+          ? <div class="precio">{precioFmt}</div>
+          : <div class="precio ask">Consultar precio</div>}
+
+        <button class={`buy ${bc}`} type="button">{bl}</button>
+
+        {p.desc && <div class="desc" set:html={p.desc}></div>}
+
+        <dl class="detalles">
+          {p.lic && <div><dt>Licencia</dt><dd>{p.lic}</dd></div>}
+          {p.cat && <div><dt>Categoría</dt><dd>{p.cat}</dd></div>}
+          {p.ean && <div><dt>EAN</dt><dd>{p.ean}</dd></div>}
+        </dl>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // Galería: al pulsar una miniatura, cambia la foto grande.
+    const big = document.getElementById('fotoBig');
+    document.querySelectorAll('.mini').forEach((m) => {
+      m.addEventListener('click', () => {
+        if (big && m.dataset.src) big.src = m.dataset.src;
+        document.querySelectorAll('.mini').forEach((x) => x.classList.remove('on'));
+        m.classList.add('on');
+      });
+    });
+  </script>
+</Base>
