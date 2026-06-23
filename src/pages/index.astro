@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import Card from '../components/Card.astro';
+
+// Productos de EJEMPLO (de momento). En el siguiente paso este array vendrá
+// de Supabase (tabla web_productos), leído aquí mismo en el build.
+const PRODUS = [
+  { nm:'Eleven (Hospital Gown) #511', fr:'Stranger Things', rar:'vaulted', disp:'inmediato', precio:24.99, c1:'#a78bfa', slug:'eleven-hospital-gown-511' },
+  { nm:"Iron Man 'I Am Iron Man' #580", fr:'Marvel', rar:'excl', disp:'inmediato', precio:34.99, c1:'#fb923c', slug:'iron-man-i-am-iron-man-580' },
+  { nm:'Goku Super Saiyan #1491', fr:'Dragon Ball', rar:'chase', disp:'pedido', precio:29.99, c1:'#fbbf24', slug:'goku-super-saiyan-1491' },
+  { nm:'Harry Potter (Yule Ball) #90', fr:'Harry Potter', rar:'vaulted', disp:'inmediato', precio:19.99, c1:'#60a5fa', slug:'harry-potter-yule-ball-90' },
+  { nm:'Stitch con helado #1233', fr:'Disney', rar:'chase', disp:'reserva', precio:17.99, c1:'#34d399', slug:'stitch-helado-1233' },
+  { nm:'Luffy Gear 5 #1271', fr:'Anime', rar:'excl', disp:'inmediato', precio:39.99, c1:'#f472b6', slug:'luffy-gear-5-1271' },
+  { nm:'Dancing Groot #65', fr:'Marvel', rar:'vaulted', disp:'pedido', precio:22.50, c1:'#a3e635', slug:'dancing-groot-65' },
+  { nm:'Vegeta Ultra Ego #1361', fr:'Dragon Ball', rar:'chase', disp:'agotado', precio:27.99, c1:'#818cf8', slug:'vegeta-ultra-ego-1361' },
+];
+
+// Los agotados NO se muestran (decisión firme).
+const novedades = PRODUS.filter((p) => p.disp !== 'agotado');
+---
+
+<Base>
+  <main class="wrap">
+
+    <section class="carousel">
+      <div class="slides" id="slides">
+        <div class="slide on" style="--g1:#341970;--g2:#09041A;--a1:rgba(34,211,238,.42);--a2:rgba(236,72,153,.5)">
+          <div class="kicker">Coleccionables · Envío desde España</div>
+          <h1>Lo que ya no encuentras.</h1>
+          <p>Rarezas, CHASE y ediciones agotadas que no quedan en ningún sitio. Y si lo buscas, lo conseguimos.</p>
+          <a href="#nov" class="cta">Ver rarezas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="slide" style="--g1:#0c2340;--g2:#04101f;--a1:rgba(34,211,238,.4);--a2:rgba(124,58,237,.5)">
+          <div class="kicker">Banpresto · Tamashii Nations</div>
+          <h1>Ahora también bajo pedido.</h1>
+          <p>Figuras de anime que antes había que importar de fuera. Te las traemos nosotros, sin líos de aduanas.</p>
+          <a href="/banpresto" class="cta">Descúbrelas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="slide" style="--g1:#3a1a14;--g2:#1a0806;--a1:rgba(245,158,11,.4);--a2:rgba(236,72,153,.42)">
+          <div class="kicker">Model Kit · Bandai</div>
+          <h1>Monta tu primer Gunpla.</h1>
+          <p>Modelismo Bandai para empezar de cero o ampliar tu taller. Una afición que engancha, pieza a pieza.</p>
+          <a href="/model-kit" class="cta">Entrar al taller <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="dots" id="dots"></div>
+    </section>
+
+    <section id="nov">
+      <div class="sec-head">
+        <h2>Novedades <span class="spark">✦</span>
+          <span class="sub">Lo último que ha entrado en el almacén</span>
+        </h2>
+        <a href="/funko" class="seeall">Ver todo →</a>
+      </div>
+      <div class="grid">
+        {novedades.map((p) => <Card p={p} />)}
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Carrusel de banners (rota solo + puntos de navegación).
+    const slides = [...document.querySelectorAll('.slide')];
+    const dotsBox = document.getElementById('dots');
+    let ci = 0;
+    if (dotsBox && slides.length) {
+      slides.forEach((_, i) => {
+        const b = document.createElement('button');
+        if (i === 0) b.classList.add('on');
+        b.addEventListener('click', () => { go(i); reset(); });
+        dotsBox.appendChild(b);
+      });
+      const dots = [...dotsBox.children];
+      function go(i) {
+        slides[ci].classList.remove('on'); dots[ci].classList.remove('on');
+        ci = i;
+        slides[ci].classList.add('on'); dots[ci].classList.add('on');
+      }
+      let timer = setInterval(() => go((ci + 1) % slides.length), 5500);
+      function reset() { clearInterval(timer); timer = setInterval(() => go((ci + 1) % slides.length), 5500); }
+    }
+  </script>
+</Base>
