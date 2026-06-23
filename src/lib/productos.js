@@ -48,3 +48,48 @@ export function aCard(p) {
     imagen: p.imagen_principal,
   };
 }
+/**
+ * Trae los productos con TODOS los campos que necesita la ficha de detalle
+ * (galería completa, descripción, licencia, EAN). Para getStaticPaths.
+ */
+export async function getProductosFull() {
+  if (!url || !key) {
+    console.warn('[supabase] Sin credenciales — no se generan fichas de producto.');
+    return [];
+  }
+  try {
+    const supabase = createClient(url, key);
+    const { data, error } = await supabase
+      .from('web_productos')
+      .select('slug,nombre,titulo_seo,fandom,categoria,licencia,ean,precio,disponibilidad,es_chase,es_vaulted,es_exclusivo,imagen_principal,imagenes,descripcion_html,origen,activo')
+      .eq('activo', true)
+      .eq('origen', 'fabrica');
+    if (error) { console.warn('[supabase] Error en getProductosFull:', error.message); return []; }
+    return data || [];
+  } catch (e) {
+    console.warn('[supabase] Excepción en getProductosFull:', e.message);
+    return [];
+  }
+}
+
+/** Mapea una fila completa a la forma que usa la ficha de detalle. */
+export function aFicha(p) {
+  const rar = p.es_chase ? 'chase' : p.es_vaulted ? 'vaulted' : p.es_exclusivo ? 'excl' : null;
+  const fotos = Array.isArray(p.imagenes) && p.imagenes.length
+    ? p.imagenes
+    : (p.imagen_principal ? [p.imagen_principal] : []);
+  return {
+    slug: p.slug,
+    nm: p.nombre,
+    titulo: p.titulo_seo || p.nombre,
+    fr: p.fandom,
+    cat: p.categoria,
+    lic: p.licencia,
+    ean: p.ean,
+    rar,
+    disp: p.disponibilidad || 'inmediato',
+    precio: p.precio,
+    desc: p.descripcion_html || '',
+    fotos,
+  };
+}
