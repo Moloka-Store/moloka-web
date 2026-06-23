@@ -223,3 +223,45 @@
   .thumb{text-decoration:none;color:inherit}
   .meta .nm{display:-webkit-box;text-decoration:none;color:inherit;cursor:pointer}
   .meta .nm:hover{color:var(--n2)}
+/* ====================== FICHA DE PRODUCTO ====================== */
+  .ficha{padding:24px 20px 64px}
+  .migas{font-size:13px;color:var(--ink-soft);margin-bottom:22px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .migas a{color:var(--ink-soft);text-decoration:none}
+  .migas a:hover{color:var(--n2)}
+  .migas b{color:var(--ink);font-weight:600}
+
+  .ficha-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+
+  .galeria{position:sticky;top:92px}
+  .foto-grande{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
+    aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden;padding:26px}
+  .foto-grande img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+  .sinfoto{color:var(--ink-soft);font-size:14px}
+  .minis{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .mini{width:70px;height:70px;border:1px solid var(--line);border-radius:12px;background:var(--bg2);
+    padding:6px;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+  .mini img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+  .mini:hover{border-color:var(--n1)}
+  .mini.on{border-color:var(--n2);box-shadow:0 0 0 2px rgba(124,58,237,.18)}
+
+  .info .info-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .info .fr{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+  .info h1{font-family:'Space Grotesk',sans-serif;font-size:32px;line-height:1.15;margin:0 0 16px;color:var(--ink)}
+  .estado{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:#fff;
+    padding:5px 13px;border-radius:999px;margin-bottom:20px}
+  .estado i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.9)}
+  .precio{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:28px;margin:0 0 18px;color:var(--ink)}
+  .precio.ask{font-size:16px;color:var(--ink-soft);font-weight:500}
+  .info .buy{max-width:330px;font-size:15px;padding:14px}
+  .desc{margin:28px 0 0;color:var(--ink);line-height:1.7;font-size:15px;border-top:1px solid var(--line);padding-top:24px}
+  .detalles{margin:24px 0 0;border-top:1px solid var(--line);padding-top:18px;display:grid;gap:10px}
+  .detalles>div{display:flex;gap:12px;font-size:13.5px}
+  .detalles dt{color:var(--ink-soft);min-width:92px}
+  .detalles dd{margin:0;color:var(--ink);font-weight:500}
+
+  @media(max-width:860px){
+    .ficha-grid{grid-template-columns:1fr;gap:28px}
+    .galeria{position:static}
+    .info h1{font-size:26px}
+    .precio{font-size:24px}
+  }
