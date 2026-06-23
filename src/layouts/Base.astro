@@ -1,0 +1,90 @@
+---
+// Layout base de toda la web. El contenido de cada página entra por <slot/>.
+// Recibe el título y la descripción para el <head> (clave SEO: cada página
+// tendrá su propio title y meta description).
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'MOLOKA · Lo que ya no encuentras',
+  description = 'Funko Pops, rarezas, CHASE y ediciones agotadas. Coleccionables originales con envío desde España.',
+} = Astro.props;
+import '../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<div class="topbar">🚚 <b>Envío gratis</b> desde 65 € · Originales verificados · Enviamos desde España</div>
+
+<header>
+  <div class="wrap">
+    <div class="hbar">
+      <button class="menu-btn" id="menuBtn" aria-label="Menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a href="/" class="brand">MOLOKA</a>
+      <nav class="mainnav" id="mainnav">
+        <a href="/funko">Funko</a>
+        <a href="/banpresto">Banpresto</a>
+        <a href="/tamashii">Tamashii Nations</a>
+        <a href="/model-kit">Model Kit</a>
+        <a href="/guias">Guías</a>
+        <a href="/contacto">Contacto</a>
+      </nav>
+      <div class="icons">
+        <button class="ico" id="searchBtn" title="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+        <button class="ico" title="Favoritos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></button>
+        <button class="ico" title="Carrito"><span class="dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="search-ov" id="searchOv">
+  <div class="search-box">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="q" placeholder="Busca tu figura, fandom o número…" autocomplete="off" />
+    <button class="cls" id="searchClose">Cerrar</button>
+  </div>
+</div>
+
+<slot />
+
+<div class="trust">
+  <div class="wrap"><div class="row">
+    <div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>100% originales y verificados</div>
+    <div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="m16 8 4 0 3 3v5h-7M5.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm12 0a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>Envío protegido desde España</div>
+    <div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5l-8-3Z"/></svg>Compra segura</div>
+  </div></div>
+</div>
+
+<footer>© 2026 Moloka Store · Cartagena, España — maqueta de diseño (datos de ejemplo)</footer>
+
+<script>
+  // Buscador (la lupa abre el overlay) + menú hamburguesa. Común a toda la web.
+  const ov = document.getElementById('searchOv');
+  document.getElementById('searchBtn')?.addEventListener('click', () => {
+    ov?.classList.add('open');
+    (document.getElementById('q') as HTMLInputElement)?.focus();
+  });
+  document.getElementById('searchClose')?.addEventListener('click', () => ov?.classList.remove('open'));
+  ov?.addEventListener('click', (e) => { if (e.target === ov) ov.classList.remove('open'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') ov?.classList.remove('open'); });
+  document.getElementById('menuBtn')?.addEventListener('click', () =>
+    document.getElementById('mainnav')?.classList.toggle('open')
+  );
+</script>
+</body>
+</html>
