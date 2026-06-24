@@ -1,0 +1,97 @@
+---
+// Bloque de catálogo reutilizable por el hub /funko y por cada página de
+// categoría. La barra de categorías son ENLACES reales (cada categoría es una
+// URL propia = SEO). Los filtros (rareza/disponibilidad/orden) refinan en el
+// navegador lo que ya está escrito en el HTML.
+import Card from './Card.astro';
+import { slugCat } from '../lib/categorias.js';
+
+interface Props {
+  productos: any[];      // los de ESTA vista (ya mapeados con aCard, sin agotados)
+  categorias: string[];  // categorías con producto (para la barra), orden canónico
+  activa?: string | null; // categoría activa, o null en el hub "Todas"
+}
+const { productos, categorias, activa = null } = Astro.props;
+---
+
+<div class="chips" id="cats">
+  <a class={`chip ${activa === null ? 'on' : ''}`} href="/funko">Todas</a>
+  {categorias.map((c) => (
+    <a class={`chip ${activa === c ? 'on' : ''}`} href={`/funko/categoria/${slugCat(c)}`}>{c}</a>
+  ))}
+</div>
+
+<div class="filtros">
+  <label>Rareza
+    <select id="f-rar">
+      <option value="">Todas</option>
+      <option value="chase">CHASE</option>
+      <option value="vaulted">Vaulted</option>
+      <option value="excl">Exclusivo</option>
+    </select>
+  </label>
+  <label>Disponibilidad
+    <select id="f-disp">
+      <option value="">Todas</option>
+      <option value="inmediato">Disponible</option>
+      <option value="pedido">Bajo pedido</option>
+      <option value="reserva">Reserva</option>
+    </select>
+  </label>
+  <label>Ordenar
+    <select id="f-ord">
+      <option value="nuevo">Novedades</option>
+      <option value="precio-asc">Precio: menor a mayor</option>
+      <option value="precio-desc">Precio: mayor a menor</option>
+      <option value="nombre">Nombre (A–Z)</option>
+    </select>
+  </label>
+</div>
+
+<div class="grid" id="grid">
+  {productos.map((p) => <Card p={p} />)}
+</div>
+
+<p class="sinres" id="sinres">No hay piezas con esos filtros. Prueba a quitar alguno.</p>
+
+<script>
+  // Filtra y ordena EN EL NAVEGADOR sobre las tarjetas ya escritas en el HTML.
+  const grid = document.getElementById('grid');
+  if (grid) {
+    const cards = Array.from(grid.querySelectorAll('.card'));
+    const orden0 = new Map(cards.map((c, i) => [c, i])); // orden de entrada = novedades
+    const fRar = document.getElementById('f-rar');
+    const fDisp = document.getElementById('f-disp');
+    const fOrd = document.getElementById('f-ord');
+    const cuenta = document.getElementById('cuenta');
+    const cuentaLbl = document.getElementById('cuenta-lbl');
+    const sinres = document.getElementById('sinres');
+
+    const precioDe = (c) => {
+      const v = parseFloat(c.dataset.precio);
+      return isNaN(v) ? Infinity : v; // los "Consultar precio" al final al ordenar por precio
+    };
+
+    function aplicar() {
+      const r = fRar.value, d = fDisp.value, ord = fOrd.value;
+      const vis = cards.filter((c) =>
+        (!r || c.dataset.rar === r) &&
+        (!d || c.dataset.disp === d)
+      );
+      vis.sort((a, b) => {
+        if (ord === 'precio-asc') return precioDe(a) - precioDe(b);
+        if (ord === 'precio-desc') return precioDe(b) - precioDe(a);
+        if (ord === 'nombre') return (a.dataset.nm || '').localeCompare(b.dataset.nm || '', 'es');
+        return orden0.get(a) - orden0.get(b);
+      });
+      cards.forEach((c) => { c.style.display = 'none'; });
+      vis.forEach((c) => { c.style.display = ''; grid.appendChild(c); });
+      if (cuenta) cuenta.textContent = vis.length;
+      if (cuentaLbl) cuentaLbl.textContent = vis.length === 1 ? 'pieza' : 'piezas';
+      if (sinres) sinres.style.display = vis.length ? 'none' : 'block';
+    }
+
+    [fRar, fDisp, fOrd].forEach((s) => s.addEventListener('change', aplicar));
+    aplicar();
+  }
+</script>
