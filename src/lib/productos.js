@@ -37,12 +37,15 @@ export async function getProductos() {
 
 /** Convierte una fila de web_productos a la forma que usa la tarjeta (Card.astro). */
 export function aCard(p) {
-  const rar = p.es_chase ? 'chase' : p.es_vaulted ? 'vaulted' : p.es_exclusivo ? 'excl' : null;
+  const rars = [];
+  if (p.es_chase) rars.push('chase');
+  if (p.es_vaulted) rars.push('vaulted');
+  if (p.es_exclusivo) rars.push('excl');
   return {
     nm: p.nombre,
     fr: p.fandom,
     cat: p.categoria || null,
-    rar,
+    rars,                                   // todas las que aplican (un Funko puede ser varias)
     disp: p.disponibilidad || 'inmediato',
     precio: p.precio,
     slug: p.slug,
@@ -75,7 +78,10 @@ export async function getProductosFull() {
 
 /** Mapea una fila completa a la forma que usa la ficha de detalle. */
 export function aFicha(p) {
-  const rar = p.es_chase ? 'chase' : p.es_vaulted ? 'vaulted' : p.es_exclusivo ? 'excl' : null;
+  const rars = [];
+  if (p.es_chase) rars.push('chase');
+  if (p.es_vaulted) rars.push('vaulted');
+  if (p.es_exclusivo) rars.push('excl');
   const fotos = Array.isArray(p.imagenes) && p.imagenes.length
     ? p.imagenes
     : (p.imagen_principal ? [p.imagen_principal] : []);
@@ -87,7 +93,7 @@ export function aFicha(p) {
     cat: p.categoria,
     lic: p.licencia,
     ean: p.ean,
-    rar,
+    rars,
     disp: p.disponibilidad || 'inmediato',
     precio: p.precio,
     desc: p.descripcion_html || '',
