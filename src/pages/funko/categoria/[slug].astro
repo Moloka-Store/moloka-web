@@ -1,0 +1,41 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Catalogo from '../../../components/Catalogo.astro';
+import { getProductos, aCard } from '../../../lib/productos.js';
+import { CATS, slugCat } from '../../../lib/categorias.js';
+
+// Una página estática por categoría CON PRODUCTO. Cada una con su title/meta y
+// su H1 propios = SEO por categoría. Las categorías vacías no generan página
+// (evita "thin content"); cuando entre un producto de esa categoría, su página
+// nace sola en el siguiente build.
+export async function getStaticPaths() {
+  const productos = (await getProductos()).map(aCard).filter((p) => p.disp !== 'agotado');
+  const presentes = CATS.filter((c) => productos.some((p) => p.cat === c));
+  return presentes.map((cat) => ({
+    params: { slug: slugCat(cat) },
+    props: { cat, items: productos.filter((p) => p.cat === cat), presentes },
+  }));
+}
+
+const { cat, items, presentes } = Astro.props;
+const total = items.length;
+---
+
+<Base
+  title={`Funko de ${cat} · rarezas y ediciones | MOLOKA`}
+  description={`Funko Pop de ${cat} en Moloka Store: rarezas, CHASE, Vaulted y exclusivas. Filtra por rareza y disponibilidad. Originales con envío desde España.`}
+>
+  <main class="wrap funko-page">
+    <nav class="migas">
+      <a href="/">Inicio</a> <span>/</span> <a href="/funko">Funko</a> <span>/</span> <b>{cat}</b>
+    </nav>
+
+    <div class="sec-head">
+      <h2>{cat}
+        <span class="sub">Funko de {cat} — <span id="cuenta">{total}</span> <span id="cuenta-lbl">{total === 1 ? 'pieza' : 'piezas'}</span></span>
+      </h2>
+    </div>
+
+    <Catalogo productos={items} categorias={presentes} activa={cat} />
+  </main>
+</Base>
