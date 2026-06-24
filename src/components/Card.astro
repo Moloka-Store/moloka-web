@@ -5,7 +5,7 @@
 interface Producto {
   nm: string;
   fr: string;
-  rar?: 'chase' | 'vaulted' | 'excl' | null;
+  rars?: string[];
   disp: 'inmediato' | 'pedido' | 'reserva' | 'agotado';
   precio?: number | null;
   c1?: string;
@@ -20,14 +20,14 @@ const RAR  = { chase:['CHASE','r-chase'], vaulted:['VAULTED','r-vaulted'], excl:
 const BTN  = { inmediato:['Añadir',''], pedido:['Encargar','order'], reserva:['Reservar','pre'], agotado:['Avísame','out'] };
 
 const [dl, dc] = DISP[p.disp] ?? DISP.inmediato;
-const [rl, rc] = p.rar ? (RAR[p.rar] ?? ['','']) : ['',''];
+const rars = p.rars ?? [];
 const [bl, bc] = BTN[p.disp] ?? BTN.inmediato;
 const color = p.c1 ?? '#a78bfa';
 const precioFmt = p.precio != null ? p.precio.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €' : null;
 const href = p.slug ? `/funko/${p.slug}` : '#';
 ---
 
-<article class="card" data-fr={p.fr} data-nm={p.nm.toLowerCase()} data-cat={p.cat ?? ''} data-rar={p.rar ?? ''} data-disp={p.disp} data-precio={p.precio ?? ''}>
+<article class="card" data-fr={p.fr} data-nm={p.nm.toLowerCase()} data-cat={p.cat ?? ''} data-rars={rars.join(' ')} data-disp={p.disp} data-precio={p.precio ?? ''}>
   <a class="thumb" href={href} style={`background:linear-gradient(160deg,${color}12,${color}03)`}>
     <span class={`ribbon ${dc}`}><b>{dl}</b></span>
     <button class="fav" title="Guardar" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></button>
@@ -47,7 +47,7 @@ const href = p.slug ? `/funko/${p.slug}` : '#';
   <div class="meta">
     <div class="top">
       <span class="fr">{p.fr}</span>
-      {rl && <span class={`rar ${rc}`}>{rl}</span>}
+      {rars.map((r) => { const [l, c] = RAR[r] ?? ['', '']; return l && <span class={`rar ${c}`}>{l}</span>; })}
     </div>
     <a class="nm" href={href}>{p.nm}</a>
     {precioFmt
