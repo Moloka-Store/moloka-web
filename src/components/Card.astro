@@ -9,6 +9,7 @@ interface Producto {
   disp: 'inmediato' | 'pedido' | 'reserva' | 'agotado';
   precio?: number | null;
   c1?: string;
+  cat?: string | null;
   slug?: string;
   imagen?: string | null;
 }
@@ -26,7 +27,7 @@ const precioFmt = p.precio != null ? p.precio.toLocaleString('es-ES', { minimumF
 const href = p.slug ? `/funko/${p.slug}` : '#';
 ---
 
-<article class="card" data-fr={p.fr} data-nm={p.nm.toLowerCase()}>
+<article class="card" data-fr={p.fr} data-nm={p.nm.toLowerCase()} data-cat={p.cat ?? ''} data-rar={p.rar ?? ''} data-disp={p.disp} data-precio={p.precio ?? ''}>
   <a class="thumb" href={href} style={`background:linear-gradient(160deg,${color}12,${color}03)`}>
     <span class={`ribbon ${dc}`}><b>{dl}</b></span>
     <button class="fav" title="Guardar" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></button>
