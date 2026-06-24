@@ -41,6 +41,7 @@ export function aCard(p) {
   return {
     nm: p.nombre,
     fr: p.fandom,
+    cat: p.categoria || null,
     rar,
     disp: p.disponibilidad || 'inmediato',
     precio: p.precio,
