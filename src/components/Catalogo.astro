@@ -75,7 +75,7 @@ const { productos, categorias, activa = null } = Astro.props;
     function aplicar() {
       const r = fRar.value, d = fDisp.value, ord = fOrd.value;
       const vis = cards.filter((c) =>
-        (!r || c.dataset.rar === r) &&
+        (!r || (c.dataset.rars || '').split(' ').includes(r)) &&
         (!d || c.dataset.disp === d)
       );
       vis.sort((a, b) => {
