@@ -84,12 +84,13 @@
     font:inherit;font-weight:600;color:var(--ink-soft)}
 
   /* ---------- CARRUSEL (hero rotativo) ---------- */
-  .carousel{position:relative;margin:22px 0 28px;border-radius:26px;overflow:hidden;isolation:isolate}
+  .carousel{position:relative;margin:22px 0 28px;border-radius:26px;overflow:hidden;isolation:isolate;
+    background:#09041A url("https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/assets/hero_neon.png") center/cover no-repeat}
   .slides{position:relative;min-height:384px}
   .slide{position:absolute;inset:0;padding:54px 44px;color:#fff;
     display:flex;flex-direction:column;justify-content:center;
     opacity:0;transition:opacity .8s ease;pointer-events:none;
-    background:radial-gradient(120% 150% at 22% -5%,var(--g1),var(--g2) 60%);
+    background:linear-gradient(100deg,rgba(7,3,20,.95) 0%,rgba(7,3,20,.84) 34%,rgba(7,3,20,.48) 60%,rgba(7,3,20,.05) 82%);
     box-shadow:inset 0 0 0 1px rgba(124,58,237,.25)}
   .slide::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.7;
     background:radial-gradient(58% 48% at 86% 16%,var(--a1),transparent 60%),
