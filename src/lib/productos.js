@@ -20,7 +20,7 @@ export async function getProductos() {
     const supabase = createClient(url, key);
     const { data, error } = await supabase
       .from('web_productos')
-      .select('slug,nombre,fandom,categoria,precio,precio_web,disponibilidad,es_chase,es_vaulted,es_exclusivo,imagen_principal,origen,activo,actualizado')
+      .select('slug,nombre,fandom,categoria,precio,precio_web,precio_oferta,disponibilidad,es_chase,es_vaulted,es_exclusivo,imagen_principal,origen,activo,actualizado')
       .eq('activo', true)
       .eq('origen', 'fabrica')                 // solo lo pasado por la fábrica
       .order('actualizado', { ascending: false });
@@ -47,7 +47,8 @@ export function aCard(p) {
     cat: p.categoria || null,
     rars,                                   // todas las que aplican (un Funko puede ser varias)
     disp: p.disponibilidad || 'inmediato',
-    precio: p.precio_web != null ? p.precio_web : p.precio,   // ← lee el precio de la web; si está vacío, cae al precio genérico
+    precio: p.precio_web != null ? p.precio_web : p.precio,
+    precio_oferta: p.precio_oferta,   // ← lee el precio de la web; si está vacío, cae al precio genérico
     slug: p.slug,
     imagen: p.imagen_principal,
   };
@@ -65,7 +66,7 @@ export async function getProductosFull() {
     const supabase = createClient(url, key);
     const { data, error } = await supabase
       .from('web_productos')
-      .select('slug,nombre,titulo_seo,fandom,categoria,licencia,ean,precio,precio_web,disponibilidad,es_chase,es_vaulted,es_exclusivo,imagen_principal,imagenes,descripcion_html,origen,activo')
+      .select('slug,nombre,titulo_seo,fandom,categoria,licencia,ean,precio,precio_web,precio_oferta,disponibilidad,es_chase,es_vaulted,es_exclusivo,imagen_principal,imagenes,descripcion_html,origen,activo')
       .eq('activo', true)
       .eq('origen', 'fabrica');
     if (error) { console.warn('[supabase] Error en getProductosFull:', error.message); return []; }
@@ -95,7 +96,8 @@ export function aFicha(p) {
     ean: p.ean,
     rars,
     disp: p.disponibilidad || 'inmediato',
-    precio: p.precio_web != null ? p.precio_web : p.precio,   // ← mismo arreglo en la ficha de detalle
+    precio: p.precio_web != null ? p.precio_web : p.precio,
+    precio_oferta: p.precio_oferta,   // ← mismo arreglo en la ficha de detalle
     desc: p.descripcion_html || '',
     fotos,
   };
