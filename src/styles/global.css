@@ -218,7 +218,7 @@
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 /* ---------- foto real del producto en la card ---------- */
   .thumb .foto{width:82%;height:82%;object-fit:contain;
-    transition:transform .25s, filter .25s;mix-blend-mode:multiply}
+    transition:transform .25s, filter .25s}
   .card:hover .foto{transform:translateY(-3px) scale(1.04)}
   /* ---------- ajustes Astro: thumb y nombre son enlaces ---------- */
   .thumb{text-decoration:none;color:inherit}
@@ -234,14 +234,14 @@
   .ficha-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
 
   .galeria{position:sticky;top:92px}
-  .foto-grande{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
+  .foto-grande{background:#fff;border:1px solid var(--line);border-radius:var(--radius);
     aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden;padding:26px}
-  .foto-grande img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+  .foto-grande img{width:100%;height:100%;object-fit:contain}
   .sinfoto{color:var(--ink-soft);font-size:14px}
   .minis{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-  .mini{width:70px;height:70px;border:1px solid var(--line);border-radius:12px;background:var(--bg2);
+  .mini{width:70px;height:70px;border:1px solid var(--line);border-radius:12px;background:#fff;
     padding:6px;cursor:pointer;transition:border-color .2s,box-shadow .2s}
-  .mini img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+  .mini img{width:100%;height:100%;object-fit:contain}
   .mini:hover{border-color:var(--n1)}
   .mini.on{border-color:var(--n2);box-shadow:0 0 0 2px rgba(124,58,237,.18)}
 
