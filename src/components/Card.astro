@@ -8,6 +8,7 @@ interface Producto {
   rars?: string[];
   disp: 'inmediato' | 'pedido' | 'reserva' | 'agotado';
   precio?: number | null;
+  precio_oferta?: number | null;
   c1?: string;
   cat?: string | null;
   slug?: string;
@@ -23,7 +24,11 @@ const [dl, dc] = DISP[p.disp] ?? DISP.inmediato;
 const rars = p.rars ?? [];
 const [bl, bc] = BTN[p.disp] ?? BTN.inmediato;
 const color = p.c1 ?? '#a78bfa';
-const precioFmt = p.precio != null ? p.precio.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €' : null;
+const _fmtEur = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €';
+const oferta = (p.precio != null && p.precio_oferta != null && p.precio_oferta > 0 && p.precio_oferta < p.precio) ? p.precio_oferta : null;
+const precioFmt = p.precio != null ? _fmtEur(p.precio) : null;
+const ofertaFmt = oferta != null ? _fmtEur(oferta) : null;
+const pctOff = oferta != null ? Math.round((1 - oferta / p.precio) * 100) : 0;
 const href = p.slug ? `/funko/${p.slug}` : '#';
 ---
 
@@ -51,7 +56,9 @@ const href = p.slug ? `/funko/${p.slug}` : '#';
     </div>
     <a class="nm" href={href}>{p.nm}</a>
     {precioFmt
-      ? <div class="pr">{precioFmt}</div>
+      ? (ofertaFmt
+          ? <div class="pr"><span style="text-decoration:line-through;color:#9ca3af;font-weight:500;font-size:.72em;margin-right:7px">{precioFmt}</span><span style="color:#dc2626;font-weight:800">{ofertaFmt}</span><span style="background:#dc2626;color:#fff;font-size:.58em;font-weight:700;padding:2px 6px;border-radius:6px;margin-left:7px;vertical-align:middle">-{pctOff}%</span></div>
+          : <div class="pr">{precioFmt}</div>)
       : <div class="pr ask">Consultar precio</div>}
     <button class={`buy ${bc}`} type="button">{bl}</button>
   </div>
