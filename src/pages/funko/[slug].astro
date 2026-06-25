@@ -16,7 +16,11 @@ const BTN  = { inmediato:['Añadir a la cesta',''], pedido:['Encargar','order'],
 const [dl, dc] = DISP[p.disp] ?? DISP.inmediato;
 const rars = p.rars ?? [];
 const [bl, bc] = BTN[p.disp] ?? BTN.inmediato;
-const precioFmt = p.precio != null ? p.precio.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €' : null;
+const _fmtEur = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €';
+const oferta = (p.precio != null && p.precio_oferta != null && p.precio_oferta > 0 && p.precio_oferta < p.precio) ? p.precio_oferta : null;
+const precioFmt = p.precio != null ? _fmtEur(p.precio) : null;
+const ofertaFmt = oferta != null ? _fmtEur(oferta) : null;
+const pctOff = oferta != null ? Math.round((1 - oferta / p.precio) * 100) : 0;
 const fotos = p.fotos.length ? p.fotos : [null];
 const metaDesc = `${p.nm}${p.fr ? ' de ' + p.fr : ''}. Coleccionable original con envío desde España — Moloka Store.`;
 ---
@@ -59,7 +63,9 @@ const metaDesc = `${p.nm}${p.fr ? ' de ' + p.fr : ''}. Coleccionable original co
         <span class={`estado ${dc}`}><i></i>{dl}</span>
 
         {precioFmt
-          ? <div class="precio">{precioFmt}</div>
+          ? (ofertaFmt
+              ? <div class="precio"><span style="text-decoration:line-through;color:#9ca3af;font-weight:500;font-size:.6em;margin-right:9px">{precioFmt}</span><span style="color:#dc2626">{ofertaFmt}</span><span style="background:#dc2626;color:#fff;font-size:.42em;font-weight:700;padding:3px 8px;border-radius:7px;margin-left:10px;vertical-align:middle">-{pctOff}%</span></div>
+              : <div class="precio">{precioFmt}</div>)
           : <div class="precio ask">Consultar precio</div>}
 
         <button class={`buy ${bc}`} type="button">{bl}</button>
