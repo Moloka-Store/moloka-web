@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import CatalogoMarca from '../components/CatalogoMarca.astro';
+import { getProductos, aCard } from '../lib/productos.js';
+
+const productos = (await getProductos())
+  .filter((p) => p.seccion === 'model_kit')
+  .map(aCard)
+  .filter((p) => p.disp !== 'agotado');
+const franquicias = [...new Set(productos.map((p) => p.fr).filter(Boolean))]
+  .sort((a, b) => a.localeCompare(b, 'es'));
+const total = productos.length;
+---
+
+<Base
+  title="Model Kit · Gunpla y maquetas Bandai bajo pedido | MOLOKA"
+  description="Maquetas Bandai: Gunpla, 30 Minutes y más. Cientos de referencias que te traemos bajo pedido en 10-15 días. Originales, desde España."
+>
+  <main class="wrap funko-page">
+    <div class="sec-head">
+      <h2>Model Kit <span class="spark">&#10022;</span>
+        <span class="sub">Maquetas Bandai — <span id="cuenta">{total}</span> <span id="cuenta-lbl">{total === 1 ? 'pieza' : 'piezas'}</span></span>
+      </h2>
+    </div>
+
+    {total > 0
+      ? <CatalogoMarca productos={productos} franquicias={franquicias} />
+      : <p class="vacio">Estamos cargando el catálogo. Vuelve pronto.</p>}
+  </main>
+</Base>
