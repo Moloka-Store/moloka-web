@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import CatalogoMarca from '../components/CatalogoMarca.astro';
+import { getProductos, aCard } from '../lib/productos.js';
+
+const productos = (await getProductos())
+  .filter((p) => p.seccion === 'banpresto')
+  .map(aCard)
+  .filter((p) => p.disp !== 'agotado');
+const franquicias = [...new Set(productos.map((p) => p.fr).filter(Boolean))]
+  .sort((a, b) => a.localeCompare(b, 'es'));
+const total = productos.length;
+---
+
+<Base
+  title="Banpresto · figuras de anime bajo pedido | MOLOKA"
+  description="Figuras Banpresto de tus animes favoritos: One Piece, Dragon Ball y más. Te las traemos bajo pedido en 10-15 días. Originales, desde España."
+>
+  <main class="wrap funko-page">
+    <div class="sec-head">
+      <h2>Banpresto <span class="spark">&#10022;</span>
+        <span class="sub">Figuras de anime — <span id="cuenta">{total}</span> <span id="cuenta-lbl">{total === 1 ? 'pieza' : 'piezas'}</span></span>
+      </h2>
+    </div>
+
+    {total > 0
+      ? <CatalogoMarca productos={productos} franquicias={franquicias} />
+      : <p class="vacio">Estamos cargando el catálogo. Vuelve pronto.</p>}
+  </main>
+</Base>
