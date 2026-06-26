@@ -1,0 +1,83 @@
+---
+// Catálogo para las secciones de marca (Banpresto / Tamashii / Model Kit).
+// En BEMS no hay rarezas y casi todo es "Anime y Manga", así que el filtro
+// útil es la FRANQUICIA (fandom). Reutiliza Card.astro y los estilos.
+import Card from './Card.astro';
+
+interface Props {
+  productos: any[];
+  franquicias: string[];
+}
+const { productos, franquicias } = Astro.props;
+---
+
+<div class="filtros">
+  <label>Franquicia
+    <select id="f-fr">
+      <option value="">Todas</option>
+      {franquicias.map((f) => <option value={f}>{f}</option>)}
+    </select>
+  </label>
+  <label>Disponibilidad
+    <select id="f-disp">
+      <option value="">Todas</option>
+      <option value="pedido">Bajo pedido</option>
+      <option value="inmediato">Disponible</option>
+    </select>
+  </label>
+  <label>Ordenar
+    <select id="f-ord">
+      <option value="nuevo">Novedades</option>
+      <option value="precio-asc">Precio: menor a mayor</option>
+      <option value="precio-desc">Precio: mayor a menor</option>
+      <option value="nombre">Nombre (A–Z)</option>
+    </select>
+  </label>
+</div>
+
+<div class="grid" id="grid">
+  {productos.map((p) => <Card p={p} />)}
+</div>
+
+<p class="sinres" id="sinres">No hay piezas con esos filtros. Prueba a quitar alguno.</p>
+
+<script>
+  const grid = document.getElementById('grid');
+  if (grid) {
+    const cards = Array.from(grid.querySelectorAll('.card'));
+    const orden0 = new Map(cards.map((c, i) => [c, i]));
+    const fFr = document.getElementById('f-fr');
+    const fDisp = document.getElementById('f-disp');
+    const fOrd = document.getElementById('f-ord');
+    const cuenta = document.getElementById('cuenta');
+    const cuentaLbl = document.getElementById('cuenta-lbl');
+    const sinres = document.getElementById('sinres');
+
+    const precioDe = (c) => {
+      const v = parseFloat(c.dataset.precio);
+      return isNaN(v) ? Infinity : v;
+    };
+
+    function aplicar() {
+      const fr = fFr.value, d = fDisp.value, ord = fOrd.value;
+      const vis = cards.filter((c) =>
+        (!fr || c.dataset.fr === fr) &&
+        (!d || c.dataset.disp === d)
+      );
+      vis.sort((a, b) => {
+        if (ord === 'precio-asc') return precioDe(a) - precioDe(b);
+        if (ord === 'precio-desc') return precioDe(b) - precioDe(a);
+        if (ord === 'nombre') return (a.dataset.nm || '').localeCompare(b.dataset.nm || '', 'es');
+        return orden0.get(a) - orden0.get(b);
+      });
+      cards.forEach((c) => { c.style.display = 'none'; });
+      vis.forEach((c) => { c.style.display = ''; grid.appendChild(c); });
+      if (cuenta) cuenta.textContent = vis.length;
+      if (cuentaLbl) cuentaLbl.textContent = vis.length === 1 ? 'pieza' : 'piezas';
+      if (sinres) sinres.style.display = vis.length ? 'none' : 'block';
+    }
+
+    [fFr, fDisp, fOrd].forEach((s) => s.addEventListener('change', aplicar));
+    aplicar();
+  }
+</script>
