@@ -4,9 +4,7 @@ import Catalogo from '../../components/Catalogo.astro';
 import { getProductos, aCard } from '../../lib/productos.js';
 import { CATS } from '../../lib/categorias.js';
 
-// Hub de la sección Funko: TODO el catálogo escrito en el HTML (SEO) + barra
-// de categorías que lleva a cada página de categoría. Lee Supabase en el build.
-const productos = (await getProductos()).map(aCard).filter((p) => p.disp !== 'agotado');
+const productos = (await getProductos()).filter((p) => p.origen === 'fabrica').map(aCard).filter((p) => p.disp !== 'agotado');
 const presentes = CATS.filter((c) => productos.some((p) => p.cat === c));
 const total = productos.length;
 ---
