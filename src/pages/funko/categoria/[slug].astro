@@ -8,8 +8,14 @@ import { CATS, slugCat } from '../../../lib/categorias.js';
 // su H1 propios = SEO por categoría. Las categorías vacías no generan página
 // (evita "thin content"); cuando entre un producto de esa categoría, su página
 // nace sola en el siguiente build.
+// IMPORTANTE: mismo filtro de origen que el hub /funko -> solo Funkos de fábrica
+// y TCG. Excluye BEMS (model kits Bandai, etc.) para que no se cuelen en Funko
+// ni ensucien el filtro de franquicia.
 export async function getStaticPaths() {
-  const productos = (await getProductos()).map(aCard).filter((p) => p.disp !== 'agotado');
+  const productos = (await getProductos())
+    .filter((p) => p.origen === 'fabrica' || p.origen === 'tcg')
+    .map(aCard)
+    .filter((p) => p.disp !== 'agotado');
   const presentes = CATS.filter((c) => productos.some((p) => p.cat === c));
   return presentes.map((cat) => ({
     params: { slug: slugCat(cat) },
