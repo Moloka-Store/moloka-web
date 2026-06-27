@@ -12,6 +12,18 @@ interface Props {
   activa?: string | null; // categoría activa, o null en el hub "Todas"
 }
 const { productos, categorias, activa = null } = Astro.props;
+
+// Franquicias presentes en ESTA vista. Solo las que tienen varios productos salen
+// como opcion propia; el resto cae en "Otras" (para no llenar el desplegable de
+// franquicias con un solo producto).
+const MIN_FR = 3;
+const _frCount = {};
+for (const p of productos) { if (p.fr) _frCount[p.fr] = (_frCount[p.fr] || 0) + 1; }
+const franquicias = Object.entries(_frCount)
+  .filter(([, n]) => n >= MIN_FR)
+  .map(([f]) => f)
+  .sort((a, b) => a.localeCompare(b, 'es'));
+const hayOtras = Object.values(_frCount).some((n) => n < MIN_FR);
 ---
 
 <div class="chips" id="cats">
@@ -28,6 +40,13 @@ const { productos, categorias, activa = null } = Astro.props;
       <option value="chase">CHASE</option>
       <option value="vaulted">Vaulted</option>
       <option value="excl">Exclusivo</option>
+    </select>
+  </label>
+  <label>Franquicia
+    <select id="f-fr">
+      <option value="">Todas</option>
+      {franquicias.map((f) => <option value={f}>{f}</option>)}
+      {hayOtras && <option value="__otras__">Otras</option>}
     </select>
   </label>
   <label>Disponibilidad
@@ -54,7 +73,7 @@ const { productos, categorias, activa = null } = Astro.props;
 
 <p class="sinres" id="sinres">No hay piezas con esos filtros. Prueba a quitar alguno.</p>
 
-<script>
+<script define:vars={{ principales: franquicias }}>
   // Filtra y ordena EN EL NAVEGADOR sobre las tarjetas ya escritas en el HTML.
   const grid = document.getElementById('grid');
   if (grid) {
@@ -62,6 +81,7 @@ const { productos, categorias, activa = null } = Astro.props;
     const orden0 = new Map(cards.map((c, i) => [c, i])); // orden de entrada = novedades
     const fRar = document.getElementById('f-rar');
     const fDisp = document.getElementById('f-disp');
+    const fFr = document.getElementById('f-fr');
     const fOrd = document.getElementById('f-ord');
     const cuenta = document.getElementById('cuenta');
     const cuentaLbl = document.getElementById('cuenta-lbl');
@@ -73,10 +93,11 @@ const { productos, categorias, activa = null } = Astro.props;
     };
 
     function aplicar() {
-      const r = fRar.value, d = fDisp.value, ord = fOrd.value;
+      const r = fRar.value, d = fDisp.value, fr = fFr ? fFr.value : '', ord = fOrd.value;
       const vis = cards.filter((c) =>
         (!r || (c.dataset.rars || '').split(' ').includes(r)) &&
-        (!d || c.dataset.disp === d)
+        (!d || c.dataset.disp === d) &&
+        (!fr || (fr === '__otras__' ? !principales.includes(c.dataset.fr) : c.dataset.fr === fr))
       );
       vis.sort((a, b) => {
         if (ord === 'precio-asc') return precioDe(a) - precioDe(b);
@@ -91,7 +112,7 @@ const { productos, categorias, activa = null } = Astro.props;
       if (sinres) sinres.style.display = vis.length ? 'none' : 'block';
     }
 
-    [fRar, fDisp, fOrd].forEach((s) => s.addEventListener('change', aplicar));
+    [fRar, fFr, fDisp, fOrd].forEach((s) => s && s.addEventListener('change', aplicar));
     aplicar();
   }
 </script>
