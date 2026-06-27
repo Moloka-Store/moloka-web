@@ -14,7 +14,7 @@ export async function getProductos() {
       .from('web_productos')
       .select('slug,nombre,fandom,categoria,precio,precio_web,precio_oferta,disponibilidad,es_chase,es_vaulted,es_exclusivo,imagen_principal,origen,activo,actualizado,seccion')
       .eq('activo', true)
-      .in('origen', ['fabrica', 'bems'])
+      .in('origen', ['fabrica', 'bems', 'tcg'])
       .order('actualizado', { ascending: false });
     if (error) {
       console.warn('[supabase] Error leyendo web_productos:', error.message);
@@ -56,7 +56,7 @@ export async function getProductosFull() {
       .from('web_productos')
       .select('slug,nombre,titulo_seo,fandom,categoria,licencia,ean,precio,precio_web,precio_oferta,disponibilidad,es_chase,es_vaulted,es_exclusivo,imagen_principal,imagenes,descripcion_html,origen,activo')
       .eq('activo', true)
-      .in('origen', ['fabrica', 'bems']);
+      .in('origen', ['fabrica', 'bems', 'tcg']);
     if (error) { console.warn('[supabase] Error en getProductosFull:', error.message); return []; }
     return data || [];
   } catch (e) {
