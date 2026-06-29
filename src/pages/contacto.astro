@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Contacto | Moloka Store" description="Contacta con Moloka Store. Coleccionables originales con envío desde España.">
+  <main class="wrap pg">
+    <header class="pg-head">
+      <h1>Contacto</h1>
+      <p>¿Buscas una pieza concreta, tienes una duda sobre un pedido o quieres trabajar con nosotros? Escríbenos.</p>
+    </header>
+
+    <div class="contacto-grid">
+
+      <section class="datos">
+        <h2>Datos de la empresa</h2>
+        <dl>
+          <div><dt>Razón social</dt><dd>Moloka Store S.L.U.</dd></div>
+          <div><dt>CIF</dt><dd>B22487987</dd></div>
+          <div><dt>Correo</dt><dd><a href="mailto:info@moloka.es">info@moloka.es</a></dd></div>
+          <div><dt>Atención</dt><dd>Coleccionables · Envío desde España</dd></div>
+        </dl>
+      </section>
+
+      <section class="formulario">
+        <h2>Escríbenos</h2>
+        <form id="contactForm">
+          <label>Nombre
+            <input type="text" id="cf-nombre" name="nombre" required autocomplete="name" />
+          </label>
+          <label>Correo
+            <input type="email" id="cf-email" name="email" required autocomplete="email" />
+          </label>
+          <label>Mensaje
+            <textarea id="cf-msg" name="mensaje" rows="5" required></textarea>
+          </label>
+          <button type="submit" class="cta-form">Enviar mensaje</button>
+          <p class="cf-nota" id="cf-nota"></p>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('contactForm') as HTMLFormElement | null;
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = (document.getElementById('cf-nombre') as HTMLInputElement).value.trim();
+      const email = (document.getElementById('cf-email') as HTMLInputElement).value.trim();
+      const msg = (document.getElementById('cf-msg') as HTMLTextAreaElement).value.trim();
+      const asunto = `Consulta web de ${nombre || 'cliente'}`;
+      const cuerpo = `Nombre: ${nombre}\nCorreo: ${email}\n\n${msg}`;
+      const nota = document.getElementById('cf-nota');
+      if (nota) nota.textContent = 'Abriendo tu correo para enviar el mensaje…';
+      window.location.href = `mailto:info@moloka.es?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+    });
+  </script>
+
+  <style>
+    .pg{padding:38px 20px 10px}
+    .pg-head{max-width:640px;margin-bottom:34px}
+    .pg-head h1{font-family:'Space Grotesk';font-weight:700;font-size:clamp(28px,4vw,40px);margin-bottom:12px}
+    .pg-head p{color:var(--ink-soft);font-size:16px;line-height:1.6}
+    .contacto-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:32px;align-items:start}
+    .datos,.formulario{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+    .datos h2,.formulario h2{font-family:'Space Grotesk';font-size:18px;margin-bottom:18px}
+    .datos dl div{padding:11px 0;border-bottom:1px solid var(--line)}
+    .datos dl div:last-child{border-bottom:0}
+    .datos dt{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:600;margin-bottom:3px}
+    .datos dd{font-size:15px;font-weight:500}
+    .datos a{color:var(--n2);text-decoration:none}
+    .datos a:hover{text-decoration:underline}
+    form label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:14px}
+    form input,form textarea{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:11px;
+      padding:12px 13px;font:inherit;font-size:15px;font-weight:400;color:var(--ink);background:#fff;outline:0;transition:.18s}
+    form input:focus,form textarea:focus{border-color:var(--n2);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+    form textarea{resize:vertical}
+    .cta-form{width:100%;border:0;border-radius:11px;padding:13px;font:inherit;font-weight:600;font-size:15px;
+      cursor:pointer;color:#fff;background:linear-gradient(92deg,var(--n2),var(--n1));transition:.2s}
+    .cta-form:hover{transform:translateY(-1px);box-shadow:0 8px 22px -8px rgba(124,58,237,.5)}
+    .cf-nota{margin-top:12px;font-size:13px;color:var(--ink-soft);min-height:18px}
+    @media(max-width:760px){.contacto-grid{grid-template-columns:1fr}}
+  </style>
+</Base>
