@@ -1,225 +1,78 @@
 ---
-// Layout base de toda la web. El contenido de cada página entra por <slot/>.
-// Recibe el título y la descripción para el <head> (clave SEO: cada página
-// tendrá su propio title y meta description).
-interface Props {
-  title?: string;
-  description?: string;
-}
-const {
-  title = 'MOLOKA · Lo que ya no encuentras',
-  description = 'Funko Pops, rarezas, CHASE y ediciones agotadas. Coleccionables originales con envío desde España.',
-} = Astro.props;
-import '../styles/global.css';
+import Base from '../layouts/Base.astro';
+import Card from '../components/Card.astro';
+import { getProductos, aCard } from '../lib/productos.js';
+
+// Lee los productos reales de Supabase EN EL BUILD (pasados por la fábrica).
+// Si no hubiera conexión, getProductos() devuelve [] y la web no se rompe.
+const filas = await getProductos();
+const rarezas = filas
+  .map(aCard)
+  .filter((p) => p.disp !== 'agotado')          // los agotados no se muestran
+  .filter((p) => Array.isArray(p.rars) && p.rars.length > 0); // SOLO chase / vaulted / exclusivos
 ---
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-</head>
-<body>
+<Base>
+  <main class="wrap">
 
-<div class="topbar">🚚 <b>Envío gratis</b> desde 65 € · Originales verificados · Enviamos desde España</div>
-
-<header>
-  <div class="wrap">
-    <div class="hbar">
-      <button class="menu-btn" id="menuBtn" aria-label="Menú">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
-      <a href="/" class="brand">MOLOKA</a>
-      <nav class="mainnav" id="mainnav">
-        <a href="/funko">Funko</a>
-        <a href="/banpresto">Banpresto</a>
-        <a href="/tamashii">Tamashii Nations</a>
-        <a href="/model-kit">Model Kit</a>
-        <a href="/guias">Guías</a>
-        <a href="/contacto">Contacto</a>
-      </nav>
-      <div class="icons">
-        <button class="ico" id="searchBtn" title="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
-        <button class="ico" title="Favoritos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></button>
-        <button class="ico" id="cartBtn" title="Cesta"><span class="cart-count" id="cartCount" hidden>0</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button>
-      </div>
-    </div>
-  </div>
-</header>
-
-<div class="search-ov" id="searchOv">
-  <div class="search-box">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-    <input id="q" placeholder="Busca tu figura, fandom o número…" autocomplete="off" />
-    <button class="cls" id="searchClose">Cerrar</button>
-  </div>
-</div>
-
-<slot />
-
-<div class="trust">
-  <div class="wrap"><div class="row">
-    <div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>100% originales y verificados</div>
-    <div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="m16 8 4 0 3 3v5h-7M5.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm12 0a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>Envío protegido desde España</div>
-    <div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5l-8-3Z"/></svg>Compra segura</div>
-  </div></div>
-</div>
-
-<footer>© 2026 Moloka Store S.L.U. · Cartagena, España</footer>
-
-<!-- ===== CESTA (panel lateral) ===== -->
-<div class="cart-ov" id="cartOv" aria-hidden="true">
-  <aside class="cart-panel" role="dialog" aria-label="Tu cesta">
-    <div class="cart-head">
-      <strong>Tu cesta</strong>
-      <button class="cart-x" id="cartClose" aria-label="Cerrar">&times;</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-empty" id="cartEmpty">Tu cesta está vacía.</div>
-    <div class="cart-note">
-      <b>Estamos actualizando la web.</b>
-      <span>Para consultas urgentes, ponte en contacto con nosotros.</span>
-      <div class="cart-actions">
-        <a class="cart-cta" href="/contacto">Contactar</a>
-        <a class="cart-mail" href="mailto:info@moloka.es">info@moloka.es</a>
-      </div>
-    </div>
-  </aside>
-</div>
-
-<style is:global>
-  .cart-count{position:absolute;top:4px;right:5px;min-width:17px;height:17px;padding:0 4px;
-    border-radius:9px;background:var(--n1);color:#fff;font-size:10.5px;font-weight:700;
-    line-height:17px;text-align:center;box-shadow:0 0 0 2px #fff}
-  .cart-ov{position:fixed;inset:0;background:rgba(15,8,30,.5);backdrop-filter:blur(4px);
-    z-index:95;display:none;justify-content:flex-end}
-  .cart-ov.open{display:flex}
-  .cart-panel{width:min(390px,92vw);background:#fff;height:100%;display:flex;flex-direction:column;
-    box-shadow:-20px 0 60px -20px rgba(0,0,0,.4);animation:cartIn .25s ease}
-  @keyframes cartIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
-  .cart-head{display:flex;align-items:center;justify-content:space-between;
-    padding:20px 22px;border-bottom:1px solid var(--line)}
-  .cart-head strong{font-family:'Space Grotesk';font-size:18px}
-  .cart-x{border:0;background:0;font-size:26px;line-height:1;cursor:pointer;color:var(--ink-soft)}
-  .cart-items{flex:1;overflow-y:auto;padding:10px 22px}
-  .cart-row{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
-  .cart-row img{width:52px;height:52px;object-fit:contain;border-radius:10px;background:var(--bg2);flex-shrink:0}
-  .cart-row .ci-nm{font-size:13px;font-weight:600;line-height:1.3}
-  .cart-row .ci-pr{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
-  .cart-row .ci-del{margin-left:auto;border:0;background:0;cursor:pointer;color:#c0bccb;font-size:18px;align-self:flex-start}
-  .cart-row .ci-del:hover{color:var(--n1)}
-  .cart-empty{flex:1;display:flex;align-items:center;justify-content:center;
-    color:var(--ink-soft);font-size:14px;padding:30px}
-  .cart-note{padding:18px 22px;border-top:1px solid var(--line);background:var(--bg2)}
-  .cart-note b{display:block;font-size:14px;margin-bottom:3px}
-  .cart-note span{font-size:13px;color:var(--ink-soft);line-height:1.5}
-  .cart-actions{display:flex;gap:10px;margin-top:14px}
-  .cart-cta{flex:1;text-align:center;background:linear-gradient(92deg,var(--n2),var(--n1));
-    color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px;border-radius:11px}
-  .cart-mail{flex:1;text-align:center;border:1px solid var(--line);color:var(--ink);
-    text-decoration:none;font-weight:600;font-size:13px;padding:11px;border-radius:11px}
-  .buy.added{background:#16a34a}
-</style>
-
-<script>
-  // Buscador (la lupa abre el overlay) + menú hamburguesa. Común a toda la web.
-  const ov = document.getElementById('searchOv');
-  document.getElementById('searchBtn')?.addEventListener('click', () => {
-    ov?.classList.add('open');
-    (document.getElementById('q') as HTMLInputElement)?.focus();
-  });
-  document.getElementById('searchClose')?.addEventListener('click', () => ov?.classList.remove('open'));
-  ov?.addEventListener('click', (e) => { if (e.target === ov) ov.classList.remove('open'); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') ov?.classList.remove('open'); });
-  document.getElementById('menuBtn')?.addEventListener('click', () =>
-    document.getElementById('mainnav')?.classList.toggle('open')
-  );
-
-  // ===== CESTA (carrito real, persiste en el navegador con localStorage) =====
-  const CART_KEY = 'moloka_cart_v1';
-  const cartOv = document.getElementById('cartOv');
-  const cartItemsBox = document.getElementById('cartItems');
-  const cartEmpty = document.getElementById('cartEmpty');
-  const cartCount = document.getElementById('cartCount');
-
-  function cartLoad() {
-    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
-    catch { return []; }
-  }
-  function cartSave(items) { localStorage.setItem(CART_KEY, JSON.stringify(items)); }
-  function eur(n) {
-    const v = parseFloat(n);
-    return isNaN(v) ? 'Consultar' : v.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €';
-  }
-  function cartRender() {
-    const items = cartLoad();
-    const total = items.reduce((s, it) => s + (it.qty || 1), 0);
-    if (cartCount) {
-      cartCount.textContent = String(total);
-      cartCount.hidden = total === 0;
-    }
-    if (!cartItemsBox || !cartEmpty) return;
-    if (!items.length) {
-      cartItemsBox.innerHTML = '';
-      cartEmpty.style.display = 'flex';
-      return;
-    }
-    cartEmpty.style.display = 'none';
-    cartItemsBox.innerHTML = items.map((it, i) => `
-      <div class="cart-row">
-        ${it.img ? `<img src="${it.img}" alt="">` : `<div style="width:52px;height:52px;border-radius:10px;background:var(--bg2);flex-shrink:0"></div>`}
-        <div>
-          <div class="ci-nm">${it.nm}</div>
-          <div class="ci-pr">${it.qty > 1 ? it.qty + ' × ' : ''}${eur(it.precio)}</div>
+    <section class="carousel">
+      <div class="slides" id="slides">
+        <div class="slide on" style="--g1:#341970;--g2:#09041A;--a1:rgba(34,211,238,.42);--a2:rgba(236,72,153,.5)">
+          <div class="kicker">Coleccionables · Envío desde España</div>
+          <h1>Lo que ya no encuentras.</h1>
+          <p>Rarezas, CHASE y ediciones agotadas que no quedan en ningún sitio. Y si lo buscas, lo conseguimos.</p>
+          <a href="#nov" class="cta">Ver rarezas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-        <button class="ci-del" data-i="${i}" aria-label="Quitar">&times;</button>
-      </div>`).join('');
-    cartItemsBox.querySelectorAll('.ci-del').forEach((b) => {
-      b.addEventListener('click', () => {
-        const items2 = cartLoad();
-        items2.splice(parseInt(b.getAttribute('data-i')), 1);
-        cartSave(items2);
-        cartRender();
+        <div class="slide" style="--g1:#0c2340;--g2:#04101f;--a1:rgba(34,211,238,.4);--a2:rgba(124,58,237,.5)">
+          <div class="kicker">Banpresto · Tamashii Nations</div>
+          <h1>Ahora también bajo pedido.</h1>
+          <p>Figuras de anime que antes había que importar de fuera. Te las traemos nosotros, sin líos de aduanas.</p>
+          <a href="/banpresto" class="cta">Descúbrelas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="slide" style="--g1:#3a1a14;--g2:#1a0806;--a1:rgba(245,158,11,.4);--a2:rgba(236,72,153,.42)">
+          <div class="kicker">Model Kit · Bandai</div>
+          <h1>Monta tu primer Gunpla.</h1>
+          <p>Modelismo Bandai para empezar de cero o ampliar tu taller. Una afición que engancha, pieza a pieza.</p>
+          <a href="/model-kit" class="cta">Entrar al taller <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="dots" id="dots"></div>
+    </section>
+
+    <section id="nov">
+      <div class="sec-head">
+        <h2>Rarezas <span class="spark">&#10022;</span>
+          <span class="sub">Chase, vaulted y exclusivos — lo que no encuentras en otro sitio</span>
+        </h2>
+        <a href="/funko" class="seeall">Ver todo &#8594;</a>
+      </div>
+      {rarezas.length > 0
+        ? <div class="grid">{rarezas.map((p) => <Card p={p} />)}</div>
+        : <p style="color:var(--ink-soft);padding:30px 0">Estamos preparando las primeras piezas. Vuelve pronto.</p>}
+    </section>
+
+  </main>
+
+  <script>
+    // Carrusel de banners (rota solo + puntos de navegación).
+    const slides = [...document.querySelectorAll('.slide')];
+    const dotsBox = document.getElementById('dots');
+    let ci = 0;
+    if (dotsBox && slides.length) {
+      slides.forEach((_, i) => {
+        const b = document.createElement('button');
+        if (i === 0) b.classList.add('on');
+        b.addEventListener('click', () => { go(i); reset(); });
+        dotsBox.appendChild(b);
       });
-    });
-  }
-  function cartAdd(it) {
-    const items = cartLoad();
-    const found = items.find((x) => x.slug && x.slug === it.slug);
-    if (found) found.qty = (found.qty || 1) + 1;
-    else items.push({ ...it, qty: 1 });
-    cartSave(items);
-    cartRender();
-  }
-  function cartOpen() { cartOv?.classList.add('open'); cartOv?.setAttribute('aria-hidden', 'false'); cartRender(); }
-  function cartClose() { cartOv?.classList.remove('open'); cartOv?.setAttribute('aria-hidden', 'true'); }
-
-  document.getElementById('cartBtn')?.addEventListener('click', cartOpen);
-  document.getElementById('cartClose')?.addEventListener('click', cartClose);
-  cartOv?.addEventListener('click', (e) => { if (e.target === cartOv) cartClose(); });
-
-  // Botones "Añadir / Encargar / Reservar" de cualquier página (no los "Avísame" de agotados).
-  document.querySelectorAll('.buy[data-add]:not(.out)').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      cartAdd({
-        slug: btn.getAttribute('data-slug') || '',
-        nm: btn.getAttribute('data-nm') || 'Producto',
-        precio: btn.getAttribute('data-precio') || '',
-        img: btn.getAttribute('data-img') || '',
-      });
-      const original = btn.textContent;
-      btn.classList.add('added');
-      btn.textContent = '✓ Añadido';
-      setTimeout(() => { btn.classList.remove('added'); btn.textContent = original; }, 1100);
-    });
-  });
-
-  cartRender();
-</script>
-</body>
-</html>
+      const dots = [...dotsBox.children];
+      function go(i) {
+        slides[ci].classList.remove('on'); dots[ci].classList.remove('on');
+        ci = i;
+        slides[ci].classList.add('on'); dots[ci].classList.add('on');
+      }
+      let timer = setInterval(() => go((ci + 1) % slides.length), 5500);
+      function reset() { clearInterval(timer); timer = setInterval(() => go((ci + 1) % slides.length), 5500); }
+    }
+  </script>
+</Base>
