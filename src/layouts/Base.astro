@@ -46,7 +46,7 @@ import '../styles/global.css';
       <div class="icons">
         <button class="ico" id="searchBtn" title="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
         <button class="ico" title="Favoritos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></button>
-        <button class="ico" title="Carrito"><span class="dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button>
+        <button class="ico" id="cartBtn" title="Cesta"><span class="cart-count" id="cartCount" hidden>0</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button>
       </div>
     </div>
   </div>
@@ -70,7 +70,61 @@ import '../styles/global.css';
   </div></div>
 </div>
 
-<footer>© 2026 Moloka Store · Cartagena, España — maqueta de diseño (datos de ejemplo)</footer>
+<footer>© 2026 Moloka Store S.L.U. · Cartagena, España</footer>
+
+<!-- ===== CESTA (panel lateral) ===== -->
+<div class="cart-ov" id="cartOv" aria-hidden="true">
+  <aside class="cart-panel" role="dialog" aria-label="Tu cesta">
+    <div class="cart-head">
+      <strong>Tu cesta</strong>
+      <button class="cart-x" id="cartClose" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-empty" id="cartEmpty">Tu cesta está vacía.</div>
+    <div class="cart-note">
+      <b>Estamos actualizando la web.</b>
+      <span>Para consultas urgentes, ponte en contacto con nosotros.</span>
+      <div class="cart-actions">
+        <a class="cart-cta" href="/contacto">Contactar</a>
+        <a class="cart-mail" href="mailto:info@moloka.es">info@moloka.es</a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<style is:global>
+  .cart-count{position:absolute;top:4px;right:5px;min-width:17px;height:17px;padding:0 4px;
+    border-radius:9px;background:var(--n1);color:#fff;font-size:10.5px;font-weight:700;
+    line-height:17px;text-align:center;box-shadow:0 0 0 2px #fff}
+  .cart-ov{position:fixed;inset:0;background:rgba(15,8,30,.5);backdrop-filter:blur(4px);
+    z-index:95;display:none;justify-content:flex-end}
+  .cart-ov.open{display:flex}
+  .cart-panel{width:min(390px,92vw);background:#fff;height:100%;display:flex;flex-direction:column;
+    box-shadow:-20px 0 60px -20px rgba(0,0,0,.4);animation:cartIn .25s ease}
+  @keyframes cartIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+  .cart-head{display:flex;align-items:center;justify-content:space-between;
+    padding:20px 22px;border-bottom:1px solid var(--line)}
+  .cart-head strong{font-family:'Space Grotesk';font-size:18px}
+  .cart-x{border:0;background:0;font-size:26px;line-height:1;cursor:pointer;color:var(--ink-soft)}
+  .cart-items{flex:1;overflow-y:auto;padding:10px 22px}
+  .cart-row{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+  .cart-row img{width:52px;height:52px;object-fit:contain;border-radius:10px;background:var(--bg2);flex-shrink:0}
+  .cart-row .ci-nm{font-size:13px;font-weight:600;line-height:1.3}
+  .cart-row .ci-pr{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+  .cart-row .ci-del{margin-left:auto;border:0;background:0;cursor:pointer;color:#c0bccb;font-size:18px;align-self:flex-start}
+  .cart-row .ci-del:hover{color:var(--n1)}
+  .cart-empty{flex:1;display:flex;align-items:center;justify-content:center;
+    color:var(--ink-soft);font-size:14px;padding:30px}
+  .cart-note{padding:18px 22px;border-top:1px solid var(--line);background:var(--bg2)}
+  .cart-note b{display:block;font-size:14px;margin-bottom:3px}
+  .cart-note span{font-size:13px;color:var(--ink-soft);line-height:1.5}
+  .cart-actions{display:flex;gap:10px;margin-top:14px}
+  .cart-cta{flex:1;text-align:center;background:linear-gradient(92deg,var(--n2),var(--n1));
+    color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px;border-radius:11px}
+  .cart-mail{flex:1;text-align:center;border:1px solid var(--line);color:var(--ink);
+    text-decoration:none;font-weight:600;font-size:13px;padding:11px;border-radius:11px}
+  .buy.added{background:#16a34a}
+</style>
 
 <script>
   // Buscador (la lupa abre el overlay) + menú hamburguesa. Común a toda la web.
@@ -85,6 +139,87 @@ import '../styles/global.css';
   document.getElementById('menuBtn')?.addEventListener('click', () =>
     document.getElementById('mainnav')?.classList.toggle('open')
   );
+
+  // ===== CESTA (carrito real, persiste en el navegador con localStorage) =====
+  const CART_KEY = 'moloka_cart_v1';
+  const cartOv = document.getElementById('cartOv');
+  const cartItemsBox = document.getElementById('cartItems');
+  const cartEmpty = document.getElementById('cartEmpty');
+  const cartCount = document.getElementById('cartCount');
+
+  function cartLoad() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
+    catch { return []; }
+  }
+  function cartSave(items) { localStorage.setItem(CART_KEY, JSON.stringify(items)); }
+  function eur(n) {
+    const v = parseFloat(n);
+    return isNaN(v) ? 'Consultar' : v.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €';
+  }
+  function cartRender() {
+    const items = cartLoad();
+    const total = items.reduce((s, it) => s + (it.qty || 1), 0);
+    if (cartCount) {
+      cartCount.textContent = String(total);
+      cartCount.hidden = total === 0;
+    }
+    if (!cartItemsBox || !cartEmpty) return;
+    if (!items.length) {
+      cartItemsBox.innerHTML = '';
+      cartEmpty.style.display = 'flex';
+      return;
+    }
+    cartEmpty.style.display = 'none';
+    cartItemsBox.innerHTML = items.map((it, i) => `
+      <div class="cart-row">
+        ${it.img ? `<img src="${it.img}" alt="">` : `<div style="width:52px;height:52px;border-radius:10px;background:var(--bg2);flex-shrink:0"></div>`}
+        <div>
+          <div class="ci-nm">${it.nm}</div>
+          <div class="ci-pr">${it.qty > 1 ? it.qty + ' × ' : ''}${eur(it.precio)}</div>
+        </div>
+        <button class="ci-del" data-i="${i}" aria-label="Quitar">&times;</button>
+      </div>`).join('');
+    cartItemsBox.querySelectorAll('.ci-del').forEach((b) => {
+      b.addEventListener('click', () => {
+        const items2 = cartLoad();
+        items2.splice(parseInt(b.getAttribute('data-i')), 1);
+        cartSave(items2);
+        cartRender();
+      });
+    });
+  }
+  function cartAdd(it) {
+    const items = cartLoad();
+    const found = items.find((x) => x.slug && x.slug === it.slug);
+    if (found) found.qty = (found.qty || 1) + 1;
+    else items.push({ ...it, qty: 1 });
+    cartSave(items);
+    cartRender();
+  }
+  function cartOpen() { cartOv?.classList.add('open'); cartOv?.setAttribute('aria-hidden', 'false'); cartRender(); }
+  function cartClose() { cartOv?.classList.remove('open'); cartOv?.setAttribute('aria-hidden', 'true'); }
+
+  document.getElementById('cartBtn')?.addEventListener('click', cartOpen);
+  document.getElementById('cartClose')?.addEventListener('click', cartClose);
+  cartOv?.addEventListener('click', (e) => { if (e.target === cartOv) cartClose(); });
+
+  // Botones "Añadir / Encargar / Reservar" de cualquier página (no los "Avísame" de agotados).
+  document.querySelectorAll('.buy[data-add]:not(.out)').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      cartAdd({
+        slug: btn.getAttribute('data-slug') || '',
+        nm: btn.getAttribute('data-nm') || 'Producto',
+        precio: btn.getAttribute('data-precio') || '',
+        img: btn.getAttribute('data-img') || '',
+      });
+      const original = btn.textContent;
+      btn.classList.add('added');
+      btn.textContent = '✓ Añadido';
+      setTimeout(() => { btn.classList.remove('added'); btn.textContent = original; }, 1100);
+    });
+  });
+
+  cartRender();
 </script>
 </body>
 </html>
