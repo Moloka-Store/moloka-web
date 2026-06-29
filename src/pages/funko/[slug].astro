@@ -23,6 +23,7 @@ const ofertaFmt = oferta != null ? _fmtEur(oferta) : null;
 const pctOff = oferta != null ? Math.round((1 - oferta / p.precio) * 100) : 0;
 const fotos = p.fotos.length ? p.fotos : [null];
 const metaDesc = `${p.nm}${p.fr ? ' de ' + p.fr : ''}. Coleccionable original con envío desde España — Moloka Store.`;
+const precioCarrito = oferta != null ? oferta : (p.precio ?? '');
 ---
 
 <Base title={`${p.titulo} | Moloka Store`} description={metaDesc}>
@@ -68,7 +69,7 @@ const metaDesc = `${p.nm}${p.fr ? ' de ' + p.fr : ''}. Coleccionable original co
               : <div class="precio">{precioFmt}</div>)
           : <div class="precio ask">Consultar precio</div>}
 
-        <button class={`buy ${bc}`} type="button">{bl}</button>
+        <button class={`buy ${bc}`} type="button" data-add data-slug={p.slug} data-nm={p.nm} data-precio={precioCarrito} data-img={fotos[0] ?? ''}>{bl}</button>
 
         {p.desc && <div class="desc" set:html={p.desc}></div>}
 
@@ -84,10 +85,11 @@ const metaDesc = `${p.nm}${p.fr ? ' de ' + p.fr : ''}. Coleccionable original co
 
   <script>
     // Galería: al pulsar una miniatura, cambia la foto grande.
-    const big = document.getElementById('fotoBig');
+    const big = document.getElementById('fotoBig') as HTMLImageElement | null;
     document.querySelectorAll('.mini').forEach((m) => {
       m.addEventListener('click', () => {
-        if (big && m.dataset.src) big.src = m.dataset.src;
+        const src = (m as HTMLElement).dataset.src;
+        if (big && src) big.src = src;
         document.querySelectorAll('.mini').forEach((x) => x.classList.remove('on'));
         m.classList.add('on');
       });
