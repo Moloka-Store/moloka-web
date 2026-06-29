@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Guías | Moloka Store" description="Guías de coleccionismo de Moloka Store. Muy pronto.">
+  <main class="wrap pg">
+    <section class="enobras">
+      <div class="eo-badge">Muy pronto</div>
+      <h1>Estamos preparando las Guías</h1>
+      <p>Estamos trabajando en guías de coleccionismo: cómo identificar rarezas, CHASE, ediciones vaulted y exclusivos, y cómo cuidar tus piezas. Vuelve pronto.</p>
+      <div class="eo-actions">
+        <a class="cta" href="/funko">Ver el catálogo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="eo-mail" href="mailto:info@moloka.es">¿Una duda? info@moloka.es</a>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    .pg{padding:38px 20px}
+    .enobras{max-width:620px;margin:30px auto;text-align:center;background:var(--bg2);
+      border:1px solid var(--line);border-radius:26px;padding:54px 34px}
+    .eo-badge{display:inline-block;background:linear-gradient(92deg,var(--n2),var(--n1));color:#fff;
+      font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      padding:6px 14px;border-radius:999px;margin-bottom:20px}
+    .enobras h1{font-family:'Space Grotesk';font-weight:700;font-size:clamp(26px,4vw,36px);margin-bottom:14px}
+    .enobras p{color:var(--ink-soft);font-size:16px;line-height:1.65;max-width:46ch;margin:0 auto 28px}
+    .eo-actions{display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap}
+    .eo-actions .cta{display:inline-flex;align-items:center;gap:9px;
+      background:linear-gradient(92deg,var(--n2),var(--n1));color:#fff;font-weight:600;font-size:15px;
+      padding:13px 22px;border-radius:999px;text-decoration:none}
+    .eo-actions .cta svg{width:16px;height:16px}
+    .eo-mail{color:var(--n2);text-decoration:none;font-weight:600;font-size:14px}
+    .eo-mail:hover{text-decoration:underline}
+  </style>
+</Base>
