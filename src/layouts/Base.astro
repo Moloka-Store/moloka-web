@@ -5,11 +5,18 @@
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  type?: string;
 }
 const {
   title = 'MOLOKA · Lo que ya no encuentras',
   description = 'Funko Pops, rarezas, CHASE y ediciones agotadas. Coleccionables originales con envío desde España.',
+  image,
+  type = 'website',
 } = Astro.props;
+// Para compartir en redes/IA: URL canónica de la página y la imagen (absoluta).
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImg = image ? (String(image).startsWith('http') ? image : new URL(image, Astro.site).href) : undefined;
 import '../styles/global.css';
 ---
 
@@ -20,6 +27,17 @@ import '../styles/global.css';
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content={type} />
+  <meta property="og:site_name" content="Moloka Store" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  {ogImg && <meta property="og:image" content={ogImg} />}
+  <meta name="twitter:card" content={ogImg ? 'summary_large_image' : 'summary'} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  {ogImg && <meta name="twitter:image" content={ogImg} />}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
