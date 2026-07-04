@@ -1,0 +1,86 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+// Una página estática por cada guía de src/content/guias/ (en el build).
+export async function getStaticPaths() {
+  const guias = await getCollection('guias');
+  return guias.map((g) => ({ params: { slug: g.slug }, props: { guia: g } }));
+}
+
+const { guia } = Astro.props;
+const { Content } = await guia.render();
+const { title, description, fecha, imagen } = guia.data;
+
+const SITE = (Astro.site?.href?.replace(/\/+$/, '')) || 'https://moloka.es';
+const url = `${SITE}/guias/${guia.slug}`;
+const ogImg = imagen ? (String(imagen).startsWith('http') ? imagen : `${SITE}${imagen}`) : undefined;
+
+// --- Datos estructurados para Google y las IA (GEO) ---
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: fecha,
+  dateModified: fecha,
+  inLanguage: 'es-ES',
+  author: { '@type': 'Organization', name: 'Moloka Store', url: SITE },
+  publisher: { '@type': 'Organization', name: 'Moloka Store', url: SITE },
+  mainEntityOfPage: url,
+  ...(ogImg ? { image: ogImg } : {}),
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE}/` },
+    { '@type': 'ListItem', position: 2, name: 'Guías', item: `${SITE}/guias` },
+    { '@type': 'ListItem', position: 3, name: title, item: url },
+  ],
+};
+---
+
+<Base title={`${title} | Moloka Store`} description={description} image={imagen} type="article">
+  <main class="wrap guia-page">
+
+    <nav class="migas" aria-label="migas de pan">
+      <a href="/">Inicio</a> <span>/</span>
+      <a href="/guias">Guías</a> <span>/</span>
+      <b>{title}</b>
+    </nav>
+
+    <article class="guia-cont">
+      <h1>{title}</h1>
+      <Content />
+    </article>
+
+    <div class="guia-cta">
+      <p>En <strong>Moloka Store</strong> nos especializamos en rarezas, CHASE y ediciones agotadas, siempre originales y verificadas.</p>
+      <a class="cta" href="/funko">Ver el catálogo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+
+  </main>
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(articleLd)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+
+  <style>
+    .guia-page{padding-top:24px;padding-bottom:20px}
+    .guia-cont{max-width:760px;margin:0 auto}
+    .guia-cont h1{font-family:'Space Grotesk';font-weight:700;font-size:clamp(28px,4.5vw,40px);line-height:1.16;margin:0 0 22px}
+    .guia-cont :global(h2){font-family:'Space Grotesk';font-weight:600;font-size:clamp(21px,3vw,26px);margin:38px 0 12px;line-height:1.25}
+    .guia-cont :global(h3){font-weight:600;font-size:18px;margin:24px 0 8px}
+    .guia-cont :global(p){color:var(--ink);font-size:17px;line-height:1.75;margin:0 0 18px}
+    .guia-cont :global(ul),.guia-cont :global(ol){margin:0 0 18px;padding-left:22px}
+    .guia-cont :global(li){font-size:17px;line-height:1.7;margin-bottom:9px;color:var(--ink)}
+    .guia-cont :global(strong){color:var(--ink);font-weight:600}
+    .guia-cont :global(a){color:var(--n2);font-weight:600}
+    .guia-cont :global(em){color:var(--ink-soft)}
+    .guia-cont :global(hr){border:0;border-top:1px solid var(--line);margin:34px 0}
+    .guia-cta{max-width:760px;margin:36px auto 0;background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:28px 30px;text-align:center}
+    .guia-cta p{color:var(--ink-soft);font-size:16px;line-height:1.6;margin:0 0 18px}
+    .guia-cta .cta{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(92deg,var(--n2),var(--n1));color:#fff;font-weight:600;font-size:15px;padding:13px 24px;border-radius:999px;text-decoration:none}
+    .guia-cta .cta svg{width:16px;height:16px}
+  </style>
+</Base>
