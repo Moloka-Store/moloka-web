@@ -1,0 +1,7 @@
+# Moloka Store — moloka.es
+# Rastreo permitido a todos, incluidos los crawlers de IA
+# (OAI-SearchBot, ChatGPT-User, PerplexityBot, Google-Extended, etc.)
+User-agent: *
+Allow: /
+
+Sitemap: https://moloka.es/sitemap.xml
