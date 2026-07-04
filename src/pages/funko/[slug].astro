@@ -1,47 +1,150 @@
 ---
-import Base from '../../../layouts/Base.astro';
-import Catalogo from '../../../components/Catalogo.astro';
-import { getProductos, aCard } from '../../../lib/productos.js';
-import { CATS, slugCat } from '../../../lib/categorias.js';
+import Base from '../../layouts/Base.astro';
+import { getProductosFull, aFicha } from '../../lib/productos.js';
 
-// Una página estática por categoría CON PRODUCTO. Cada una con su title/meta y
-// su H1 propios = SEO por categoría. Las categorías vacías no generan página
-// (evita "thin content"); cuando entre un producto de esa categoría, su página
-// nace sola en el siguiente build.
-// IMPORTANTE: mismo filtro de origen que el hub /funko -> solo Funkos de fábrica
-// y TCG. Excluye BEMS (model kits Bandai, etc.) para que no se cuelen en Funko
-// ni ensucien el filtro de franquicia.
+// Genera UNA página estática por cada producto de la fábrica (en el build).
 export async function getStaticPaths() {
-  const productos = (await getProductos())
-    .filter((p) => p.origen === 'fabrica' || p.origen === 'tcg')
-    .map(aCard)
-    .filter((p) => p.disp !== 'agotado');
-  const presentes = CATS.filter((c) => productos.some((p) => p.cat === c));
-  return presentes.map((cat) => ({
-    params: { slug: slugCat(cat) },
-    props: { cat, items: productos.filter((p) => p.cat === cat), presentes },
-  }));
+  const filas = await getProductosFull();
+  return filas.map((row) => ({ params: { slug: row.slug }, props: { p: aFicha(row) } }));
 }
+const { p } = Astro.props;
 
-const { cat, items, presentes } = Astro.props;
-const total = items.length;
+const DISP = { inmediato:['Disponible','d-now'], pedido:['Bajo pedido','d-order'], reserva:['Reserva','d-pre'], agotado:['Agotado','d-out'] };
+const RAR  = { chase:['CHASE','r-chase'], vaulted:['VAULTED','r-vaulted'], excl:['EXCLUSIVO','r-excl'] };
+const BTN  = { inmediato:['Añadir a la cesta',''], pedido:['Encargar','order'], reserva:['Reservar','pre'], agotado:['Avísame cuando llegue','out'] };
+
+const [dl, dc] = DISP[p.disp] ?? DISP.inmediato;
+const rars = p.rars ?? [];
+const [bl, bc] = BTN[p.disp] ?? BTN.inmediato;
+const _fmtEur = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €';
+const oferta = (p.precio != null && p.precio_oferta != null && p.precio_oferta > 0 && p.precio_oferta < p.precio) ? p.precio_oferta : null;
+const precioFmt = p.precio != null ? _fmtEur(p.precio) : null;
+const ofertaFmt = oferta != null ? _fmtEur(oferta) : null;
+const pctOff = oferta != null ? Math.round((1 - oferta / p.precio) * 100) : 0;
+const fotos = p.fotos.length ? p.fotos : [null];
+const metaDesc = `${p.nm}${p.fr ? ' de ' + p.fr : ''}. Coleccionable original con envío desde España — Moloka Store.`;
+const precioCarrito = oferta != null ? oferta : (p.precio ?? '');
+
+// --- Datos estructurados (JSON-LD) para Google y asistentes de IA (GEO) ---
+// Aditivo: no cambia nada visible. Solo describe el producto en lenguaje de maquina
+// (precio, stock, EAN/GTIN, marca) para que Google lo muestre enriquecido y las IA
+// (ChatGPT, Gemini, Perplexity...) lo entiendan y lo puedan recomendar.
+const SITE = (Astro.site?.href?.replace(/\/+$/, '')) || 'https://moloka.es';
+const urlFicha = `${SITE}/funko/${p.slug}`;
+const imgsAbs = fotos.filter(Boolean).map((f) => (String(f).startsWith('http') ? f : `${SITE}${f}`));
+const descTexto = (p.desc || metaDesc).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 600);
+const eanStr = p.ean ? String(p.ean).trim() : '';
+const precioSchema = oferta != null ? oferta : p.precio;
+const DISP_SCHEMA = {
+  inmediato: 'https://schema.org/InStock',
+  pedido:    'https://schema.org/BackOrder',
+  reserva:   'https://schema.org/PreOrder',
+  agotado:   'https://schema.org/OutOfStock',
+};
+const productLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.nm,
+  ...(imgsAbs.length ? { image: imgsAbs } : {}),
+  description: descTexto,
+  sku: p.slug,
+  ...(eanStr.length === 13 ? { gtin13: eanStr } : (eanStr.length === 12 ? { gtin12: eanStr } : {})),
+  ...(p.cat ? { category: p.cat } : {}),
+  brand: { '@type': 'Brand', name: p.lic || p.fr || 'Funko' },
+  ...(precioSchema != null ? {
+    offers: {
+      '@type': 'Offer',
+      url: urlFicha,
+      priceCurrency: 'EUR',
+      price: Number(precioSchema).toFixed(2),
+      itemCondition: 'https://schema.org/NewCondition',
+      availability: DISP_SCHEMA[p.disp] ?? DISP_SCHEMA.inmediato,
+      seller: { '@type': 'Organization', name: 'Moloka Store' },
+    },
+  } : {}),
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE}/` },
+    { '@type': 'ListItem', position: 2, name: 'Funko',  item: `${SITE}/funko` },
+    { '@type': 'ListItem', position: 3, name: p.nm,     item: urlFicha },
+  ],
+};
 ---
 
-<Base
-  title={`Funko de ${cat} · rarezas y ediciones | MOLOKA`}
-  description={`Funko Pop de ${cat} en Moloka Store: rarezas, CHASE, Vaulted y exclusivas. Filtra por rareza y disponibilidad. Originales con envío desde España.`}
->
-  <main class="wrap funko-page">
-    <nav class="migas">
-      <a href="/">Inicio</a> <span>/</span> <a href="/funko">Funko</a> <span>/</span> <b>{cat}</b>
+<Base title={`${p.titulo} | Moloka Store`} description={metaDesc} image={imgsAbs[0]} type="product">
+  <main class="wrap ficha">
+
+    <nav class="migas" aria-label="migas de pan">
+      <a href="/">Inicio</a> <span>/</span>
+      <a href="/funko">Funko</a> <span>/</span>
+      <b>{p.nm}</b>
     </nav>
 
-    <div class="sec-head">
-      <h1>{cat}
-        <span class="sub">Funko de {cat} — <span id="cuenta">{total}</span> <span id="cuenta-lbl">{total === 1 ? 'pieza' : 'piezas'}</span></span>
-      </h1>
-    </div>
+    <div class="ficha-grid">
 
-    <Catalogo productos={items} categorias={presentes} activa={cat} />
+      <section class="galeria">
+        <div class="foto-grande">
+          {fotos[0]
+            ? <img id="fotoBig" src={fotos[0]} alt={p.nm} />
+            : <div class="sinfoto">Sin imagen</div>}
+        </div>
+        {fotos.length > 1 &&
+          <div class="minis">
+            {fotos.map((f, i) => (
+              <button class={`mini ${i === 0 ? 'on' : ''}`} data-src={f} type="button" aria-label={`Foto ${i + 1}`}>
+                <img src={f} alt="" loading="lazy" />
+              </button>
+            ))}
+          </div>}
+      </section>
+
+      <section class="info">
+        <div class="info-top">
+          <span class="fr">{p.fr}</span>
+          {rars.map((r) => { const [l, c] = RAR[r] ?? ['', '']; return l && <span class={`rar ${c}`}>{l}</span>; })}
+        </div>
+
+        <h1>{p.nm}</h1>
+
+        <span class={`estado ${dc}`}><i></i>{dl}</span>
+
+        {precioFmt
+          ? (ofertaFmt
+              ? <div class="precio"><span style="text-decoration:line-through;color:#9ca3af;font-weight:500;font-size:.6em;margin-right:9px">{precioFmt}</span><span style="color:#dc2626">{ofertaFmt}</span><span style="background:#dc2626;color:#fff;font-size:.42em;font-weight:700;padding:3px 8px;border-radius:7px;margin-left:10px;vertical-align:middle">-{pctOff}%</span></div>
+              : <div class="precio">{precioFmt}</div>)
+          : <div class="precio ask">Consultar precio</div>}
+
+        <button class={`buy ${bc}`} type="button" data-add data-slug={p.slug} data-nm={p.nm} data-precio={precioCarrito} data-img={fotos[0] ?? ''}>{bl}</button>
+
+        {p.desc && <div class="desc" set:html={p.desc}></div>}
+
+        <dl class="detalles">
+          {p.lic && <div><dt>Licencia</dt><dd>{p.lic}</dd></div>}
+          {p.cat && <div><dt>Categoría</dt><dd>{p.cat}</dd></div>}
+          {p.ean && <div><dt>EAN</dt><dd>{p.ean}</dd></div>}
+        </dl>
+      </section>
+
+    </div>
   </main>
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(productLd)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+
+  <script>
+    // Galería: al pulsar una miniatura, cambia la foto grande.
+    const big = document.getElementById('fotoBig') as HTMLImageElement | null;
+    document.querySelectorAll('.mini').forEach((m) => {
+      m.addEventListener('click', () => {
+        const src = (m as HTMLElement).dataset.src;
+        if (big && src) big.src = src;
+        document.querySelectorAll('.mini').forEach((x) => x.classList.remove('on'));
+        m.classList.add('on');
+      });
+    });
+  </script>
 </Base>
+3
