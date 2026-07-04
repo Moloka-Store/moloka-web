@@ -11,7 +11,7 @@ interface Props {
 const {
   title = 'MOLOKA · Lo que ya no encuentras',
   description = 'Funko Pops, rarezas, CHASE y ediciones agotadas. Coleccionables originales con envío desde España.',
-  image,
+  image = '/og-default.png',
   type = 'website',
 } = Astro.props;
 // Para compartir en redes/IA: URL canónica de la página y la imagen (absoluta).
@@ -25,6 +25,7 @@ import '../styles/global.css';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
@@ -88,7 +89,42 @@ import '../styles/global.css';
   </div></div>
 </div>
 
-<footer>© 2026 Moloka Store S.L.U. · Cartagena, España</footer>
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div class="foot-col foot-brand">
+      <a href="/" class="foot-logo">MOLOKA</a>
+      <p>Funko Pops, rarezas, CHASE y ediciones agotadas. Coleccionables originales con envío desde España.</p>
+    </div>
+    <div class="foot-col">
+      <h3>Catálogo</h3>
+      <a href="/funko">Funko Pop</a>
+      <a href="/banpresto">Banpresto</a>
+      <a href="/tamashii">Tamashii Nations</a>
+      <a href="/model-kit">Model Kit</a>
+    </div>
+    <div class="foot-col">
+      <h3>Ayuda</h3>
+      <a href="/guias">Guías</a>
+      <a href="/contacto">Contacto</a>
+      <a href="mailto:info@moloka.es">info@moloka.es</a>
+    </div>
+  </div>
+  <div class="foot-base"><div class="wrap">© 2026 Moloka Store S.L.U. · Cartagena, España</div></div>
+</footer>
+
+<style>
+  .site-foot{margin-top:64px;border-top:1px solid var(--line);background:var(--bg2)}
+  .foot-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:34px;padding:46px 0 30px}
+  .foot-brand .foot-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:23px;
+    background:linear-gradient(100deg,var(--n1),var(--n2) 52%,var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;text-decoration:none;display:inline-block}
+  .foot-brand p{color:var(--ink-soft);font-size:13.5px;line-height:1.65;margin:12px 0 0;max-width:36ch}
+  .foot-col h3{font-size:12.5px;font-weight:700;color:var(--ink);margin:0 0 12px;letter-spacing:.05em;text-transform:uppercase}
+  .foot-col a{display:block;color:var(--ink-soft);text-decoration:none;font-size:14px;padding:5px 0;transition:.15s}
+  .foot-col a:hover{color:var(--n2)}
+  .foot-base{border-top:1px solid var(--line);padding:16px 0;color:var(--ink-soft);font-size:12.5px;text-align:center}
+  @media(max-width:640px){.foot-grid{grid-template-columns:1fr 1fr;gap:26px;padding:34px 0 24px}.foot-brand{grid-column:1/-1}}
+</style>
 
 <!-- ===== CESTA (panel lateral) ===== -->
 <div class="cart-ov" id="cartOv" aria-hidden="true">
