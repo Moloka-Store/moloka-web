@@ -5,6 +5,10 @@
 // pero no se inventa. La única rareza que dan los datos es chase (marco de oro).
 //
 // «Añadir a la cesta» no está todavía: llega con la cesta, en su propio tramo.
+//
+// La imagen: el montaje si lo hay. Si no (solo en los listados; la portada solo
+// enseña piezas con montaje), nuestra foto de la caja por delante, entera y sin
+// tocar, sobre un panel claro. Y si tampoco hay, un panel que dice «foto por hacer».
 interface Props {
   pieza: {
     clave: string;
@@ -13,7 +17,8 @@ interface Props {
     serie: string | null;
     esChase: boolean;
     precioTexto: string | null;
-    montaje: { url: string; ancho: number; alto: number };
+    montaje: { url: string; ancho: number; alto: number } | null;
+    fotoCaja?: { url: string } | null;
     url: string;
   };
   carga?: 'lazy' | 'eager';
@@ -21,15 +26,21 @@ interface Props {
 const { pieza: p, carga = 'lazy' } = Astro.props;
 const marco = p.esChase ? 'marco oro' : 'marco liso';
 const conNumero = p.numero ? `, número ${p.numero}` : '';
+const caja = !p.montaje && p.fotoCaja ? p.fotoCaja : null;
 ---
 <article class="cromo" data-cromo>
   <div class="sube">
     <div class="giro">
       <div class={`cara frente ${marco}`}>
         <div class="dentro">
-          <a class="arte" href={p.url} aria-label={`Ver la ficha de ${p.nombre}${conNumero}`}>
-            <img src={p.montaje.url} width={p.montaje.ancho} height={p.montaje.alto}
-              alt={`${p.nombre}, la figura en un decorado`} loading={carga} decoding="async" />
+          <a class={`arte${p.montaje ? '' : caja ? ' arte-caja' : ' arte-vacia'}`} href={p.url}
+            aria-label={`Ver la ficha de ${p.nombre}${conNumero}`}>
+            {p.montaje
+              ? <img src={p.montaje.url} width={p.montaje.ancho} height={p.montaje.alto}
+                  alt={`${p.nombre}, la figura en un decorado`} loading={carga} decoding="async" />
+              : caja
+                ? <img src={caja.url} alt={`${p.nombre}, la caja por delante`} loading={carga} decoding="async" />
+                : <span class="por-hacer mono">foto por hacer</span>}
           </a>
           {p.numero && <span class="num mono">n.º {p.numero}</span>}
           {p.esChase && <span class="tag mono">CHASE</span>}
@@ -101,7 +112,7 @@ const conNumero = p.numero ? `, número ${p.numero}` : '';
 </script>
 
 <style>
-  .cromo { perspective: 1400px; min-width: 0; }
+  .cromo { perspective: 1400px; min-width: 0; container: cromo / inline-size; }
   .sube { height: 100%; transition: transform .35s cubic-bezier(.2, .8, .2, 1); }
   .cromo:hover .sube { transform: translateY(-8px); }
   .giro {
@@ -124,6 +135,18 @@ const conNumero = p.numero ? `, número ${p.numero}` : '';
   /* El montaje se ve entero, cuadrado, sin recortar ni retocar. */
   .arte { display: block; aspect-ratio: 1 / 1; background: var(--tinta); }
   .arte img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  /* La foto de la caja, entera sobre claro (sin teñir ni recortar). */
+  .arte-caja { background: var(--blanco); }
+  .arte-caja img { padding: 6%; }
+  /* Sin foto todavía: un panel neutro que lo dice. */
+  .arte-vacia {
+    display: grid; place-items: center; text-decoration: none;
+    background: repeating-linear-gradient(135deg, var(--linea-2) 0 10px, #E6E3EE 10px 20px);
+  }
+  .por-hacer {
+    padding: 6px 12px; border-radius: 8px; background: var(--blanco); color: var(--tinta-3);
+    font-size: 14px; font-weight: 700; letter-spacing: .04em;
+  }
 
   .num, .tag {
     position: absolute; top: 10px; padding: 5px 8px; border-radius: 8px;
@@ -169,6 +192,28 @@ const conNumero = p.numero ? `, número ${p.numero}` : '';
     .cromo:hover .marco.oro, .cromo:focus-within .marco.oro { animation: lamina 2.4s linear infinite; }
     .cromo:hover .lam::after { animation: barrido 1.5s ease-out 1; }
   }
+  /* Cromo estrecho (dos por fila en el móvil): menos relleno y el precio encima del botón. */
+  @container cromo (max-width: 220px) {
+    .cara { padding: 6px; border-radius: 16px; }
+    .dentro { border-radius: 11px; }
+    .num, .tag { top: 6px; padding: 4px 6px; font-size: 11px; }
+    .num { left: 6px; }
+    .tag { right: 6px; letter-spacing: .04em; }
+    .texto { padding: 8px 9px 9px; }
+    .serie { font-size: 13px; }
+    .nombre { font-size: 14px; }
+    .estado, .llega { font-size: 13px; }
+    .fila { flex-wrap: wrap; gap: 6px; }
+    .precio { font-size: 16px; }
+    .sin-precio { font-size: 13px; padding: 3px 6px; }
+    .sin-precio, .pie-dorso a { white-space: nowrap; }
+    .dorso .dentro { padding: 10px; gap: 6px; }
+    .datos { font-size: 13px; }
+    .pie-dorso { flex-wrap: wrap; gap: 0 8px; }
+    .pie-dorso a { padding: 8px 0; }
+    .girar.ancho { font-size: 14px; gap: 6px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .sube, .giro { transition: none; }
     .cromo:hover .sube { transform: none; }

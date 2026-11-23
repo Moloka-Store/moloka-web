@@ -1,27 +1,31 @@
 ---
-import Base from '../../layouts/Base.astro';
-import Catalogo from '../../components/Catalogo.astro';
-import { getProductos, aCard } from '../../lib/productos.js';
-import { CATS } from '../../lib/categorias.js';
+// «Funko»: todas las piezas del catálogo que están hoy en el almacén (hoy, todas
+// Funko Pop). Primero lo raro, después lo demás.
+// Las piezas salen de src/lib/catalogo.js: aquí no se escribe ningún dato a mano.
+import Cromos from '../../layouts/Cromos.astro';
+import CabezaListado from '../../components/cromos/CabezaListado.astro';
+import Listado from '../../components/cromos/Listado.astro';
+import { paraListado } from '../../lib/catalogo.js';
 
-const productos = (await getProductos()).filter((p) => p.origen === 'fabrica' || p.origen === 'tcg').map(aCard).filter((p) => p.disp !== 'agotado');
-const presentes = CATS.filter((c) => productos.some((p) => p.cat === c));
-const total = productos.length;
+const piezas = paraListado();
+const raras = piezas.filter((p) => p.esChase).length;
 ---
-
-<Base
-  title="Funko Pop · rarezas, CHASE y ediciones agotadas | MOLOKA"
-  description="Catálogo de Funko Pop de Moloka Store: rarezas, ediciones CHASE, Vaulted y exclusivas. Navega por categoría y filtra por rareza y disponibilidad. Originales con envío desde España."
+<Cromos
+  title="Funko Pop en el almacén: chase y los de siempre | MOLOKA"
+  description={`Los ${piezas.length} Funko Pop que tenemos hoy en el almacén, ${raras} de ellos chase. Cada cromo dice su número, su precio y qué día llega. Filtra por licencia o busca por número.`}
 >
-  <main class="wrap funko-page">
-    <div class="sec-head">
-      <h1>Funko Pop <span class="spark">&#10022;</span>
-        <span class="sub">Todo el catálogo — <span id="cuenta">{total}</span> <span id="cuenta-lbl">{total === 1 ? 'pieza' : 'piezas'}</span></span>
-      </h1>
-    </div>
+  <div class="claro">
+    <CabezaListado
+      migas={[{ texto: 'Inicio', href: '/' }, { texto: 'Funko', href: '/funko' }]}
+      antetitulo="FUNKO · EN EL ALMACÉN"
+      titulo="Funko Pop en el almacén"
+    >
+      <p>Los Funko Pop que tenemos hoy en el almacén. Primero lo raro, con su marco dorado; después, los de siempre. Cada cromo dice su número, su precio y qué día llega. Filtra por licencia o busca por nombre o por número.</p>
+    </CabezaListado>
+    <Listado piezas={piezas} filtroRaro />
+  </div>
+</Cromos>
 
-    {total > 0
-      ? <Catalogo productos={productos} categorias={presentes} activa={null} />
-      : <p class="vacio">Estamos preparando las primeras piezas. Vuelve pronto.</p>}
-  </main>
-</Base>
+<style>
+  .claro { background: var(--claro); color: var(--tinta); }
+</style>

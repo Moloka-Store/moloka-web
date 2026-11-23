@@ -9,6 +9,7 @@
 // del nombre solo cuando es inequívoco (ver nombres.js); si no, null.
 import datos from '../data/catalogo.json';
 import { numeroDe, serieDe, nombreLimpio } from './nombres.js';
+import { ordenListado } from './listado.js';
 
 const EUROS = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
 
@@ -24,6 +25,8 @@ export function urlFicha(clave) {
 
 function aPieza(p) {
   const montaje = (p.fotos_web || []).find((f) => f.tipo === 'montaje' && f.url) || null;
+  // Nuestra foto de la caja por delante (la primera con dirección; algunas vienen vacías).
+  const frente = (p.fotos_caja || []).find((f) => f.tipo === 'frente' && f.url) || null;
   const s = serieDe(p.nombre);
   return {
     clave: p.clave,
@@ -39,6 +42,9 @@ function aPieza(p) {
     // Solo el montaje: las fotos de la figura tienen la cesión sin averiguar.
     // Los montajes de la web son de 1200 × 1200.
     montaje: montaje ? { url: montaje.url, ancho: 1200, alto: 1200 } : null,
+    // Las fotos de la caja no traen medidas (y cada una mide distinto): se enseñan
+    // enteras dentro de un panel cuadrado, así que no hace falta saberlas.
+    fotoCaja: frente ? { url: frente.url } : null,
     url: urlFicha(p.clave),
   };
 }
@@ -58,6 +64,14 @@ export function enAlmacen() {
 /** Las raras del almacén (hoy, solo chase). */
 export function rarasEnAlmacen() {
   return enAlmacen().filter((p) => p.esChase);
+}
+
+/**
+ * Lo que enseña un listado: en el almacén, primero lo raro y después lo demás,
+ * cada grupo en el orden del catálogo. Con `soloRaras`, solo lo raro.
+ */
+export function paraListado({ soloRaras = false } = {}) {
+  return ordenListado(soloRaras ? rarasEnAlmacen() : enAlmacen());
 }
 
 /** Las que pueden salir como cromo en portada: en el almacén y con montaje. */

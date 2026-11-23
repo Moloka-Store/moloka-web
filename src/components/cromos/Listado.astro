@@ -1,0 +1,275 @@
+---
+// El listado de cromos: filtros por licencia (y «Solo La Cámara», lo raro, si la lista mezcla),
+// buscador por nombre y por número, y todos los cromos en el HTML desde que carga.
+// El filtro esconde, no trae: sin JavaScript se ven todos.
+//
+// Solo filtra por lo que dan los datos. Sin precio en casi ninguna pieza, ni
+// exclusivos, ni descatalogados: no hay filtros de eso ni orden por precio.
+import Cromo from './Cromo.astro';
+import { licenciaDe, licenciasDe, datosDeBusqueda } from '../../lib/listado.js';
+
+interface Props {
+  piezas: any[];
+  /** Enseñar el filtro «Solo La Cámara» (no tiene sentido si todas son raras). */
+  filtroRaro?: boolean;
+}
+const { piezas, filtroRaro = false } = Astro.props;
+const total = piezas.length;
+const licencias = licenciasDe(piezas);
+const nRaras = piezas.filter((p) => p.esChase).length;
+// Lo que se ve sin desplazarse en un ordenador: esas imágenes cargan de entrada.
+const DE_ENTRADA = 4;
+const casilla =
+  `<span class="casilla" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"><path d="M5 12.5l4.5 4.5L19 7"></path></svg></span>`;
+---
+<section id="lista" class="caja lista" data-listado data-total={total}>
+  <aside class="lado" aria-label="Filtros">
+    <button type="button" class="abre-filtros" aria-expanded="false" aria-controls="filtros" data-abre-filtros>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>
+      <span>Filtros <span data-n-filtros></span></span>
+    </button>
+    <div id="filtros" class="filtros">
+      <h2>Filtrar</h2>
+      {filtroRaro && (
+        <>
+          <h3>Rareza</h3>
+          <div role="group" aria-label="Rareza" class="grupo">
+            <button type="button" class="opcion" aria-pressed="false" data-raro data-nombre="Solo La Cámara">
+              <Fragment set:html={casilla} /><span class="opcion-txt">Solo La Cámara <span class="cuantos">({nRaras})</span></span>
+            </button>
+          </div>
+        </>
+      )}
+      <h3>Licencia</h3>
+      <div role="group" aria-label="Licencia" class="grupo">
+        {licencias.map((l) => (
+          <button type="button" class="opcion" aria-pressed="false" data-licencia={l.licencia} data-nombre={l.licencia}>
+            <Fragment set:html={casilla} /><span class="opcion-txt">{l.licencia} <span class="cuantos">({l.n})</span></span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </aside>
+
+  <div class="resultados">
+    <div class="barra">
+      <p class="recuento" data-recuento>{total} {total === 1 ? 'cromo' : 'cromos'} en el almacén</p>
+      <div role="search" class="busca-lista">
+        <label for="busca-lista">Buscar en la lista</label>
+        <input id="busca-lista" type="search" placeholder="Nombre o número (865, n.º 865)" autocomplete="off" data-busca />
+      </div>
+    </div>
+    <p class="solo-lector" role="status" aria-live="polite" data-anuncio></p>
+
+    <div class="puestos" data-puestos hidden>
+      <span class="puestos-titulo">Filtros puestos:</span>
+      <span class="chips" data-chips></span>
+      <button type="button" class="quitar-todo" data-quitar-todo>Quitar los filtros</button>
+    </div>
+
+    <div class="nada" data-nada hidden>
+      <p class="dis nada-titulo">Con estos filtros no sale ningún cromo.</p>
+      <p>Quita alguno o borra la búsqueda para volver a verlos todos.</p>
+      <button type="button" class="boton tinta" data-quitar-todo>Ver todos los cromos</button>
+    </div>
+
+    <ul class="rejilla" role="list">
+      {piezas.map((p, i) => {
+        const b = datosDeBusqueda(p);
+        return (
+          <li data-item data-licencia={licenciaDe(p)} data-raro={p.esChase ? '1' : '0'}
+            data-texto={b.texto} data-numeros={b.numeros.join(' ')}>
+            <Cromo pieza={p} carga={i < DE_ENTRADA ? 'eager' : 'lazy'} />
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<script>
+  import { preparaBusqueda, pasaFiltro, textoRecuento } from '../../lib/listado.js';
+
+  const raiz = document.querySelector<HTMLElement>('[data-listado]');
+  if (raiz) {
+    const total = Number(raiz.dataset.total);
+    const items = [...raiz.querySelectorAll<HTMLElement>('[data-item]')].map((el) => ({
+      el,
+      licencia: el.dataset.licencia ?? '',
+      raro: el.dataset.raro === '1',
+      texto: el.dataset.texto ?? '',
+      numeros: (el.dataset.numeros ?? '').split(' ').filter(Boolean),
+    }));
+    const botonesLicencia = [...raiz.querySelectorAll<HTMLButtonElement>('button[data-licencia]')];
+    const botonRaro = raiz.querySelector<HTMLButtonElement>('button[data-raro]');
+    const busca = raiz.querySelector<HTMLInputElement>('[data-busca]')!;
+    const recuento = raiz.querySelector<HTMLElement>('[data-recuento]')!;
+    const anuncio = raiz.querySelector<HTMLElement>('[data-anuncio]')!;
+    const nada = raiz.querySelector<HTMLElement>('[data-nada]')!;
+    const puestos = raiz.querySelector<HTMLElement>('[data-puestos]')!;
+    const chips = raiz.querySelector<HTMLElement>('[data-chips]')!;
+    const nFiltros = raiz.querySelector<HTMLElement>('[data-n-filtros]')!;
+    const abre = raiz.querySelector<HTMLButtonElement>('[data-abre-filtros]')!;
+    const panel = raiz.querySelector<HTMLElement>('#filtros')!;
+
+    const marcado = (b: HTMLButtonElement) => b.getAttribute('aria-pressed') === 'true';
+    let espera: number | undefined;
+
+    function chip(texto: string, quitar: () => void) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.setAttribute('aria-label', `Quitar el filtro ${texto}`);
+      b.textContent = texto;
+      b.insertAdjacentHTML('beforeend', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>');
+      b.addEventListener('click', () => { quitar(); aplica(); busca.focus(); });
+      return b;
+    }
+
+    function aplica() {
+      const licencias = botonesLicencia.filter(marcado).map((b) => b.dataset.licencia ?? '');
+      const soloRaro = botonRaro ? marcado(botonRaro) : false;
+      const q = busca.value.trim();
+      const busqueda = preparaBusqueda(q);
+      let vistos = 0;
+      for (const it of items) {
+        const si = pasaFiltro(it, { licencias, soloRaro, busqueda });
+        it.el.hidden = !si;
+        if (si) vistos++;
+      }
+      const texto = textoRecuento(vistos, total);
+      recuento.textContent = texto;
+      nada.hidden = vistos > 0;
+
+      // Lo que está puesto, como chips que se quitan de uno en uno.
+      chips.replaceChildren();
+      if (soloRaro && botonRaro) chips.append(chip('Solo La Cámara', () => botonRaro.setAttribute('aria-pressed', 'false')));
+      for (const b of botonesLicencia.filter(marcado)) {
+        chips.append(chip(b.dataset.nombre ?? '', () => b.setAttribute('aria-pressed', 'false')));
+      }
+      if (q) chips.append(chip(`«${q}»`, () => { busca.value = ''; }));
+      const n = licencias.length + (soloRaro ? 1 : 0);
+      nFiltros.textContent = n ? `(${n})` : '';
+      puestos.hidden = n === 0 && !q;
+
+      // La dirección guarda la búsqueda, para poder volver o compartirla.
+      const url = new URL(location.href);
+      if (q) url.searchParams.set('q', q); else url.searchParams.delete('q');
+      history.replaceState(null, '', url);
+
+      // Al lector de pantalla se le dice el recuento cuando se deja de teclear.
+      clearTimeout(espera);
+      espera = window.setTimeout(() => { anuncio.textContent = texto; }, 500);
+    }
+
+    for (const b of [...botonesLicencia, ...(botonRaro ? [botonRaro] : [])]) {
+      b.addEventListener('click', () => {
+        b.setAttribute('aria-pressed', String(!marcado(b)));
+        aplica();
+      });
+    }
+    busca.addEventListener('input', aplica);
+    for (const b of raiz.querySelectorAll<HTMLButtonElement>('[data-quitar-todo]')) {
+      b.addEventListener('click', () => {
+        for (const o of [...botonesLicencia, ...(botonRaro ? [botonRaro] : [])]) o.setAttribute('aria-pressed', 'false');
+        busca.value = '';
+        aplica();
+        busca.focus();
+      });
+    }
+    abre.addEventListener('click', () => {
+      const abierto = abre.getAttribute('aria-expanded') !== 'true';
+      abre.setAttribute('aria-expanded', String(abierto));
+      panel.classList.toggle('abierto', abierto);
+    });
+
+    // Lo que llega en la dirección (la búsqueda de la cabecera manda aquí con ?q=).
+    const inicial = new URLSearchParams(location.search).get('q');
+    if (inicial) {
+      busca.value = inicial;
+      aplica();
+    }
+  }
+</script>
+
+<style>
+  .lista {
+    padding-top: 24px; padding-bottom: 72px;
+    display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px 32px;
+  }
+  .lado { flex: 1 1 250px; min-width: 0; max-width: 100%; }
+  .resultados { flex: 999 1 560px; min-width: 0; }
+
+  .abre-filtros {
+    display: none; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; min-height: 48px; padding: 0 16px; border: 2px solid var(--tinta); border-radius: 12px;
+    background: var(--blanco); color: var(--tinta); font: inherit; font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+  .filtros { padding: 20px; border-radius: 18px; background: var(--blanco); border: 1px solid var(--linea); }
+  .filtros h2 { margin: 0; font-size: 18px; font-weight: 700; }
+  .filtros h3 { margin: 18px 0 4px; font-size: 16px; font-weight: 700; }
+  .grupo { display: flex; flex-direction: column; }
+  .opcion {
+    display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 4px 0;
+    border: none; background: transparent; color: var(--tinta); font: inherit; font-size: 16px;
+    text-align: left; cursor: pointer;
+  }
+  .opcion :global(.casilla) {
+    flex: none; width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center;
+    border: 2px solid var(--tinta); background: var(--blanco); color: transparent;
+  }
+  .opcion[aria-pressed="true"] :global(.casilla) { background: var(--tinta); color: var(--blanco); }
+  .opcion[aria-pressed="true"] .opcion-txt { font-weight: 700; }
+  .cuantos { color: var(--tinta-3); font-weight: 500; }
+  @media (max-width: 860px) {
+    .abre-filtros { display: inline-flex; }
+    .filtros { display: none; margin-top: 10px; }
+    .filtros.abierto { display: block; }
+  }
+
+  .barra {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px;
+    padding: 14px 16px; border-radius: 16px; background: var(--blanco); border: 1px solid var(--linea);
+  }
+  .recuento { margin: 0; font-size: 16px; font-weight: 700; }
+  .busca-lista { flex: 1 1 260px; max-width: 420px; display: flex; flex-direction: column; gap: 4px; }
+  .busca-lista label { font-size: 14px; font-weight: 600; color: var(--tinta-2); }
+  .busca-lista input {
+    height: 48px; padding: 0 14px; border: 2px solid var(--tinta); border-radius: 12px;
+    background: var(--blanco); color: var(--tinta); font: inherit; font-size: 16px; min-width: 0;
+  }
+  .busca-lista input::placeholder { color: #5A5666; opacity: 1; }
+  .busca-lista input:focus-visible { outline: 3px solid var(--morado); outline-offset: 2px; }
+
+  .puestos { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+  .puestos[hidden] { display: none; }
+  .puestos-titulo { font-size: 16px; font-weight: 600; color: var(--tinta-2); }
+  .chips { display: contents; }
+  .puestos :global(.chip) {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px;
+    border: 2px solid var(--tinta); border-radius: 999px; background: var(--tinta); color: var(--hueso);
+    font: inherit; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .quitar-todo {
+    min-height: 44px; padding: 0 12px; border: none; background: transparent; color: var(--tinta);
+    font: inherit; font-size: 15px; font-weight: 700; text-decoration: underline; cursor: pointer;
+  }
+
+  .nada { margin-top: 24px; padding: 28px; border-radius: 18px; background: var(--blanco); border: 1px solid var(--linea); }
+  .nada[hidden] { display: none; }
+  .nada-titulo { margin: 0; font-size: 20px; font-weight: 700; }
+  .nada p:not(.nada-titulo) { margin: 10px 0 18px; font-size: 16px; line-height: 1.5; color: var(--tinta-2); }
+  .nada .boton { border: none; font: inherit; font-weight: 700; cursor: pointer; }
+
+  .rejilla {
+    list-style: none; margin: 24px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)); gap: 24px 20px;
+  }
+  .rejilla > li { min-width: 0; display: flex; flex-direction: column; }
+  .rejilla > li > :global(.cromo) { flex: 1 1 auto; }
+  .rejilla > li[hidden] { display: none !important; }
+  /* En el móvil, dos cromos por fila: 74 de uno en uno son una lista interminable. */
+  @media (max-width: 560px) {
+    .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
+  }
+</style>
