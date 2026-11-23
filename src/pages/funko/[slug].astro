@@ -1,150 +1,456 @@
 ---
-import Base from '../../layouts/Base.astro';
-import { getProductosFull, aFicha } from '../../lib/productos.js';
+// La ficha de una pieza («los cromos»), tal como la de Super Buu del diseño (CromoFicha).
+// Una página por pieza del catálogo, en la dirección que da `urlFicha()`.
+// Todo sale de src/lib/catalogo.js: aquí no se escribe ningún dato de una pieza a mano.
+// Lo que no viene en los datos no se pinta (ni texto de relleno ni huecos).
+//
+// Sin cesta todavía: «Añadir a la cesta» y la casilla del protector se pintan, no hacen
+// nada y lo dicen. La cesta llega en su propio tramo.
+import Cromos from '../../layouts/Cromos.astro';
+import CromoFicha from '../../components/cromos/CromoFicha.astro';
+import Cromo from '../../components/cromos/Cromo.astro';
+import { piezas, paraListado, rarasEnAlmacen, deLaMismaHoja, precioTexto, PRECIO_PROTECTOR } from '../../lib/catalogo.js';
 
-// Genera UNA página estática por cada producto de la fábrica (en el build).
-export async function getStaticPaths() {
-  const filas = await getProductosFull();
-  return filas.map((row) => ({ params: { slug: row.slug }, props: { p: aFicha(row) } }));
+export function getStaticPaths() {
+  return piezas().map((p) => ({ params: { slug: p.slug }, props: { p } }));
 }
 const { p } = Astro.props;
 
-const DISP = { inmediato:['Disponible','d-now'], pedido:['Bajo pedido','d-order'], reserva:['Reserva','d-pre'], agotado:['Agotado','d-out'] };
-const RAR  = { chase:['CHASE','r-chase'], vaulted:['VAULTED','r-vaulted'], excl:['EXCLUSIVO','r-excl'] };
-const BTN  = { inmediato:['Añadir a la cesta',''], pedido:['Encargar','order'], reserva:['Reservar','pre'], agotado:['Avísame cuando llegue','out'] };
+const SITIO = 'https://www.moloka.es';
+const GUIA_CHASE = '/guias/rarezas-funko-chase-vaulted-exclusivas';
+const LLEGA = 'Llega en 2 a 4 días laborables';
+const e = p.escrito;
+const num = p.numero ? ` n.º ${p.numero}` : '';
+const titulo = `${p.nombre}${num}${p.esChase ? ' · Chase' : ''}`;
+const protector1 = precioTexto(PRECIO_PROTECTOR);
 
-const [dl, dc] = DISP[p.disp] ?? DISP.inmediato;
-const rars = p.rars ?? [];
-const [bl, bc] = BTN[p.disp] ?? BTN.inmediato;
-const _fmtEur = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €';
-const oferta = (p.precio != null && p.precio_oferta != null && p.precio_oferta > 0 && p.precio_oferta < p.precio) ? p.precio_oferta : null;
-const precioFmt = p.precio != null ? _fmtEur(p.precio) : null;
-const ofertaFmt = oferta != null ? _fmtEur(oferta) : null;
-const pctOff = oferta != null ? Math.round((1 - oferta / p.precio) * 100) : 0;
-const fotos = p.fotos.length ? p.fotos : [null];
-const metaDesc = `${p.nm}${p.fr ? ' de ' + p.fr : ''}. Coleccionable original con envío desde España — Moloka Store.`;
-const precioCarrito = oferta != null ? oferta : (p.precio ?? '');
+// Para los buscadores: personaje, número y «Chase» delante; la serie después; la tienda una vez.
+const tituloPagina = `Funko Pop! ${p.nombre}${p.numero ? ` ${p.numero}` : ''}${p.esChase ? ' Chase' : ''}${p.serie ? ` – ${p.serie}` : ''} | MOLOKA`;
+const descripcion = [
+  `Funko Pop! ${p.nombre}${num}${p.esChase ? ', el chase' : ''}${p.serie ? ` de ${p.serie}` : ''}${p.enAlmacen ? ', en nuestro almacén' : ''}.`,
+  p.precioTexto ? `${p.precioTexto} con IVA.` : null,
+  p.enAlmacen ? 'Pedido antes de las 13:00 de lunes a viernes, sale ese día y llega en 2 a 4 días laborables.' : null,
+  'Envío 4,95 € en la península, gratis desde 60 €. 30 días para devolver.',
+].filter(Boolean).join(' ');
 
-// --- Datos estructurados (JSON-LD) para Google y asistentes de IA (GEO) ---
-// Aditivo: no cambia nada visible. Solo describe el producto en lenguaje de maquina
-// (precio, stock, EAN/GTIN, marca) para que Google lo muestre enriquecido y las IA
-// (ChatGPT, Gemini, Perplexity...) lo entiendan y lo puedan recomendar.
-const SITE = (Astro.site?.href?.replace(/\/+$/, '')) || 'https://moloka.es';
-const urlFicha = `${SITE}/funko/${p.slug}`;
-const imgsAbs = fotos.filter(Boolean).map((f) => (String(f).startsWith('http') ? f : `${SITE}${f}`));
-const descTexto = (p.desc || metaDesc).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 600);
-const eanStr = p.ean ? String(p.ean).trim() : '';
-const precioSchema = oferta != null ? oferta : p.precio;
-const DISP_SCHEMA = {
-  inmediato: 'https://schema.org/InStock',
-  pedido:    'https://schema.org/BackOrder',
-  reserva:   'https://schema.org/PreOrder',
-  agotado:   'https://schema.org/OutOfStock',
-};
-const productLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Product',
-  name: p.nm,
-  ...(imgsAbs.length ? { image: imgsAbs } : {}),
-  description: descTexto,
-  sku: p.slug,
-  ...(eanStr.length === 13 ? { gtin13: eanStr } : (eanStr.length === 12 ? { gtin12: eanStr } : {})),
-  ...(p.cat ? { category: p.cat } : {}),
-  brand: { '@type': 'Brand', name: p.lic || p.fr || 'Funko' },
-  ...(precioSchema != null ? {
-    offers: {
-      '@type': 'Offer',
-      url: urlFicha,
-      priceCurrency: 'EUR',
-      price: Number(precioSchema).toFixed(2),
-      itemCondition: 'https://schema.org/NewCondition',
-      availability: DISP_SCHEMA[p.disp] ?? DISP_SCHEMA.inmediato,
-      seller: { '@type': 'Organization', name: 'Moloka Store' },
-    },
-  } : {}),
-};
-const breadcrumbLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE}/` },
-    { '@type': 'ListItem', position: 2, name: 'Funko',  item: `${SITE}/funko` },
-    { '@type': 'ListItem', position: 3, name: p.nm,     item: urlFicha },
-  ],
-};
+// Las fotos limpias (sin montaje ni cromo) son las que van primero para los buscadores.
+const limpias = [p.fotos.figura, p.fotos.caja, p.fotos.base].filter(Boolean).map((f) => f.url);
+const imagenCompartir = limpias[0] ?? p.fotos.montaje?.url ?? undefined;
+
+// Dónde está: Inicio / Funko / la licencia (el listado filtrado) / la pieza.
+const migas = [
+  { texto: 'Inicio', href: '/' },
+  { texto: 'Funko', href: '/funko' },
+  ...(p.licencia ? [{ texto: p.licencia, href: `/funko?q=${encodeURIComponent(p.licencia)}` }] : []),
+  { texto: titulo, href: p.url },
+];
+
+// De la misma hoja: su licencia. Sin licencia, lo raro (o lo demás) del almacén.
+const MAX_HOJA = 8;
+const misma = deLaMismaHoja(p);
+const hoja = misma
+  ? { titulo: `Hoja de ${p.licencia}`, total: misma.length + 1, lista: misma, href: `/funko?q=${encodeURIComponent(p.licencia)}`, ver: `Ver los ${misma.length + 1} de ${p.licencia}` }
+  : p.esChase
+    ? { titulo: 'Más de La Cámara', total: null, lista: rarasEnAlmacen().filter((x) => x.clave !== p.clave), href: '/la-camara', ver: 'Ver La Cámara entera' }
+    : { titulo: 'Más en el almacén', total: null, lista: paraListado().filter((x) => x.clave !== p.clave && !x.esChase), href: '/funko', ver: 'Ver todos los Funko del almacén' };
+
+// La ficha técnica: solo las filas con dato.
+const tecnica = [
+  p.marca && ['marca', p.marca],
+  p.serie && ['serie', p.serie],
+  p.numero && ['número', p.numero],
+  p.esChase && ['rareza', `Chase${e?.rareza ? ` · ${e.rareza}` : ''}`],
+  e?.pegatinas?.length && ['pegatina', e.pegatinas.map((x) => x.texto).join(' · ')],
+  p.anio && ['salió', String(p.anio)],
+  p.ean && ['código de barras', p.ean],
+  ['estado de la caja', 'Caja de coleccionista: revisada antes de enviar, sin golpes ni esquinas dobladas'],
+  p.protector === 'incluido' && ['protector', 'Incluido'],
+  p.protector === 'opcional' && ['protector', `Opcional, ${protector1}`],
+].filter(Boolean);
+
+const FOTOS_GALERIA = [
+  ['caja', 'La caja.', 'Nuestra foto de la caja por delante: lo que recibes, la figura dentro de su caja.', `${p.nombre}${num}: nuestra foto de la caja por delante`],
+  ['figura', 'La figura.', 'Fuera de la caja, para ver el detalle. Es la foto de referencia.', `${p.nombre}: la figura fuera de la caja`],
+  ['montaje', 'En su mundo.', 'Es un montaje: la figura está redibujada en un decorado de su serie. No es una foto de la pieza.', `Montaje: ${p.nombre} redibujada en un decorado de su serie (no es una foto de la pieza)`],
+  ['base', 'La base.', 'Nuestra foto de la base de la caja.', `${p.nombre}: nuestra foto de la base de la caja`],
+].filter(([k]) => p.fotos[k]);
+
+// Los datos para los buscadores. Sin precio no hay oferta (no se inventa un precio).
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `Funko Pop! ${p.nombre}${p.numero ? ` ${p.numero}` : ''}${p.esChase ? ' Chase' : ''}`,
+    description: e?.texto?.[0] ?? descripcion,
+    ...(limpias.length ? { image: limpias } : {}),
+    sku: p.clave,
+    ...(p.ean ? { [p.ean.length === 12 ? 'gtin12' : p.ean.length === 13 ? 'gtin13' : 'gtin']: p.ean } : {}),
+    ...(p.marca ? { brand: { '@type': 'Brand', name: p.marca } } : {}),
+    itemCondition: 'https://schema.org/NewCondition',
+    url: new URL(p.url, SITIO).href,
+    ...(p.precio != null ? {
+      offers: {
+        '@type': 'Offer',
+        price: p.precio.toFixed(2),
+        priceCurrency: 'EUR',
+        availability: p.enAlmacen ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        itemCondition: 'https://schema.org/NewCondition',
+        url: new URL(p.url, SITIO).href,
+      },
+    } : {}),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: migas.map((m, i) => ({ '@type': 'ListItem', position: i + 1, name: m.texto, item: new URL(m.href, SITIO).href })),
+  },
+];
 ---
+<Cromos title={tituloPagina} description={descripcion} image={imagenCompartir}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(ld)} />
 
-<Base title={`${p.titulo} | Moloka Store`} description={metaDesc} image={imgsAbs[0]} type="product">
-  <main class="wrap ficha">
-
-    <nav class="migas" aria-label="migas de pan">
-      <a href="/">Inicio</a> <span>/</span>
-      <a href="/funko">Funko</a> <span>/</span>
-      <b>{p.nm}</b>
+  <section class="caja arriba">
+    <div class="brillo" aria-hidden="true"></div>
+    <nav aria-label="Dónde estás" class="migas">
+      {migas.map((m, i) => i < migas.length - 1
+        ? <><a href={m.href}>{m.texto}</a><span aria-hidden="true">/</span></>
+        : <span aria-current="page" class="aqui">{m.texto}</span>)}
     </nav>
 
-    <div class="ficha-grid">
+    <div class="dos">
+      <div class="lado-cromo">
+        <CromoFicha pieza={p} llega={LLEGA} />
+      </div>
 
-      <section class="galeria">
-        <div class="foto-grande">
-          {fotos[0]
-            ? <img id="fotoBig" src={fotos[0]} alt={p.nm} />
-            : <div class="sinfoto">Sin imagen</div>}
-        </div>
-        {fotos.length > 1 &&
-          <div class="minis">
-            {fotos.map((f, i) => (
-              <button class={`mini ${i === 0 ? 'on' : ''}`} data-src={f} type="button" aria-label={`Foto ${i + 1}`}>
-                <img src={f} alt="" loading="lazy" />
-              </button>
-            ))}
-          </div>}
-      </section>
+      <div class="compra">
+        <p class="mono antetitulo">FUNKO POP!{p.serie && ` · ${p.serie.toUpperCase()}`}</p>
+        <h1 class="dis">{titulo}</h1>
+        {p.esChase && (
+          <p class="es-chase">
+            <span class="tag mono">CHASE</span>
+            <span>La variante escasa de la figura normal{e?.rareza ? `: esta ${e.rareza}.` : '.'}</span>
+          </p>
+        )}
 
-      <section class="info">
-        <div class="info-top">
-          <span class="fr">{p.fr}</span>
-          {rars.map((r) => { const [l, c] = RAR[r] ?? ['', '']; return l && <span class={`rar ${c}`}>{l}</span>; })}
+        <div class="precio">
+          {p.precioTexto
+            ? <><span class="dis cifra">{p.precioTexto}</span><span class="iva">IVA incluido</span></>
+            : <span class="sin-precio">precio por poner</span>}
         </div>
 
-        <h1>{p.nm}</h1>
+        {p.enAlmacen
+          ? (
+            <div class="estado">
+              <span class="estado-1"><span class="punto" aria-hidden="true"></span>En el almacén · <span data-fecha-ficha>{LLEGA}</span></span>
+              <span class="estado-2">Pedido antes de las 13:00 de lunes a viernes, sale ese día.</span>
+            </div>
+          )
+          : (
+            <div class="estado no">
+              <span class="estado-1"><span class="punto" aria-hidden="true"></span>Hoy no la tenemos</span>
+              <span class="estado-2">La ficha sigue aquí, con su cromo y sus datos. No se puede comprar hasta que vuelva.</span>
+            </div>
+          )}
 
-        <span class={`estado ${dc}`}><i></i>{dl}</span>
+        {p.protector === 'incluido' && (
+          <div class="protector">
+            <p>
+              <b>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+                Va con protector, incluido en el precio.
+              </b>
+              La caja viaja dentro de su funda transparente.
+            </p>
+            <span class="hueco-protector mono">foto del protector</span>
+          </div>
+        )}
+        {p.protector === 'opcional' && p.enAlmacen && (
+          <label class="protector casilla" for="protector">
+            <input id="protector" type="checkbox" disabled aria-describedby="sin-cesta" />
+            <span class="casilla-txt"><b>Añadir protector para esta caja · <span class="nw">+{protector1}</span></b><br />Opcional: una funda transparente a la medida de la caja.</span>
+            <span class="hueco-protector mono">foto del protector</span>
+          </label>
+        )}
 
-        {precioFmt
-          ? (ofertaFmt
-              ? <div class="precio"><span style="text-decoration:line-through;color:#9ca3af;font-weight:500;font-size:.6em;margin-right:9px">{precioFmt}</span><span style="color:#dc2626">{ofertaFmt}</span><span style="background:#dc2626;color:#fff;font-size:.42em;font-weight:700;padding:3px 8px;border-radius:7px;margin-left:10px;vertical-align:middle">-{pctOff}%</span></div>
-              : <div class="precio">{precioFmt}</div>)
-          : <div class="precio ask">Consultar precio</div>}
+        {p.enAlmacen && (
+          <>
+            <button type="button" class="comprar" disabled aria-describedby="sin-cesta">Añadir a la cesta</button>
+            <p class="sin-cesta" id="sin-cesta">Todavía no se puede comprar: la cesta llega en el siguiente tramo de la obra.</p>
+          </>
+        )}
 
-        <button class={`buy ${bc}`} type="button" data-add data-slug={p.slug} data-nm={p.nm} data-precio={precioCarrito} data-img={fotos[0] ?? ''}>{bl}</button>
+        <div class="dos-tarjetas">
+          <a href="/envios" class="tarjeta">
+            <span class="tarjeta-t">Envíos</span>
+            <span>4,95 € a domicilio en la península, gratis desde 60 €</span>
+          </a>
+          <a href="/devoluciones" class="tarjeta">
+            <span class="tarjeta-t">Devoluciones</span>
+            <span>30 días para devolver, sin dar motivo</span>
+          </a>
+        </div>
 
-        {p.desc && <div class="desc" set:html={p.desc}></div>}
-
-        <dl class="detalles">
-          {p.lic && <div><dt>Licencia</dt><dd>{p.lic}</dd></div>}
-          {p.cat && <div><dt>Categoría</dt><dd>{p.cat}</dd></div>}
-          {p.ean && <div><dt>EAN</dt><dd>{p.ean}</dd></div>}
-        </dl>
-      </section>
-
+        <p class="recibes">
+          Lo que recibes es la figura dentro de su caja{FOTOS_GALERIA.length > 0 && <>, como en <a href="#fotos">las fotos</a></>}. El cromo es la forma de enseñarla.
+        </p>
+      </div>
     </div>
-  </main>
+  </section>
 
-  <script type="application/ld+json" is:inline set:html={JSON.stringify(productLd)} />
-  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbLd)} />
+  <div class="claro">
+    {FOTOS_GALERIA.length > 0 && (
+      <section id="fotos" class="caja bloque">
+        <p class="mono antetitulo-c">LAS FOTOS</p>
+        <h2 class="dis">Las fotos de {p.nombre}</h2>
+        <div class="galeria">
+          {FOTOS_GALERIA.map(([k, t, texto, alt]) => (
+            <figure>
+              <span class={`foto${k === 'montaje' ? ' oscura' : ''}`}>
+                <img src={p.fotos[k].url} alt={alt} width={p.fotos[k].ancho} height={p.fotos[k].alto} loading="lazy" decoding="async" />
+              </span>
+              <figcaption><b>{t}</b> {texto}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
 
-  <script>
-    // Galería: al pulsar una miniatura, cambia la foto grande.
-    const big = document.getElementById('fotoBig') as HTMLImageElement | null;
-    document.querySelectorAll('.mini').forEach((m) => {
-      m.addEventListener('click', () => {
-        const src = (m as HTMLElement).dataset.src;
-        if (big && src) big.src = src;
-        document.querySelectorAll('.mini').forEach((x) => x.classList.remove('on'));
-        m.classList.add('on');
-      });
-    });
-  </script>
-</Base>
-3
+    {e?.texto?.length > 0 && (
+      <section class="caja bloque">
+        <div class="panel">
+          <p class="mono antetitulo-c">LA PIEZA</p>
+          <h2 class="dis">{titulo}</h2>
+          {e.texto.map((t) => <p class="texto-pieza">{t}</p>)}
+          <p class="texto-pieza">
+            {p.precioTexto ? `Cuesta ${p.precioTexto} con IVA` : 'El precio está por poner'}{p.protector === 'incluido' && ', con protector incluido'}{p.enAlmacen && <>; está en nuestro almacén y <span data-fecha-ficha-min>{LLEGA.toLowerCase()}</span></>}.
+          </p>
+        </div>
+      </section>
+    )}
+
+    <section class="caja bloque">
+      <div class="tecnica-y-rareza">
+        <div class="panel tecnica">
+          <h2 class="mono antetitulo-c">FICHA TÉCNICA · EL REVERSO, ENTERO</h2>
+          <table>
+            <tbody>
+              {tecnica.map(([k, v]) => <tr><th scope="row" class="mono">{k}</th><td>{v}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+        {(p.esChase || e?.pegatinas?.length > 0) && (
+          <div class="panel rareza">
+            {e?.porQueEsRara && (
+              <>
+                <h2 class="mono antetitulo-o">POR QUÉ ES RARA</h2>
+                <p class="porque">{e.porQueEsRara}</p>
+              </>
+            )}
+            {p.esChase && (
+              <p class={`que-es${e?.porQueEsRara ? ' raya' : ''}`}>
+                <b>¿Qué es un chase?</b> La variante escasa que Funko mezcla con la figura normal. <a href={GUIA_CHASE}>Guía: qué es un chase y cómo reconocerlo</a>
+              </p>
+            )}
+            {e?.pegatinas?.length > 0 && (
+              <>
+                <h2 class="mono antetitulo-o raya">LAS PEGATINAS DE LA CAJA</h2>
+                <ul class="pegatinas">
+                  {e.pegatinas.map((x) => <li><b>{x.texto}</b>{x.significado && <span>{x.significado}</span>}</li>)}
+                </ul>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+
+    {hoja.lista.length > 0 && (
+      <section id="hoja" class="caja bloque">
+        <div class="panel">
+          <div class="hoja-cabeza">
+            <div>
+              <p class="mono antetitulo-c">DE LA MISMA HOJA</p>
+              <h2 class="dis">{hoja.titulo}</h2>
+            </div>
+            {hoja.total && <p class="hoja-n">{hoja.total} en el almacén</p>}
+          </div>
+          <ul class="rejilla" role="list">
+            {hoja.lista.slice(0, MAX_HOJA).map((x) => <li><Cromo pieza={x} /></li>)}
+          </ul>
+          <a href={hoja.href} class="boton tinta ver-hoja">{hoja.ver} <span aria-hidden="true">→</span></a>
+        </div>
+      </section>
+    )}
+
+    <section class="caja bloque ultimo">
+      <div class="promesas">
+        <div>
+          <p class="dis promesa-t">Envío</p>
+          <p>4,95 € a domicilio en la península, gratis desde 60 €. A la vista antes de pagar. <a href="/envios">Envíos</a></p>
+        </div>
+        <div>
+          <p class="dis promesa-t">Devoluciones</p>
+          <p>30 días para devolver, sin dar motivo. Si cambias de idea, la vuelta la pagas tú; si llega dañado o el fallo es nuestro, la pagamos nosotros. <a href="/devoluciones">Devoluciones</a></p>
+        </div>
+        <div>
+          <p class="dis promesa-t">La caja</p>
+          <p>Caja de coleccionista: la revisamos antes de enviarla, sin golpes ni esquinas dobladas.{p.protector === 'incluido' && ' Viaja en su protector, incluido en el precio.'}{p.protector === 'opcional' && ` Si quieres, con protector por ${protector1}.`}</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Cromos>
+
+<script>
+  import { ventanaEntrega, textoEntrega } from '../../lib/fechas.js';
+
+  // Qué día llega: se calcula aquí, en el navegador, con la hora de ahora.
+  const texto = textoEntrega(ventanaEntrega(new Date()));
+  for (const el of document.querySelectorAll('[data-fecha-ficha]')) el.textContent = texto;
+  for (const el of document.querySelectorAll('[data-fecha-ficha-min]')) el.textContent = texto.replace(/^Llega/, 'llega');
+  for (const el of document.querySelectorAll('[data-fecha-corta]')) el.textContent = texto.replace(/^Llega /, '');
+</script>
+
+<style>
+  .arriba { position: relative; padding-top: 22px; padding-bottom: 64px; }
+  .brillo {
+    position: absolute; width: 720px; height: 720px; left: -160px; top: -80px; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(232, 185, 49, .18), rgba(183, 156, 255, .08) 55%, transparent);
+  }
+  .migas { position: relative; display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 16px; color: var(--hueso-2); }
+  .migas a, .migas span { padding: 10px 0; }
+  .aqui { color: var(--hueso); font-weight: 600; }
+
+  .dos { position: relative; margin-top: 22px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px 56px; }
+  .lado-cromo { flex: 1 1 340px; min-width: 0; max-width: 440px; margin: 0 auto; }
+
+  .compra { flex: 1.3 1 420px; min-width: 0; padding: 30px; border-radius: 26px; background: var(--blanco); color: var(--tinta); }
+  .compra a:hover { color: var(--morado); }
+  .compra a:focus-visible, .compra button:focus-visible, .compra input:focus-visible { outline-color: var(--morado); }
+  .antetitulo { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .12em; color: var(--morado); }
+  h1 { margin: 12px 0 0; font-size: clamp(26px, 3vw, 40px); line-height: 1.12; font-weight: 700; overflow-wrap: break-word; }
+  .es-chase { margin: 14px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 17px; }
+  .tag { padding: 6px 10px; border-radius: 9px; background: var(--oro); color: var(--sobre-oro); font-size: 14px; font-weight: 700; letter-spacing: .08em; }
+
+  .precio { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+  .cifra { font-size: 40px; font-weight: 700; }
+  .iva { font-size: 16px; color: var(--tinta-2); }
+  .sin-precio {
+    padding: 6px 12px; border: 1px dashed var(--naranja); border-radius: 10px;
+    color: var(--naranja); font-size: 18px; font-weight: 700;
+  }
+
+  .estado {
+    margin-top: 18px; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px;
+    border-radius: 16px; background: #E9F5EE; border: 1px solid var(--verde);
+  }
+  .estado-1 { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 19px; font-weight: 700; color: #0A5239; }
+  .punto { flex: none; width: 12px; height: 12px; border-radius: 50%; background: var(--verde); }
+  .estado-2 { font-size: 16px; color: var(--tinta); }
+  .estado.no { background: #F3F1F7; border: 2px dotted #5A5666; }
+  .estado.no .estado-1 { color: var(--tinta-2); }
+  .estado.no .punto { background: transparent; border: 2px dotted #5A5666; }
+
+  .protector {
+    margin-top: 14px; display: flex; align-items: center; gap: 14px; padding: 10px 10px 10px 18px;
+    border-radius: 16px; border: 1px solid var(--linea); color: var(--tinta);
+  }
+  .protector p { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 16px; line-height: 1.45; }
+  .protector p b { display: flex; align-items: center; gap: 8px; font-size: 17px; }
+  .protector svg { flex: none; color: var(--morado); }
+  /* La foto elegida del protector lleva la corona de Funko: no se sube al repo. Va el hueco. */
+  .hueco-protector {
+    flex: none; display: grid; place-items: center; width: 96px; height: 64px; padding: 4px;
+    border-radius: 10px; border: 1px dashed var(--linea); background: #F7F6FA;
+    font-size: 12px; line-height: 1.2; text-align: center; color: var(--tinta-3);
+  }
+  .casilla { align-items: flex-start; border-color: var(--tinta); cursor: not-allowed; }
+  .casilla input { flex: none; width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--tinta); }
+  .casilla-txt { flex: 1 1 auto; min-width: 0; font-size: 16px; line-height: 1.45; }
+  .nw { white-space: nowrap; }
+
+  .comprar {
+    margin-top: 18px; width: 100%; min-height: 58px; border: none; border-radius: 14px;
+    background: var(--tinta); color: var(--hueso); font: inherit; font-size: 18px; font-weight: 700;
+    cursor: not-allowed; opacity: .55;
+  }
+  .sin-cesta { margin: 8px 0 0; font-size: 15px; line-height: 1.4; color: var(--naranja); font-weight: 600; }
+
+  .dos-tarjetas { margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .tarjeta {
+    display: flex; flex-direction: column; gap: 4px; min-height: 44px; padding: 14px 16px;
+    border-radius: 14px; border: 1px solid var(--linea); text-decoration: none; font-size: 16px; color: var(--tinta-2);
+  }
+  .tarjeta-t { font-weight: 700; color: var(--tinta); text-decoration: underline; text-underline-offset: 4px; }
+  .recibes { margin: 18px 0 0; font-size: 16px; line-height: 1.5; color: var(--tinta-2); }
+  .recibes a { font-weight: 700; }
+
+  .claro { background: var(--claro); color: var(--tinta); }
+  .bloque { padding-top: 68px; padding-bottom: 0; }
+  .ultimo { padding-bottom: 84px; }
+  .antetitulo-c { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .14em; color: var(--morado); }
+  .antetitulo-o { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .14em; color: var(--oro); }
+  .claro h2.dis { margin: 10px 0 0; font-size: clamp(22px, 2.6vw, 34px); line-height: 1.15; font-weight: 700; overflow-wrap: break-word; }
+
+  .galeria { margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .galeria figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .foto { display: block; aspect-ratio: 1 / 1; border-radius: 20px; overflow: hidden; background: var(--blanco); border: 1px solid var(--linea); }
+  .foto.oscura { background: var(--tinta); }
+  .foto img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 18px; }
+  .foto.oscura img { padding: 0; }
+  .galeria figcaption { font-size: 16px; line-height: 1.45; }
+
+  .panel { padding: 30px; border-radius: 22px; background: var(--blanco); border: 1px solid var(--linea); }
+  .texto-pieza { margin: 16px 0 0; max-width: 78ch; font-size: 18px; line-height: 1.6; }
+
+  .tecnica-y-rareza { display: flex; flex-wrap: wrap; gap: 24px; }
+  .tecnica { flex: 1.2 1 420px; min-width: 0; }
+  .tecnica table { margin-top: 16px; width: 100%; border-collapse: collapse; font-size: 17px; line-height: 1.4; }
+  .tecnica th, .tecnica td { padding: 12px 0; border-top: 1px solid var(--linea-2); text-align: left; vertical-align: top; }
+  .tecnica tr:last-child th, .tecnica tr:last-child td { border-bottom: 1px solid var(--linea-2); }
+  .tecnica th { width: 1%; padding-right: 16px; white-space: nowrap; font-weight: 500; color: var(--tinta-3); }
+  .tecnica td { overflow-wrap: anywhere; }
+  .rareza { flex: 1 1 340px; min-width: 0; background: var(--tinta); color: var(--hueso); border-color: var(--tinta); }
+  .rareza a:hover { color: var(--oro); }
+  .rareza a:focus-visible { outline-color: var(--oro); }
+  .porque { margin: 16px 0 0; font-size: 19px; line-height: 1.55; }
+  .que-es { margin: 0; font-size: 17px; line-height: 1.55; }
+  .que-es a { font-weight: 700; }
+  .raya { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(244, 239, 230, .22); }
+  .pegatinas { margin: 14px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .pegatinas li { font-size: 16px; line-height: 1.5; }
+  .pegatinas b { display: block; font-size: 17px; }
+
+  .hoja-cabeza {
+    display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 32px;
+    padding-bottom: 18px; border-bottom: 2px solid var(--tinta);
+  }
+  .hoja-n { margin: 0; font-size: 20px; font-weight: 700; }
+  .rejilla {
+    margin: 22px 0 0; padding: 0; list-style: none;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px;
+  }
+  .ver-hoja { margin-top: 24px; }
+
+  .promesas {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px;
+    background: var(--linea); border: 1px solid var(--linea); border-radius: 20px; overflow: hidden;
+  }
+  .promesas > div { background: var(--blanco); padding: 26px; }
+  .promesas p { margin: 10px 0 0; font-size: 16px; line-height: 1.55; color: var(--tinta-2); }
+  .promesas .promesa-t { margin: 0; font-size: 19px; font-weight: 700; color: var(--tinta); }
+
+  @media (max-width: 760px) {
+    .arriba { padding-top: 10px; padding-bottom: 44px; }
+    .dos { gap: 28px; }
+    .compra { padding: 22px 18px; border-radius: 22px; }
+    .cifra { font-size: 34px; }
+    .bloque { padding-top: 44px; }
+    .ultimo { padding-bottom: 56px; }
+    .panel { padding: 22px 18px; }
+    .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .tecnica table { font-size: 16px; }
+    .tecnica th { white-space: normal; width: 38%; }
+    .texto-pieza { font-size: 17px; }
+  }
+</style>

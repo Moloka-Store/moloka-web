@@ -1,6 +1,6 @@
 {
- "leido_en": "2026-11-23 10:58:51.703694",
- "origen": "piezas guardadas para la web, leídas el 23-nov-2026",
+ "leido_en": "2026-11-23 12:46:43.568094",
+ "origen": "piezas guardadas para la web, leídas el 23-nov-2026 (segunda copia, para la ficha): solo campos públicos; lleva las fotos de la figura con su cesión",
  "piezas": [
   {
    "clave": "889698610100-chase",
@@ -11,7 +11,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698610100_figura_6144954988728.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698610100_montaje_8574930469391.jpg",
@@ -29,7 +36,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698906678_figura_8416305222734.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698906678_montaje_1593710693950.jpg",
@@ -47,7 +61,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698864954_figura_3536765608964.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698864954_montaje_5795911782917.jpg",
@@ -65,7 +86,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698736954_figura_4437084878541.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698736954_montaje_8290277730453.jpg",
@@ -83,7 +111,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698503402_figura_6651558889142.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698503402_montaje_4328790193654.jpg",
@@ -101,7 +136,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698327480_figura_9594797937185.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698327480_montaje_0035643027984.jpg",
@@ -119,7 +161,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_figura_1987599496027.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_montaje_8297201493116.jpg",
@@ -137,6 +186,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -149,6 +199,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -161,7 +212,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698803694_figura_0539144560464.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698803694_montaje_9695018504043.jpg",
@@ -178,8 +236,19 @@
    "marca": null,
    "precio_venta": null,
    "en_almacen": true,
-   "lanzamiento": null,
+   "lanzamiento": "2016-01-12",
+   "caja_cm": {
+    "largo": 28.1,
+    "ancho": 18.2,
+    "alto": 8.5
+   },
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698133180_figura_6869441681002.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698133180_montaje_9612100270320.jpg",
@@ -197,7 +266,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698721356_figura_1799768266884.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698721356_montaje_9816235903989.jpg",
@@ -215,6 +291,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -227,7 +304,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698756365_figura_3957435234499.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698756365_montaje_4716245804304.jpg",
@@ -245,7 +329,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698886659_figura_3889790606963.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698886659_montaje_9605474583705.jpg",
@@ -263,6 +354,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -275,7 +367,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698515276_figura_2851202693322.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698515276_montaje_1881493515053.jpg",
@@ -293,7 +392,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698581493_figura_2040038996145.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698581493_montaje_5837370703901.jpg",
@@ -311,7 +417,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698602839_figura_9523675545888.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698602839_montaje_0593203814625.jpg",
@@ -329,6 +442,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -341,6 +455,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -353,7 +468,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698626460_figura_1481870743496.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698626460_montaje_6856971432993.jpg",
@@ -371,7 +493,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698849913_figura_3038970472734.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698849913_montaje_8403001925863.jpg",
@@ -389,7 +518,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698755597_figura_2082522685843.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698755597_montaje_6205335475097.jpg",
@@ -407,6 +543,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -419,7 +556,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698826174_figura_9894129717737.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698826174_montaje_1651589817212.jpg",
@@ -437,6 +581,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -449,6 +594,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -461,6 +607,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -473,7 +620,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698848749_figura_0701362121556.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698848749_montaje_2757966201473.jpg",
@@ -491,6 +645,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -503,7 +658,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698783385_figura_0805840278482.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698783385_montaje_1364728637468.jpg",
@@ -521,6 +683,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -533,7 +696,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698782678_figura_9459622851154.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698782678_montaje_7294311495543.jpg",
@@ -551,6 +721,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -563,7 +734,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698602433_figura_5615602597460.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698602433_montaje_7836294302707.jpg",
@@ -581,6 +759,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -593,6 +772,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -605,7 +785,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698556606_figura_3415682192574.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698556606_montaje_2931531568912.jpg",
@@ -623,7 +810,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698364065_figura_2269628784565.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698364065_montaje_3197953784642.jpg",
@@ -640,8 +834,19 @@
    "marca": "Funko",
    "precio_venta": null,
    "en_almacen": true,
-   "lanzamiento": null,
+   "lanzamiento": "2017-08-01",
+   "caja_cm": {
+    "largo": 20,
+    "ancho": 11.7,
+    "alto": 8.9
+   },
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698144254_figura_6779243053026.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698144254_montaje_9547592248475.jpg",
@@ -659,6 +864,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -671,6 +877,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -683,7 +890,14 @@
    "precio_venta": 17.9,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698872126_figura_7698860377249.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698872126_montaje_0770668762994.jpg",
@@ -701,7 +915,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698769136_figura_3225102243627.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698769136_montaje_3866306483133.jpg",
@@ -719,7 +940,14 @@
    "precio_venta": 22.99,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698615297_figura_0960010947590.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698615297_montaje_9555542495851.jpg",
@@ -758,7 +986,14 @@
    "precio_venta": 27.99,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698584500_figura_3114380156488.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698584500_montaje_7702595075804.jpg",
@@ -776,6 +1011,7 @@
    "precio_venta": 23.95,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": [
     {
@@ -797,7 +1033,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698501439_figura_3767523795102.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698501439_montaje_7847190542919.jpg",
@@ -815,7 +1058,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698725651_figura_2803870509700.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698725651_montaje_4153381934748.jpg",
@@ -833,6 +1083,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -845,6 +1096,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -857,6 +1109,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -869,6 +1122,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -881,7 +1135,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698510103_figura_0783734435445.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698510103_montaje_2875357408100.jpg",
@@ -899,7 +1160,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698918725_figura_8836925005842.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698918725_montaje_5602197916385.jpg",
@@ -917,6 +1185,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -929,6 +1198,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -941,7 +1211,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698688611_figura_8708501744346.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698688611_montaje_5438630388475.jpg",
@@ -959,7 +1236,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698581523_figura_8410159740179.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698581523_montaje_8079474248776.jpg",
@@ -977,6 +1261,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -989,7 +1274,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698779593_figura_6171837371195.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698779593_montaje_2732864124857.jpg",
@@ -1007,6 +1299,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -1019,6 +1312,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -1030,7 +1324,12 @@
    "marca": null,
    "precio_venta": null,
    "en_almacen": true,
-   "lanzamiento": null,
+   "lanzamiento": "2020-06-24",
+   "caja_cm": {
+    "largo": 22.1,
+    "ancho": 14.7,
+    "alto": 10.4
+   },
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -1043,7 +1342,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698623940_figura_0363905392106.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698623940_montaje_1422934909667.jpg",
@@ -1061,7 +1367,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698682701_figura_9372095337552.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698682701_montaje_6434816694700.jpg",
@@ -1079,6 +1392,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": [
     {
@@ -1096,7 +1410,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698673891_figura_9416335415161.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698673891_montaje_2370595228921.jpg",
@@ -1114,6 +1435,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -1126,6 +1448,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -1138,6 +1461,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   },
@@ -1150,7 +1474,14 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698623896_figura_4024463251032.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
     {
      "tipo": "montaje",
      "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698623896_montaje_2660402993688.jpg",
@@ -1168,6 +1499,7 @@
    "precio_venta": null,
    "en_almacen": true,
    "lanzamiento": null,
+   "caja_cm": null,
    "fotos_web": [],
    "fotos_caja": []
   }

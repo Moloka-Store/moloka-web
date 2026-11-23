@@ -1,0 +1,227 @@
+---
+// El cromo grande de la ficha (Fernando, 20-nov-2026): por delante enseña la figura
+// suelta y, debajo, cuatro miniaturas en este orden: caja, figura, montaje y base, que
+// cambian lo que enseña el cromo. Solo se pinta la miniatura que tiene foto. Sin figura,
+// arranca con el montaje; sin nada, «foto por hacer». El giro se queda: por detrás, lo
+// que se sabe de la pieza, escrito en la página desde que carga.
+//
+// El montaje se dice que es un montaje: en su miniatura, en su texto alternativo y en
+// una línea visible debajo.
+interface Props {
+  pieza: any;
+  llega: string;      // texto de la fecha antes de calcularla en el navegador
+}
+const { pieza: p, llega } = Astro.props;
+
+const ORDEN = ['caja', 'figura', 'montaje', 'base'] as const;
+const ETIQUETA = { caja: 'Caja', figura: 'Figura', montaje: 'Montaje', base: 'Base' };
+const conNumero = p.numero ? ` n.º ${p.numero}` : '';
+const ALT = {
+  caja: `${p.nombre}${conNumero}: nuestra foto de la caja por delante`,
+  figura: `${p.nombre}: la figura fuera de la caja`,
+  montaje: `Montaje: ${p.nombre} redibujada en un decorado de su serie (no es una foto de la pieza)`,
+  base: `${p.nombre}: nuestra foto de la base de la caja`,
+};
+const hay = ORDEN.filter((k) => p.fotos[k]);
+const inicial = p.vistaInicial;
+const marco = p.esChase ? 'marco oro viva' : 'marco liso';
+const e = p.escrito;
+const pegatinas = e?.pegatinas ?? [];
+const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la caja' : null;
+---
+<div class={`vista${inicial ? ` v-${inicial}` : ''}`} data-ficha-vista>
+  <div class="cromo-f" data-ficha-cromo>
+    <div class="giro">
+      <div class={`cara frente ${marco}`}>
+        <div class="dentro">
+          <div class={`arte${inicial ? '' : ' arte-vacia'}`}>
+            {hay.map((k) => (
+              <img class={`capa c-${k}`} src={p.fotos[k].url} alt={ALT[k]}
+                width={p.fotos[k].ancho} height={p.fotos[k].alto}
+                loading={k === inicial ? 'eager' : 'lazy'} fetchpriority={k === inicial ? 'high' : undefined}
+                decoding="async" />
+            ))}
+            {!inicial && <span class="por-hacer mono">foto por hacer</span>}
+          </div>
+          {p.numero && <span class="num mono">n.º {p.numero}</span>}
+          {p.esChase && <span class="tag mono">CHASE</span>}
+          <div class={`texto lam${p.esChase ? ' viva-lam' : ''}`}>
+            <div class="quien">
+              {p.serie && <span class="serie">{p.serie}</span>}
+              <span class="nombre dis">{p.nombre}</span>
+            </div>
+            <button type="button" class="girar" data-girar>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"></path><path d="M18 3v4h-4M6 21v-4h4"></path></svg>
+              Girar<span class="solo-lector"> el cromo</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class={`cara dorso ${marco}`} inert>
+        <div class="dentro">
+          <span class="rev mono">REVERSO{p.numero && ` · n.º ${p.numero}`}</span>
+          <span class="nombre dis">{p.nombre}</span>
+          <dl class="datos">
+            {p.serie && <><dt class="mono">serie</dt><dd>{p.serie}</dd></>}
+            {p.esChase && <><dt class="mono">rareza</dt><dd>Chase{e?.rareza && ` · ${e.rareza}`}</dd></>}
+            {pegatinas.length > 0 && <><dt class="mono">pegatina</dt><dd>{pegatinas.map((x: any) => x.texto).join(' · ')}</dd></>}
+            {p.anio && <><dt class="mono">salió</dt><dd>{p.anio}</dd></>}
+            <dt class="mono">estado</dt><dd><b>{p.enAlmacen ? 'En el almacén' : 'Hoy no la tenemos'}</b></dd>
+            {p.enAlmacen && <><dt class="mono">llega</dt><dd data-fecha-corta>{llega.replace(/^Llega /, '')}</dd></>}
+            <dt class="mono">caja</dt><dd>De coleccionista{p.protector === 'incluido' && ' · con protector'}</dd>
+          </dl>
+          {e?.porQueEsRara && <p class="porque"><b>Por qué es rara.</b> {e.porQueEsRara}</p>}
+          <button type="button" class="girar" data-girar>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"></path><path d="M18 3v4h-4M6 21v-4h4"></path></svg>
+            Volver a la cara
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {hay.length > 1 && (
+    <div role="group" aria-label="Lo que enseña el cromo" class="minis">
+      {hay.map((k) => (
+        <button type="button" class={`mini m-${k}`} data-ver={k} aria-pressed={k === inicial ? 'true' : 'false'}>
+          <span class={`mini-foto${k === 'montaje' ? ' oscura' : ''}`}>
+            <img src={p.fotos[k].url} alt="" width={p.fotos[k].ancho} height={p.fotos[k].alto} loading="lazy" decoding="async" />
+          </span>
+          <span class="mini-txt">{ETIQUETA[k]}</span>
+        </button>
+      ))}
+    </div>
+  )}
+  {p.fotos.montaje && (
+    <p class="aviso-montaje">
+      <b>El montaje es una ilustración, no una foto de la pieza:</b> la figura está redibujada en un decorado de su serie.{referencia && ` La foto de referencia es ${referencia}.`}
+    </p>
+  )}
+</div>
+
+<script>
+  // Las miniaturas cambian lo que enseña el cromo (y lo devuelven a la cara);
+  // «Girar» le da la vuelta. La cara que no se ve queda fuera del tabulador (inert).
+  for (const vista of document.querySelectorAll<HTMLElement>('[data-ficha-vista]')) {
+    const cromo = vista.querySelector<HTMLElement>('[data-ficha-cromo]');
+    const frente = vista.querySelector<HTMLElement>('.frente');
+    const dorso = vista.querySelector<HTMLElement>('.dorso');
+    if (!cromo || !frente || !dorso) continue;
+    const girar = (vuelto: boolean, foco = true) => {
+      cromo.classList.toggle('vuelto', vuelto);
+      frente.inert = vuelto;
+      dorso.inert = !vuelto;
+      if (foco) (vuelto ? dorso : frente).querySelector<HTMLButtonElement>('[data-girar]')?.focus();
+    };
+    for (const b of vista.querySelectorAll<HTMLButtonElement>('[data-girar]')) {
+      b.addEventListener('click', () => girar(!cromo.classList.contains('vuelto')));
+    }
+    const minis = [...vista.querySelectorAll<HTMLButtonElement>('[data-ver]')];
+    for (const b of minis) {
+      b.addEventListener('click', () => {
+        const k = b.dataset.ver;
+        for (const c of [...vista.classList]) if (c.startsWith('v-')) vista.classList.remove(c);
+        vista.classList.add(`v-${k}`);
+        for (const o of minis) o.setAttribute('aria-pressed', String(o === b));
+        if (cromo.classList.contains('vuelto')) girar(false, false);
+      });
+    }
+  }
+</script>
+
+<style>
+  .vista { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .cromo-f { perspective: 1600px; }
+  .giro { position: relative; transition: transform .7s cubic-bezier(.2, .8, .2, 1); transform-style: preserve-3d; }
+  .cromo-f.vuelto .giro { transform: rotateY(180deg); }
+  .cara {
+    padding: 14px; border-radius: 28px; box-shadow: 0 50px 90px -30px rgba(0, 0, 0, .9);
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
+  .frente { position: relative; }
+  .dorso { position: absolute; inset: 0; transform: rotateY(180deg); }
+  .dentro {
+    position: relative; display: flex; flex-direction: column; height: 100%;
+    border-radius: 17px; overflow: hidden; background: var(--papel); color: var(--tinta);
+  }
+
+  /* Las fotos, enteras y sin tocar, en un panel cuadrado. Se ve la de la vista elegida. */
+  .arte { position: relative; aspect-ratio: 1 / 1; background: var(--blanco); }
+  .capa {
+    position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain;
+    opacity: 0; visibility: hidden; transition: opacity .25s; background: var(--blanco);
+    padding: 52px 18px 14px;
+  }
+  .c-montaje { padding: 0; background: var(--tinta); }
+  .v-caja .c-caja, .v-figura .c-figura, .v-montaje .c-montaje, .v-base .c-base { opacity: 1; visibility: visible; }
+  .arte-vacia {
+    display: grid; place-items: center;
+    background: repeating-linear-gradient(135deg, var(--linea-2) 0 10px, #E6E3EE 10px 20px);
+  }
+  .por-hacer {
+    padding: 8px 14px; border-radius: 9px; background: var(--blanco); color: var(--tinta-3);
+    font-size: 16px; font-weight: 700; letter-spacing: .04em;
+  }
+
+  .num, .tag {
+    position: absolute; top: 14px; padding: 6px 10px; border-radius: 9px;
+    font-size: 15px; font-weight: 700; pointer-events: none;
+  }
+  .num { left: 14px; background: var(--tinta); color: var(--hueso); }
+  .tag { right: 14px; font-size: 14px; letter-spacing: .08em; background: var(--oro); color: var(--sobre-oro); }
+
+  .texto {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
+    padding: 14px 16px 16px; border-top: 1px solid var(--linea-2);
+  }
+  .quien { flex: 1 1 180px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .serie { font-size: 15px; color: var(--tinta-3); }
+  .nombre { font-size: 19px; line-height: 1.2; font-weight: 700; overflow-wrap: anywhere; }
+  .girar {
+    flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 16px;
+    border: 1px solid var(--tinta); border-radius: 12px; background: transparent; color: var(--tinta);
+    font: inherit; font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+  .girar:hover { background: var(--tinta); color: var(--hueso); }
+
+  .dorso .dentro { gap: 12px; padding: 20px; overflow: auto; }
+  .rev { font-size: 14px; font-weight: 700; letter-spacing: .1em; color: var(--tinta-3); }
+  .dorso .nombre { font-size: 20px; }
+  .datos {
+    margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px;
+    font-size: 16px; line-height: 1.35;
+  }
+  .datos dt { color: var(--tinta-3); }
+  .datos dd { margin: 0; }
+  .porque { margin: 0; font-size: 16px; line-height: 1.45; }
+  .dorso .girar { margin-top: auto; align-self: flex-start; }
+
+  .minis { display: flex; gap: 10px; }
+  .mini {
+    flex: 1 1 0; min-width: 0; max-width: 25%; padding: 0; border: 3px solid rgba(244, 239, 230, .28);
+    border-radius: 12px; overflow: hidden; background: var(--blanco); font: inherit; cursor: pointer;
+  }
+  .mini[aria-pressed="true"] { border-color: var(--oro); }
+  .mini-foto { display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--blanco); }
+  .mini-foto.oscura { background: var(--tinta); }
+  .mini-foto img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .mini-txt { display: block; padding: 7px 4px 8px; font-size: 14px; font-weight: 700; line-height: 1.2; color: var(--tinta); }
+  .aviso-montaje { margin: 0; font-size: 15px; line-height: 1.5; color: var(--hueso-2); }
+  .aviso-montaje b { color: var(--hueso); }
+
+  @media (max-width: 420px) {
+    .cara { padding: 10px; border-radius: 22px; }
+    .dentro { border-radius: 14px; }
+    .capa { padding: 46px 12px 10px; }
+    .c-montaje { padding: 0; }
+    .num, .tag { top: 10px; font-size: 14px; }
+    .num { left: 10px; }
+    .tag { right: 10px; font-size: 13px; }
+    .dorso .dentro { padding: 16px; gap: 10px; }
+    .datos { font-size: 15px; gap: 6px 12px; }
+    .porque { font-size: 15px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .giro, .capa { transition: none; }
+  }
+</style>
