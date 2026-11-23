@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/:resto((?!robots\\.txt$|favicon\\.svg$|og-default\\.png$|_astro/).+)",
+      "destination": "/",
+      "permanent": false
+    }
+  ]
+}
