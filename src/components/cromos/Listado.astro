@@ -1,5 +1,5 @@
 ---
-// El listado de cromos: filtros por licencia (y «solo lo raro» si la lista mezcla),
+// El listado de cromos: filtros por licencia (y «Solo La Cámara», lo raro, si la lista mezcla),
 // buscador por nombre y por número, y todos los cromos en el HTML desde que carga.
 // El filtro esconde, no trae: sin JavaScript se ven todos.
 //
@@ -10,7 +10,7 @@ import { licenciaDe, licenciasDe, datosDeBusqueda } from '../../lib/listado.js';
 
 interface Props {
   piezas: any[];
-  /** Enseñar el filtro «Solo lo raro» (no tiene sentido si todas son raras). */
+  /** Enseñar el filtro «Solo La Cámara» (no tiene sentido si todas son raras). */
   filtroRaro?: boolean;
 }
 const { piezas, filtroRaro = false } = Astro.props;
@@ -34,8 +34,8 @@ const casilla =
         <>
           <h3>Rareza</h3>
           <div role="group" aria-label="Rareza" class="grupo">
-            <button type="button" class="opcion" aria-pressed="false" data-raro data-nombre="Solo lo raro">
-              <Fragment set:html={casilla} /><span class="opcion-txt">Solo lo raro <span class="cuantos">({nRaras})</span></span>
+            <button type="button" class="opcion" aria-pressed="false" data-raro data-nombre="Solo La Cámara">
+              <Fragment set:html={casilla} /><span class="opcion-txt">Solo La Cámara <span class="cuantos">({nRaras})</span></span>
             </button>
           </div>
         </>
@@ -143,7 +143,7 @@ const casilla =
 
       // Lo que está puesto, como chips que se quitan de uno en uno.
       chips.replaceChildren();
-      if (soloRaro && botonRaro) chips.append(chip('Solo lo raro', () => botonRaro.setAttribute('aria-pressed', 'false')));
+      if (soloRaro && botonRaro) chips.append(chip('Solo La Cámara', () => botonRaro.setAttribute('aria-pressed', 'false')));
       for (const b of botonesLicencia.filter(marcado)) {
         chips.append(chip(b.dataset.nombre ?? '', () => b.setAttribute('aria-pressed', 'false')));
       }

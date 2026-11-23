@@ -55,12 +55,12 @@ const flecha = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stro
     <div class="heroe-texto entra">
       <p class="pastilla">
         <span class="punto vivo"></span>
-        <span><b>{raras.length} piezas raras</b> en el almacén hoy</span>
+        <span><b>{raras.length} piezas</b> en La Cámara hoy</span>
       </p>
       <h1 class="dis">Funko raros, model kits y figuras de acción. Cromo a cromo.</h1>
       <p class="entradilla">Cada pieza es un cromo. Por delante, la figura, su número, su precio y qué día llega. Por detrás, su serie y su rareza.</p>
       <div class="botones">
-        <a href="#raro" class="boton oro">Ver los cromos de hoy <Fragment set:html={flecha} /></a>
+        <a href="#camara" class="boton oro">Ver los cromos de hoy <Fragment set:html={flecha} /></a>
         <a href="#album" class="boton hueco">Abrir el álbum</a>
       </div>
       <p class="como">
@@ -126,13 +126,13 @@ const flecha = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stro
   </section>
 
   <div class="claro">
-    <section id="raro" class="caja bloque">
+    <section id="camara" class="caja bloque">
       <div class="cabeza">
         <div>
-          <p class="mono antetitulo morado">LO RARO · LO TENEMOS</p>
+          <p class="mono antetitulo morado">LA CÁMARA · LO TENEMOS</p>
           <h2 class="dis">Recién llegados al almacén.</h2>
         </div>
-        <a href="/lo-raro" class="ver-todos">Ver los {raras.length} cromos raros →</a>
+        <a href="/la-camara" class="ver-todos">Ver los {raras.length} cromos de La Cámara →</a>
       </div>
 
       <div class="leyenda">
@@ -147,7 +147,7 @@ const flecha = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stro
         {recientes.map((p) => <Cromo pieza={p} />)}
       </div>
       <div class="mas">
-        <a href="/lo-raro" class="boton tinta">Ver los {raras.length} cromos raros <Fragment set:html={flecha} /></a>
+        <a href="/la-camara" class="boton tinta">Ver los {raras.length} cromos de La Cámara <Fragment set:html={flecha} /></a>
       </div>
     </section>
 
