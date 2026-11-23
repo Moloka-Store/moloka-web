@@ -1,0 +1,18 @@
+{
+ "_léeme": "Lo escrito de cada pieza, por clave. Todos los campos son opcionales: lo que no está, la ficha no lo pinta. numero (solo si el nombre no lo da), anio, rareza (lo que cambia el chase, tras «Chase ·»), texto (párrafos), por_que_es_rara y pegatinas (texto y significado). Se lee solo por src/lib/catalogo.js.",
+ "889698715560-chase": {
+  "numero": "1464",
+  "anio": 2023,
+  "rareza": "brilla en la oscuridad",
+  "texto": [
+   "Funko Pop! de Super Buu con fantasma (en la caja, Super Buu with Ghost), el n.º 1464 de la línea Pop! Animation de Dragon Ball Z, en su versión chase: brilla en la oscuridad y se reconoce por la pegatina «Limited Glow Chase Edition» de la caja."
+  ],
+  "por_que_es_rara": "Es el chase de Super Buu con fantasma. El chase brilla en la oscuridad y lleva en la caja la pegatina «Limited Glow Chase Edition»; la figura normal ni brilla ni la lleva.",
+  "pegatinas": [
+   {
+    "texto": "Limited Glow Chase Edition",
+    "significado": "La que la marca como chase: esta versión brilla en la oscuridad."
+   }
+  ]
+ }
+}
