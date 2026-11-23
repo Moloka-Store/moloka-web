@@ -66,11 +66,17 @@
   </footer>
   <script is:inline>
     // Llave de obra: /en-construccion#obra=<valor> guarda la cookie un año y entra.
+    // Se mira al cargar y también al cambiar el «#»: si esta página ya estaba
+    // abierta, pegar el enlace no la recarga y el guion no volvería a correr.
     (function () {
-      var m = /^#obra=([0-9a-f]{8,64})$/.exec(location.hash);
-      if (!m) return;
-      document.cookie = 'obra=' + m[1] + '; path=/; max-age=31536000; SameSite=Lax; Secure';
-      location.replace('/');
+      function entrar() {
+        var m = /^#obra=([0-9a-f]{8,64})$/.exec(location.hash);
+        if (!m) return;
+        document.cookie = 'obra=' + m[1] + '; path=/; max-age=31536000; SameSite=Lax; Secure';
+        location.replace('/');
+      }
+      entrar();
+      window.addEventListener('hashchange', entrar);
     })();
   </script>
 </body>
