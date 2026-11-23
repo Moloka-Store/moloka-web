@@ -206,8 +206,12 @@ const caja = !p.montaje && p.fotoCaja ? p.fotoCaja : null;
     .fila { flex-wrap: wrap; gap: 6px; }
     .precio { font-size: 16px; }
     .sin-precio { font-size: 13px; padding: 3px 6px; }
+    .sin-precio, .pie-dorso a { white-space: nowrap; }
     .dorso .dentro { padding: 10px; gap: 6px; }
     .datos { font-size: 13px; }
+    .pie-dorso { flex-wrap: wrap; gap: 0 8px; }
+    .pie-dorso a { padding: 8px 0; }
+    .girar.ancho { font-size: 14px; gap: 6px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
