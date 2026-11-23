@@ -106,15 +106,21 @@ test('dirección: única y no vacía en las 74 piezas; la de Super Buu, la del e
 
 // ── El protector ────────────────────────────────────────────────────────────────
 
-test('protector: incluido en lo raro, casilla en lo normal y nada en cajas especiales', () => {
-  const normal = { largo: 16.6, ancho: 12.1, alto: 9.4 };
-  assert.equal(protectorDe({ esChase: true, nombre: 'Goku', cajaCm: null }), 'incluido');
-  assert.equal(protectorDe({ esChase: true, nombre: 'Goku', cajaCm: normal }), 'incluido');
-  assert.equal(protectorDe({ esChase: false, nombre: 'Goku', cajaCm: normal }), 'opcional');
-  assert.equal(protectorDe({ esChase: true, nombre: 'Goku', cajaCm: { largo: 28.1, ancho: 18.2, alto: 8.5 } }), null);
-  assert.equal(protectorDe({ esChase: false, nombre: 'Naruto on Gamakichi 106 (Rides)', cajaCm: null }), null);
-  for (const n of ['X Deluxe', 'X Jumbo', 'X Town', 'X Moment', 'X 25 cm', 'X 25cm']) assert.equal(cajaEspecial(n, null), true, n);
-  assert.equal(cajaEspecial('Steven Tyler 9 cm', null), false);
+test('protector: incluido en lo raro, casilla en lo normal y nada en los formatos grandes', () => {
+  assert.equal(protectorDe({ esChase: true, nombre: 'Goku' }), 'incluido');
+  assert.equal(protectorDe({ esChase: false, nombre: 'Goku' }), 'opcional');
+  assert.equal(protectorDe({ esChase: false, nombre: 'Naruto on Gamakichi 106 (Rides)' }), null);
+  assert.equal(protectorDe({ esChase: true, nombre: 'X Deluxe' }), null);
+  for (const n of ['X Deluxe', 'X Jumbo', 'X Town', 'X Moment', 'X 25 cm', 'X 25cm']) assert.equal(cajaEspecial(n), true, n);
+  assert.equal(cajaEspecial('Steven Tyler 9 cm'), false);
+});
+
+test('protector: las medidas del paquete (caja_cm) no cuentan', () => {
+  const todas = catalogoDe(DATOS.piezas, { fichas: FICHAS, figuraSoloConCesion: false });
+  const sin = todas.filter((p) => !p.protector).map((p) => p.url);
+  assert.deepEqual(sin, ['/funko/naruto-on-gamakichi-rides-106']);
+  const eleven = todas.find((p) => p.clave === '889698133180-chase');
+  assert.equal(eleven.protector, 'incluido');
 });
 
 // ── Lo escrito de cada pieza ────────────────────────────────────────────────────

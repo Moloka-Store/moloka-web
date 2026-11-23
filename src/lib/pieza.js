@@ -25,29 +25,22 @@ export function figuraVisible(foto, soloConCesion) {
 }
 
 // ── El tamaño de la caja ────────────────────────────────────────────────────────
-// Caja de tamaño normal: la de un Pop de siempre (unos 9,5 × 11,5 × 16,5 cm), que es
-// en la que cabe el protector. Se mira con margen: los tres lados, de menor a mayor,
-// sin pasar de 10,5, 13 y 18 cm. Sin medidas, se toma por normal salvo que el nombre
-// diga un formato grande.
-export const CAJA_NORMAL_MAX = [10.5, 13, 18];
+// Caja de tamaño especial (donde el protector no cabe): solo la que el nombre dice que es
+// de un formato grande. `caja_cm` NO vale para esto: son las medidas del paquete con el
+// que la envía Amazon, no las de la caja (quien dirige, 23-nov-2026).
 export const FORMATO_GRANDE = /\b(?:Rides?|Deluxe|Jumbo|Town|Moment)\b|\b25\s*cm\b/i;
 
-/** ¿Es una caja de tamaño especial (donde el protector no cabe)? */
-export function cajaEspecial(nombre, cajaCm) {
-  if (FORMATO_GRANDE.test(nombre || '')) return true;
-  if (!cajaCm) return false;
-  const lados = [cajaCm.largo, cajaCm.ancho, cajaCm.alto].map(Number);
-  if (lados.some((n) => !Number.isFinite(n))) return false;
-  lados.sort((a, b) => a - b);
-  return lados.some((n, i) => n > CAJA_NORMAL_MAX[i]);
+/** ¿Es una caja de tamaño especial? Se decide solo por el nombre. */
+export function cajaEspecial(nombre) {
+  return FORMATO_GRANDE.test(nombre || '');
 }
 
 /**
  * Qué se dice del protector: «incluido» en lo raro, «opcional» (casilla de 1,50 €) en lo
  * normal, y nada (null) en las cajas de tamaño especial, donde no cabe.
  */
-export function protectorDe({ esChase, nombre, cajaCm }) {
-  if (cajaEspecial(nombre, cajaCm)) return null;
+export function protectorDe({ esChase, nombre }) {
+  if (cajaEspecial(nombre)) return null;
   return esChase ? 'incluido' : 'opcional';
 }
 export const PRECIO_PROTECTOR = 1.5;
@@ -160,7 +153,7 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
     precioTexto: precioTexto(p.precio_venta),
     enAlmacen: p.en_almacen === true,
     anio: anioDatos || (e && e.anio) || null,
-    protector: protectorDe({ esChase, nombre: p.nombre, cajaCm: p.caja_cm }),
+    protector: protectorDe({ esChase, nombre: p.nombre }),
     // Para el cromo de la portada y los listados: el montaje y, si no, la caja.
     montaje: fotos.montaje,
     fotoCaja: fotos.caja,
