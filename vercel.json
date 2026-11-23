@@ -1,8 +1,15 @@
 {
   "redirects": [
     {
-      "source": "/:resto((?!robots\\.txt$|favicon\\.svg$|og-default\\.png$|_astro/).+)",
-      "destination": "/",
+      "source": "/:resto((?!en-construccion/?$|robots\\.txt$|favicon\\.svg$|og-default\\.png$|_astro/).*)",
+      "missing": [
+        {
+          "type": "cookie",
+          "key": "obra",
+          "value": "3de702909c0e2c886df3e314"
+        }
+      ],
+      "destination": "/en-construccion",
       "permanent": false
     }
   ]

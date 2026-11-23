@@ -1,6 +1,6 @@
 # Moloka Store — moloka.es
-# Web en construcción hasta enero: la portada lleva «noindex» y el resto de
-# direcciones redirige a ella (vercel.json). El rastreo sigue permitido para
+# Web en construcción hasta enero: todas las direcciones redirigen a la página
+# de obras (vercel.json), que lleva «noindex». El rastreo sigue permitido para
 # que los buscadores puedan leer ese «noindex».
 User-agent: *
 Allow: /

@@ -1,62 +1,78 @@
 ---
-// Portada mientras la web está en obras (decidido el 23-nov-2026: lanzamiento en enero).
-// Es la única página a la vista: `vercel.json` manda aquí todas las demás direcciones.
-// No usa el layout Base a propósito: sin menú, sin cesta y sin promesas de envío,
-// para que nadie entre buscando una pieza que no puede comprar.
-// La portada de antes sigue en el historial de git (commit bdf823a).
+import Base from '../layouts/Base.astro';
+import Card from '../components/Card.astro';
+import { getProductos, aCard } from '../lib/productos.js';
+
+// Lee los productos reales de Supabase EN EL BUILD (pasados por la fábrica).
+// Si no hubiera conexión, getProductos() devuelve [] y la web no se rompe.
+const filas = await getProductos();
+const rarezas = filas
+  .map(aCard)
+  .filter((p) => p.disp !== 'agotado')          // los agotados no se muestran
+  .filter((p) => Array.isArray(p.rars) && p.rars.length > 0); // SOLO chase / vaulted / exclusivos
 ---
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <title>MOLOKA · Web en construcción</title>
-  <meta name="description" content="La web de Moloka está en construcción. Nos vemos en enero." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family:'Inter',system-ui,sans-serif;color:#fff;
-      background:
-        radial-gradient(60% 50% at 18% 12%, rgba(34,211,238,.28), transparent 70%),
-        radial-gradient(55% 50% at 85% 88%, rgba(236,72,153,.34), transparent 70%),
-        linear-gradient(160deg,#341970,#09041A);
-      background-attachment:fixed;
-      -webkit-font-smoothing:antialiased;
-      display:flex;flex-direction:column;min-height:100%;
-    }
-    main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      text-align:center;padding:48px 24px}
-    .brand{
-      font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:.06em;
-      font-size:clamp(30px,6vw,44px);
-      background:linear-gradient(100deg,#ec4899 0%,#a78bfa 52%,#22d3ee 100%);
-      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-    }
-    h1{
-      font-family:'Space Grotesk',sans-serif;font-weight:700;line-height:1.08;
-      font-size:clamp(34px,8.5vw,76px);margin-top:28px;text-wrap:balance;
-    }
-    p{font-size:clamp(18px,3.4vw,26px);font-weight:500;color:#d9cff5;margin-top:18px}
-    footer{padding:18px 24px 22px;text-align:center;font-size:12.5px;color:#a99fc7}
-    footer a{color:#d9cff5;text-decoration:none}
-    footer a:hover{text-decoration:underline}
-  </style>
-</head>
-<body>
-  <main>
-    <div class="brand">MOLOKA</div>
-    <h1>Web en construcción</h1>
-    <p>Nos vemos en enero.</p>
+<Base>
+  <main class="wrap">
+
+    <section class="carousel">
+      <div class="slides" id="slides">
+        <div class="slide on" style="--g1:#341970;--g2:#09041A;--a1:rgba(34,211,238,.42);--a2:rgba(236,72,153,.5)">
+          <div class="kicker">Coleccionables · Envío desde España</div>
+          <h1>Lo que ya no encuentras.</h1>
+          <p>Rarezas, CHASE y ediciones agotadas que no quedan en ningún sitio. Y si lo buscas, lo conseguimos.</p>
+          <a href="#nov" class="cta">Ver rarezas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="slide" style="--g1:#0c2340;--g2:#04101f;--a1:rgba(34,211,238,.4);--a2:rgba(124,58,237,.5)">
+          <div class="kicker">Banpresto · Tamashii Nations</div>
+          <h2>Ahora también bajo pedido.</h2>
+          <p>Figuras de anime que antes había que importar de fuera. Te las traemos nosotros, sin líos de aduanas.</p>
+          <a href="/banpresto" class="cta">Descúbrelas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="slide" style="--g1:#3a1a14;--g2:#1a0806;--a1:rgba(245,158,11,.4);--a2:rgba(236,72,153,.42)">
+          <div class="kicker">Model Kit · Bandai</div>
+          <h2>Monta tu primer Gunpla.</h2>
+          <p>Modelismo Bandai para empezar de cero o ampliar tu taller. Una afición que engancha, pieza a pieza.</p>
+          <a href="/model-kit" class="cta">Entrar al taller <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="dots" id="dots"></div>
+    </section>
+
+    <section id="nov">
+      <div class="sec-head">
+        <h2>Rarezas <span class="spark">&#10022;</span>
+          <span class="sub">Chase, vaulted y exclusivos — lo que no encuentras en otro sitio</span>
+        </h2>
+        <a href="/funko" class="seeall">Ver todo &#8594;</a>
+      </div>
+      {rarezas.length > 0
+        ? <div class="grid">{rarezas.map((p) => <Card p={p} />)}</div>
+        : <p style="color:var(--ink-soft);padding:30px 0">Estamos preparando las primeras piezas. Vuelve pronto.</p>}
+    </section>
+
   </main>
-  <footer>
-    © 2026 Moloka Store S.L.U. · Cartagena, España · <a href="mailto:info@moloka.es">info@moloka.es</a>
-  </footer>
-</body>
-</html>
+
+  <script>
+    // Carrusel de banners (rota solo + puntos de navegación).
+    const slides = [...document.querySelectorAll('.slide')];
+    const dotsBox = document.getElementById('dots');
+    let ci = 0;
+    if (dotsBox && slides.length) {
+      slides.forEach((_, i) => {
+        const b = document.createElement('button');
+        if (i === 0) b.classList.add('on');
+        b.addEventListener('click', () => { go(i); reset(); });
+        dotsBox.appendChild(b);
+      });
+      const dots = [...dotsBox.children];
+      function go(i) {
+        slides[ci].classList.remove('on'); dots[ci].classList.remove('on');
+        ci = i;
+        slides[ci].classList.add('on'); dots[ci].classList.add('on');
+      }
+      let timer = setInterval(() => go((ci + 1) % slides.length), 5500);
+      function reset() { clearInterval(timer); timer = setInterval(() => go((ci + 1) % slides.length), 5500); }
+    }
+  </script>
+</Base>
