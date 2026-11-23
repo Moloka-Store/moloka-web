@@ -268,7 +268,8 @@ const casilla =
   .rejilla > li { min-width: 0; display: flex; flex-direction: column; }
   .rejilla > li > :global(.cromo) { flex: 1 1 auto; }
   .rejilla > li[hidden] { display: none !important; }
-  @media (max-width: 760px) {
-    .rejilla { gap: 18px; }
+  /* En el móvil, dos cromos por fila: 74 de uno en uno son una lista interminable. */
+  @media (max-width: 560px) {
+    .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
   }
 </style>
