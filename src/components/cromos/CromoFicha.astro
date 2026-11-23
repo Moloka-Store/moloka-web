@@ -132,14 +132,16 @@ const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la
 <style>
   .vista { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
   .cromo-f { perspective: 1600px; }
-  .giro { position: relative; transition: transform .7s cubic-bezier(.2, .8, .2, 1); transform-style: preserve-3d; }
+  /* Las dos caras en la misma celda: el cromo mide lo que la más alta (el reverso no se corta). */
+  .giro { display: grid; position: relative; transition: transform .7s cubic-bezier(.2, .8, .2, 1); transform-style: preserve-3d; }
   .cromo-f.vuelto .giro { transform: rotateY(180deg); }
   .cara {
     padding: 14px; border-radius: 28px; box-shadow: 0 50px 90px -30px rgba(0, 0, 0, .9);
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
   }
+  .cara { grid-area: 1 / 1; min-width: 0; }
   .frente { position: relative; }
-  .dorso { position: absolute; inset: 0; transform: rotateY(180deg); }
+  .dorso { transform: rotateY(180deg); }
   .dentro {
     position: relative; display: flex; flex-direction: column; height: 100%;
     border-radius: 17px; overflow: hidden; background: var(--papel); color: var(--tinta);
@@ -172,6 +174,7 @@ const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la
 
   .texto {
     display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
+    flex: 1 1 auto; align-content: flex-start;
     padding: 14px 16px 16px; border-top: 1px solid var(--linea-2);
   }
   .quien { flex: 1 1 180px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -184,7 +187,7 @@ const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la
   }
   .girar:hover { background: var(--tinta); color: var(--hueso); }
 
-  .dorso .dentro { gap: 12px; padding: 20px; overflow: auto; }
+  .dorso .dentro { gap: 12px; padding: 20px; }
   .rev { font-size: 14px; font-weight: 700; letter-spacing: .1em; color: var(--tinta-3); }
   .dorso .nombre { font-size: 20px; }
   .datos {
@@ -217,9 +220,10 @@ const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la
     .num, .tag { top: 10px; font-size: 14px; }
     .num { left: 10px; }
     .tag { right: 10px; font-size: 13px; }
-    .dorso .dentro { padding: 16px; gap: 10px; }
-    .datos { font-size: 15px; gap: 6px 12px; }
-    .porque { font-size: 15px; }
+    .dorso .dentro { padding: 16px; gap: 8px; }
+    .dorso .nombre { font-size: 18px; }
+    .datos { font-size: 15px; gap: 4px 12px; }
+    .porque { font-size: 15px; line-height: 1.4; }
   }
   @media (prefers-reduced-motion: reduce) {
     .giro, .capa { transition: none; }
