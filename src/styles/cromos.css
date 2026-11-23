@@ -1,0 +1,121 @@
+/* Base de diseño de «los cromos» (la web nueva). Solo la carga el layout Cromos.astro:
+   las páginas viejas siguen con global.css hasta que se retiren. */
+
+:root {
+  /* Colores */
+  --noche: #0E0B16;        /* fondo oscuro */
+  --noche-2: #17121F;      /* tarjetas sobre oscuro */
+  --hueso: #F4EFE6;        /* texto sobre oscuro */
+  --hueso-2: #E4DDEC;      /* texto secundario sobre oscuro */
+  --linea-osc: rgba(244, 239, 230, .14);
+  --borde-osc: rgba(244, 239, 230, .45);
+  --oro: #E8B931;          /* acento */
+  --sobre-oro: #1B1500;    /* texto sobre el acento */
+  --claro: #ECEAF2;        /* fondo claro */
+  --blanco: #FFFFFF;
+  --papel: #FBFAF6;        /* cara del cromo */
+  --tinta: #15121F;        /* texto sobre claro */
+  --tinta-2: #2E2A3B;
+  --tinta-3: #4A4658;
+  --linea: #CFCBDC;
+  --linea-2: #DCD8E6;
+  --morado: #5A2EA6;       /* acento sobre claro */
+  --verde: #0E6B4A;        /* en el almacén */
+  --naranja: #8A4B00;      /* bajo pedido */
+
+  /* Letra: elegida por que se lea */
+  --letra: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --letra-titulo: 'Unbounded', system-ui, sans-serif;
+  --letra-cifra: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --ancho: 1360px;
+  --margen: 24px;
+}
+@media (max-width: 760px) {
+  :root { --margen: 16px; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--noche);
+  color: var(--hueso);
+  font-family: var(--letra);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; }
+a { color: inherit; }
+a:hover { color: var(--oro); }
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 3px solid var(--oro);
+  outline-offset: 3px;
+}
+.claro a:hover { color: var(--morado); }
+.claro a:focus-visible, .claro button:focus-visible { outline-color: var(--morado); }
+
+.dis { font-family: var(--letra-titulo); }
+.mono { font-family: var(--letra-cifra); }
+.solo-lector {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+.caja { max-width: var(--ancho); margin: 0 auto; padding-left: var(--margen); padding-right: var(--margen); }
+
+/* Marcos del cromo según la rareza. Los datos solo dan una: chase (oro). */
+.marco { background-size: 220% 100%; background-position: 0% 50%; }
+.marco.oro {
+  background-image: linear-gradient(115deg, #B8860B 0%, #E8B931 14%, #FFF3C4 26%, #E8B931 38%, #F0A8FF 52%, #9BE4FF 64%, #E8B931 78%, #B8860B 100%);
+}
+.marco.liso { background-image: none; background-color: #2B2736; }
+
+/* Botones de píldora */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 54px; padding: 0 26px; border-radius: 999px;
+  font-weight: 700; font-size: 17px; text-decoration: none;
+}
+.boton.oro { background: var(--oro); color: var(--sobre-oro); }
+.boton.oro:hover { color: var(--sobre-oro); filter: brightness(1.06); }
+.boton.hueco { border: 1px solid var(--borde-osc); font-weight: 600; }
+.boton.tinta { background: var(--tinta); color: var(--hueso); }
+.claro .boton.tinta:hover { color: var(--oro); }
+
+/* Movimiento: solo si quien mira no ha pedido que se reduzca. */
+@keyframes lamina { 0% { background-position: 0% 50%; } 100% { background-position: 220% 50%; } }
+@keyframes flotar {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-14px) rotate(var(--r, 0deg)); }
+}
+@keyframes cinta { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes barrido {
+  0% { transform: translateX(-140%) skewX(-18deg); }
+  100% { transform: translateX(320%) skewX(-18deg); }
+}
+@keyframes latido {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 185, 49, .55); }
+  50% { box-shadow: 0 0 0 9px rgba(232, 185, 49, 0); }
+}
+@keyframes subir { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+
+/* Brillo que barre la franja de texto del cromo. */
+.lam { position: relative; overflow: hidden; }
+.lam::after {
+  content: ""; position: absolute; inset: -10% auto -10% 0; width: 34%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .8), transparent);
+  pointer-events: none; transform: translateX(-140%) skewX(-18deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marco.viva { animation: lamina 5s linear infinite; }
+  .viva-lam::after { animation: barrido 5.5s ease-in-out infinite; }
+  .flota { animation: flotar 6.5s ease-in-out infinite; }
+  .flota.b { animation-duration: 7.5s; animation-delay: -2s; }
+  .flota.c { animation-duration: 8.5s; animation-delay: -4s; }
+  .cinta-pista { animation: cinta 38s linear infinite; }
+  .vivo { animation: latido 2.2s ease-out infinite; }
+  .entra { animation: subir .9s cubic-bezier(.2, .8, .2, 1) both; }
+}

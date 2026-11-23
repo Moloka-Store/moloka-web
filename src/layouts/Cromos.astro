@@ -1,0 +1,228 @@
+---
+// Layout de la web nueva («los cromos»): cabecera, pie y la base de diseño.
+// Las páginas viejas siguen con Base.astro hasta que cada tramo las sustituya.
+//
+// Algunos enlaces apuntan a páginas que todavía no existen (cesta, búsqueda,
+// «Cómo funciona», Joy Toy, McFarlane, las legales): son las direcciones que
+// tendrán cuando se construyan en sus tramos.
+import '../styles/cromos.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+const {
+  title = 'MOLOKA · Funko raros, model kits y figuras de acción',
+  description = 'Funko raros, model kits y figuras de acción. Cada pieza es un cromo: la figura, su número, su precio y qué día llega.',
+  image = '/og-default.png',
+} = Astro.props;
+
+// La dirección buena es con www (astro.config.mjs aún dice moloka.es sin www;
+// se cambia en su propio PR).
+const SITIO = 'https://www.moloka.es';
+const canonical = new URL(Astro.url.pathname, SITIO).href;
+const ogImg = new URL(image, SITIO).href;
+
+const secciones = [
+  { texto: 'Lo raro', href: '/#raro' },
+  { texto: 'Funko', href: '/funko' },
+  { texto: 'Model kit', href: '/model-kit' },
+  { texto: 'Joy Toy', href: '/joy-toy' },
+  { texto: 'McFarlane', href: '/mcfarlane' },
+  { texto: 'Guías', href: '/guias' },
+];
+const legales = [
+  { texto: 'Cómo funciona', href: '/como-funciona' },
+  { texto: 'Envíos', href: '/envios' },
+  { texto: 'Devoluciones', href: '/devoluciones' },
+  { texto: 'Aviso legal', href: '/aviso-legal' },
+  { texto: 'Condiciones de venta', href: '/condiciones-de-venta' },
+  { texto: 'Privacidad', href: '/privacidad' },
+  { texto: 'Cookies', href: '/cookies' },
+];
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Moloka Store" />
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImg} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImg} />
+  <meta name="theme-color" content="#0E0B16" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <slot name="head" />
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="cabecera">
+    <div class="caja cab">
+      <button type="button" class="icono solo-movil" id="menu-boton" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir el menú">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <path class="ico-abrir" d="M4 7h16M4 12h16M4 17h16"></path>
+          <path class="ico-cerrar" d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
+      <a href="/" class="marca dis">MOLOKA</a>
+      <nav aria-label="Principal" class="principal solo-escritorio">
+        {secciones.map((s) => <a href={s.href}>{s.texto}</a>)}
+      </nav>
+      <div class="derecha">
+        <form role="search" action="/buscar" method="get" class="busca solo-escritorio">
+          <label for="busca" class="solo-lector">Buscar por nombre o por número</label>
+          <input id="busca" name="q" type="search" placeholder="Busca por nombre o por número" />
+          <button type="submit">Buscar</button>
+        </form>
+        <button type="button" class="icono solo-movil" id="busca-boton" aria-controls="menu-movil" aria-label="Buscar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+        </button>
+        <a href="/cesta" class="cesta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+          <span class="cesta-txt">Cesta</span>
+        </a>
+      </div>
+    </div>
+    <div id="menu-movil" class="menu-movil solo-movil" hidden>
+      <form role="search" action="/buscar" method="get" class="busca">
+        <label for="busca-m" class="solo-lector">Buscar por nombre o por número</label>
+        <input id="busca-m" name="q" type="search" placeholder="Nombre o número" />
+        <button type="submit">Buscar</button>
+      </form>
+      <nav aria-label="Secciones">
+        {secciones.map((s) => <a href={s.href}>{s.texto}<span aria-hidden="true">→</span></a>)}
+        <a href="/como-funciona" class="menor">Cómo funciona<span aria-hidden="true">→</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <slot />
+  </main>
+
+  <footer class="pie">
+    <div class="caja pie-dentro">
+      <span class="dis pie-marca">MOLOKA</span>
+      <nav aria-label="Ayuda y legal">
+        {legales.map((l) => <a href={l.href}>{l.texto}</a>)}
+      </nav>
+      <span>© 2026 Moloka Store S.L.U. · Cartagena</span>
+    </div>
+  </footer>
+
+  <script>
+    // Menú del móvil: el botón lo abre y lo cierra; la lupa lo abre y pone el cursor en la búsqueda.
+    const boton = document.getElementById('menu-boton');
+    const lupa = document.getElementById('busca-boton');
+    const panel = document.getElementById('menu-movil');
+    function abrir(si: boolean) {
+      if (!boton || !panel) return;
+      panel.hidden = !si;
+      boton.setAttribute('aria-expanded', String(si));
+      boton.setAttribute('aria-label', si ? 'Cerrar el menú' : 'Abrir el menú');
+    }
+    boton?.addEventListener('click', () => abrir(panel?.hidden ?? false));
+    lupa?.addEventListener('click', () => {
+      abrir(true);
+      document.getElementById('busca-m')?.focus();
+    });
+  </script>
+</body>
+</html>
+
+<style>
+  .saltar {
+    position: absolute; left: 12px; top: -60px; z-index: 10;
+    padding: 10px 16px; border-radius: 10px; background: var(--oro); color: var(--sobre-oro);
+    font-weight: 700; text-decoration: none;
+  }
+  .saltar:focus { top: 12px; }
+
+  /* Los brillos de fondo pueden salirse por los lados: que no den paso de lado a la página. */
+  main { overflow-x: clip; }
+  .cabecera { border-bottom: 1px solid var(--linea-osc); }
+  .cab {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 30px;
+    padding-top: 14px; padding-bottom: 14px;
+  }
+  .marca { font-size: 23px; font-weight: 900; letter-spacing: .06em; text-decoration: none; color: var(--hueso); }
+  .principal { display: flex; flex-wrap: wrap; gap: 0 24px; font-size: 16px; font-weight: 600; }
+  .principal a { text-decoration: none; padding: 12px 0; }
+  .derecha { flex: 1 1 360px; min-width: 0; display: flex; gap: 10px; justify-content: flex-end; }
+
+  .busca { flex: 1 1 240px; min-width: 0; max-width: 440px; display: flex; }
+  .busca input {
+    flex: 1 1 150px; min-width: 0; height: 48px; padding: 0 14px;
+    border: 1px solid var(--hueso); border-right: none; border-radius: 12px 0 0 12px;
+    background: var(--blanco); color: var(--tinta); font: inherit; font-size: 16px;
+  }
+  .busca input::placeholder { color: #5A5666; opacity: 1; }
+  .busca button {
+    flex: none; height: 48px; padding: 0 18px; border: 1px solid var(--oro);
+    border-radius: 0 12px 12px 0; background: var(--oro); color: var(--sobre-oro);
+    font: inherit; font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+
+  .icono {
+    flex: none; width: 46px; height: 46px; padding: 0; border: 1px solid var(--borde-osc);
+    border-radius: 12px; background: transparent; color: var(--hueso);
+    align-items: center; justify-content: center; cursor: pointer;
+  }
+  .icono .ico-cerrar { display: none; }
+  .icono[aria-expanded="true"] .ico-abrir { display: none; }
+  .icono[aria-expanded="true"] .ico-cerrar { display: inline; }
+
+  .cesta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 48px; padding: 0 16px; border: 1px solid var(--borde-osc); border-radius: 12px;
+    text-decoration: none; font-size: 16px; font-weight: 600;
+  }
+
+  .menu-movil { border-top: 1px solid var(--linea-osc); padding-top: 14px; }
+  .menu-movil[hidden] { display: none !important; }
+  .menu-movil .busca { max-width: none; padding: 4px 16px 14px; }
+  .menu-movil nav { display: flex; flex-direction: column; padding: 0 16px 10px; font-size: 18px; font-weight: 600; }
+  .menu-movil nav a {
+    display: flex; justify-content: space-between; align-items: center; min-height: 52px;
+    border-top: 1px solid rgba(244, 239, 230, .12); text-decoration: none;
+  }
+  .menu-movil nav a span { color: var(--oro); }
+  .menu-movil nav a.menor { font-size: 16px; font-weight: 500; color: var(--hueso-2); }
+  .menu-movil nav a.menor span { color: inherit; }
+
+  .solo-movil { display: none; }
+  @media (max-width: 760px) {
+    .solo-escritorio { display: none !important; }
+    .solo-movil { display: inline-flex; }
+    .menu-movil.solo-movil { display: block; }
+    .cab { flex-wrap: nowrap; gap: 10px; padding-top: 10px; padding-bottom: 10px; }
+    .derecha { flex: 1 1 auto; }
+    .cesta { width: 46px; height: 46px; padding: 0; }
+    .cesta-txt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  }
+
+  .pie { border-top: 1px solid var(--linea-osc); }
+  .pie-dentro {
+    padding-top: 36px; padding-bottom: 36px;
+    display: flex; flex-wrap: wrap; gap: 18px 40px; justify-content: space-between; align-items: center;
+    font-size: 16px; color: var(--hueso-2);
+  }
+  .pie-marca { font-size: 18px; font-weight: 900; color: var(--hueso); letter-spacing: .06em; }
+  .pie nav { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+  .pie nav a { padding: 13px 0; }
+</style>

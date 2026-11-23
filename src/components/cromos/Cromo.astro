@@ -1,0 +1,176 @@
+---
+// El cromo: una pieza del almacén. Por delante, el montaje, el número, la serie,
+// el nombre, qué día llega y el precio; por detrás, lo que dan los datos de ella.
+// Solo se pinta lo que hay: sin número, sin serie o sin precio, se dice o se calla,
+// pero no se inventa. La única rareza que dan los datos es chase (marco de oro).
+//
+// «Añadir a la cesta» no está todavía: llega con la cesta, en su propio tramo.
+interface Props {
+  pieza: {
+    clave: string;
+    nombre: string;
+    numero: string | null;
+    serie: string | null;
+    esChase: boolean;
+    precioTexto: string | null;
+    montaje: { url: string; ancho: number; alto: number };
+    url: string;
+  };
+  carga?: 'lazy' | 'eager';
+}
+const { pieza: p, carga = 'lazy' } = Astro.props;
+const marco = p.esChase ? 'marco oro' : 'marco liso';
+const conNumero = p.numero ? `, número ${p.numero}` : '';
+---
+<article class="cromo" data-cromo>
+  <div class="sube">
+    <div class="giro">
+      <div class={`cara frente ${marco}`}>
+        <div class="dentro">
+          <a class="arte" href={p.url} aria-label={`Ver la ficha de ${p.nombre}${conNumero}`}>
+            <img src={p.montaje.url} width={p.montaje.ancho} height={p.montaje.alto}
+              alt={`${p.nombre}, la figura en un decorado`} loading={carga} decoding="async" />
+          </a>
+          {p.numero && <span class="num mono">n.º {p.numero}</span>}
+          {p.esChase && <span class="tag mono">CHASE</span>}
+          <div class="texto lam">
+            {p.serie && <span class="serie">{p.serie}</span>}
+            <span class="nombre dis">{p.nombre}</span>
+            <span class="estado">En el almacén</span>
+            <span class="llega" data-llega>Llega en 2 a 4 días laborables</span>
+            <div class="fila">
+              {p.precioTexto
+                ? <span class="precio mono">{p.precioTexto}</span>
+                : <span class="precio sin-precio">precio por poner</span>}
+              <button type="button" class="girar" data-girar aria-label={`Dar la vuelta al cromo de ${p.nombre}`}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"></path><path d="M18 3v4h-4M6 21v-4h4"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class={`cara dorso ${marco}`} inert>
+        <div class="dentro">
+          <span class="rev mono">REVERSO{p.numero && ` · n.º ${p.numero}`}</span>
+          <span class="nombre dis">{p.nombre}</span>
+          <dl class="datos">
+            {p.serie && <><dt class="mono">serie</dt><dd>{p.serie}</dd></>}
+            {p.esChase && <><dt class="mono">rareza</dt><dd>Chase</dd></>}
+            <dt class="mono">estado</dt><dd><b>En el almacén</b></dd>
+            <dt class="mono">llega</dt><dd data-llega-corto>en 2 a 4 días laborables</dd>
+          </dl>
+          <span class="pie-dorso">
+            {p.precioTexto
+              ? <span class="precio mono">{p.precioTexto}</span>
+              : <span class="precio sin-precio">precio por poner</span>}
+            <a href={p.url}>Ver la ficha</a>
+          </span>
+          <button type="button" class="girar ancho" data-girar aria-label={`Volver a la cara del cromo de ${p.nombre}`}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"></path><path d="M18 3v4h-4M6 21v-4h4"></path></svg>
+            <span>Volver a la cara</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<script>
+  import { ventanaEntrega, textoEntrega } from '../../lib/fechas.js';
+
+  // Qué día llega: se calcula aquí, en el navegador, con la hora de ahora.
+  const texto = textoEntrega(ventanaEntrega(new Date()));
+  for (const el of document.querySelectorAll('[data-llega]')) el.textContent = texto;
+  const corto = texto.replace(/^Llega /, '');
+  for (const el of document.querySelectorAll('[data-llega-corto]')) el.textContent = corto;
+
+  // Girar el cromo: la cara que no se ve queda fuera del tabulador y del lector (inert).
+  for (const boton of document.querySelectorAll<HTMLButtonElement>('[data-girar]')) {
+    boton.addEventListener('click', () => {
+      const cromo = boton.closest('[data-cromo]');
+      if (!cromo) return;
+      const vuelto = cromo.classList.toggle('vuelto');
+      const frente = cromo.querySelector<HTMLElement>('.frente');
+      const dorso = cromo.querySelector<HTMLElement>('.dorso');
+      if (!frente || !dorso) return;
+      frente.inert = vuelto;
+      dorso.inert = !vuelto;
+      (vuelto ? dorso : frente).querySelector<HTMLButtonElement>('[data-girar]')?.focus();
+    });
+  }
+</script>
+
+<style>
+  .cromo { perspective: 1400px; min-width: 0; }
+  .sube { height: 100%; transition: transform .35s cubic-bezier(.2, .8, .2, 1); }
+  .cromo:hover .sube { transform: translateY(-8px); }
+  .giro {
+    position: relative; height: 100%;
+    transition: transform .7s cubic-bezier(.2, .8, .2, 1); transform-style: preserve-3d;
+  }
+  .cromo.vuelto .giro { transform: rotateY(180deg); }
+  .cara {
+    padding: 10px; border-radius: 22px;
+    box-shadow: 0 22px 36px -22px rgba(21, 18, 31, .6);
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
+  .frente { position: relative; height: 100%; }
+  .dorso { position: absolute; inset: 0; transform: rotateY(180deg); }
+  .dentro {
+    position: relative; display: flex; flex-direction: column; height: 100%;
+    border-radius: 14px; overflow: hidden; background: var(--papel); color: var(--tinta);
+  }
+
+  /* El montaje se ve entero, cuadrado, sin recortar ni retocar. */
+  .arte { display: block; aspect-ratio: 1 / 1; background: var(--tinta); }
+  .arte img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+  .num, .tag {
+    position: absolute; top: 10px; padding: 5px 8px; border-radius: 8px;
+    font-size: 13px; font-weight: 700; pointer-events: none;
+  }
+  .num { left: 10px; background: var(--tinta); color: var(--hueso); }
+  .tag { right: 10px; font-size: 12px; letter-spacing: .08em; background: var(--oro); color: var(--sobre-oro); }
+
+  .texto {
+    flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px;
+    padding: 10px 12px 12px; border-top: 1px solid var(--linea-2);
+  }
+  .serie { font-size: 14px; color: var(--tinta-3); }
+  .nombre { font-size: 15px; line-height: 1.2; font-weight: 700; overflow-wrap: anywhere; }
+  .estado { margin-top: 4px; font-size: 14px; font-weight: 700; color: var(--verde); }
+  .llega { font-size: 14px; line-height: 1.3; color: var(--verde); }
+  .fila { margin-top: auto; padding-top: 8px; display: flex; align-items: center; gap: 8px; }
+  .precio { flex: 1 1 auto; min-width: 0; font-size: 17px; font-weight: 700; }
+  .sin-precio {
+    flex: 0 1 auto; margin-right: auto; padding: 4px 8px; border: 1px dashed var(--naranja);
+    border-radius: 8px; color: var(--naranja); font-size: 14px; font-weight: 700;
+  }
+  .girar {
+    flex: none; width: 44px; height: 44px; border: 1px solid var(--tinta); border-radius: 10px;
+    background: transparent; color: var(--tinta); display: grid; place-items: center; cursor: pointer;
+  }
+  .girar:hover { background: var(--tinta); color: var(--hueso); }
+  .girar.ancho { width: 100%; display: flex; justify-content: center; gap: 8px; font: inherit; font-size: 15px; font-weight: 700; }
+
+  .dorso .dentro { gap: 8px; padding: 14px; overflow: auto; }
+  .rev { font-size: 13px; font-weight: 700; letter-spacing: .1em; color: var(--tinta-3); }
+  .datos {
+    margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px;
+    font-size: 14px; line-height: 1.35;
+  }
+  .datos dt { color: var(--tinta-3); }
+  .datos dd { margin: 0; }
+  .pie-dorso { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .pie-dorso a { font-size: 15px; font-weight: 700; padding: 13px 0; }
+
+  /* El brillo del marco de oro, al pasar por encima o al llevar el foco dentro. */
+  @media (prefers-reduced-motion: no-preference) {
+    .cromo:hover .marco.oro, .cromo:focus-within .marco.oro { animation: lamina 2.4s linear infinite; }
+    .cromo:hover .lam::after { animation: barrido 1.5s ease-out 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sube, .giro { transition: none; }
+    .cromo:hover .sube { transform: none; }
+  }
+</style>

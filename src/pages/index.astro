@@ -1,78 +1,408 @@
 ---
-import Base from '../layouts/Base.astro';
-import Card from '../components/Card.astro';
-import { getProductos, aCard } from '../lib/productos.js';
+// Portada de «los cromos» (diseño elegido por Fernando el 19-nov-2026, con los
+// cambios que decidió después: ver el parte del PR).
+// Todas las piezas salen de src/lib/catalogo.js: aquí no se escribe ningún dato a mano.
+import Cromos from '../layouts/Cromos.astro';
+import Cromo from '../components/cromos/Cromo.astro';
+import Logo from '../components/cromos/Logo.astro';
+import { rarasEnAlmacen, conCromo, hojasDelAlbum } from '../lib/catalogo.js';
 
-// Lee los productos reales de Supabase EN EL BUILD (pasados por la fábrica).
-// Si no hubiera conexión, getProductos() devuelve [] y la web no se rompe.
-const filas = await getProductos();
-const rarezas = filas
-  .map(aCard)
-  .filter((p) => p.disp !== 'agotado')          // los agotados no se muestran
-  .filter((p) => Array.isArray(p.rars) && p.rars.length > 0); // SOLO chase / vaulted / exclusivos
+const raras = rarasEnAlmacen();
+const rarasConCromo = conCromo(raras);
+
+// Los tres cromos de arriba: piezas raras con montaje (el del centro, el más grande).
+// Si alguna dejara de estar, se cogen otras raras con montaje.
+const ELEGIDAS_ARRIBA = ['889698133180-chase', '889698736954-chase', '889698715560-chase'];
+const arriba = [
+  ...ELEGIDAS_ARRIBA.map((c) => rarasConCromo.find((p) => p.clave === c)).filter(Boolean),
+  ...rarasConCromo.filter((p) => !ELEGIDAS_ARRIBA.includes(p.clave)),
+].slice(0, 3);
+
+// «Recién llegados al almacén»: dos filas de 4. Los datos no traen la fecha de
+// llegada, así que van en el orden del catálogo.
+const recientes = rarasConCromo.slice(0, 8);
+
+const hojas = hojasDelAlbum();
+
+// Cinta de licencias y puertas por marca: en texto hasta que estén los logotipos
+// oficiales (cada uno, `imagen: null` → el hueco enseña el nombre).
+const cinta = [
+  'Dragon Ball Z', 'One Piece', 'Stranger Things', 'Gundam', 'Naruto', 'My Hero Academia',
+  'Marvel', 'Warhammer 40.000', 'Harry Potter', 'Star Wars', 'Demon Slayer',
+].map((nombre) => ({ nombre, imagen: null }));
+
+const puertas = [
+  {
+    href: '/model-kit', logo: { nombre: 'Bandai Spirits', imagen: null, soloImagen: true }, titulo: 'Model kit',
+    texto: 'Se monta. Gundam por grado (Entry, HG, RG, MG) y kits de serie.', entrar: 'Entrar en Model kit',
+  },
+  {
+    href: '/joy-toy', logo: { nombre: 'Joy Toy', imagen: null }, titulo: null,
+    texto: 'Figuras articuladas 1:18 de Warhammer 40.000, ya montadas y pintadas. Para la vitrina, no para la mesa de juego.',
+    entrar: 'Entrar en Joy Toy',
+  },
+  {
+    href: '/mcfarlane', logo: { nombre: 'McFarlane Toys', imagen: null }, titulo: null,
+    texto: 'Figuras de acción de 18 cm: DC, Spawn y Warhammer 40.000.', entrar: 'Entrar en McFarlane',
+  },
+];
+
+const flecha = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>';
 ---
-
-<Base>
-  <main class="wrap">
-
-    <section class="carousel">
-      <div class="slides" id="slides">
-        <div class="slide on" style="--g1:#341970;--g2:#09041A;--a1:rgba(34,211,238,.42);--a2:rgba(236,72,153,.5)">
-          <div class="kicker">Coleccionables · Envío desde España</div>
-          <h1>Lo que ya no encuentras.</h1>
-          <p>Rarezas, CHASE y ediciones agotadas que no quedan en ningún sitio. Y si lo buscas, lo conseguimos.</p>
-          <a href="#nov" class="cta">Ver rarezas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-        <div class="slide" style="--g1:#0c2340;--g2:#04101f;--a1:rgba(34,211,238,.4);--a2:rgba(124,58,237,.5)">
-          <div class="kicker">Banpresto · Tamashii Nations</div>
-          <h2>Ahora también bajo pedido.</h2>
-          <p>Figuras de anime que antes había que importar de fuera. Te las traemos nosotros, sin líos de aduanas.</p>
-          <a href="/banpresto" class="cta">Descúbrelas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-        <div class="slide" style="--g1:#3a1a14;--g2:#1a0806;--a1:rgba(245,158,11,.4);--a2:rgba(236,72,153,.42)">
-          <div class="kicker">Model Kit · Bandai</div>
-          <h2>Monta tu primer Gunpla.</h2>
-          <p>Modelismo Bandai para empezar de cero o ampliar tu taller. Una afición que engancha, pieza a pieza.</p>
-          <a href="/model-kit" class="cta">Entrar al taller <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
+<Cromos>
+  <section id="inicio" class="caja heroe">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="heroe-texto entra">
+      <p class="pastilla">
+        <span class="punto vivo"></span>
+        <span><b>{raras.length} piezas raras</b> en el almacén hoy</span>
+      </p>
+      <h1 class="dis">Funko raros, model kits y figuras de acción. Cromo a cromo.</h1>
+      <p class="entradilla">Cada pieza es un cromo. Por delante, la figura, su número, su precio y qué día llega. Por detrás, su serie y su rareza.</p>
+      <div class="botones">
+        <a href="#raro" class="boton oro">Ver los cromos de hoy <Fragment set:html={flecha} /></a>
+        <a href="#album" class="boton hueco">Abrir el álbum</a>
       </div>
-      <div class="dots" id="dots"></div>
+      <p class="como">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--oro)" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+        <span>Ves qué día llega antes de pagar.</span>
+        <a href="/como-funciona">Cómo funciona →</a>
+      </p>
+    </div>
+
+    {arriba.length > 0 && (
+      <div class="mesa">
+        {arriba.map((p, i) => (
+          <div class={['flota', ['b', '', 'c'][i] ?? '', `sitio-${i}`].join(' ')}>
+            <a href={p.url} class="marco oro viva naipe"
+              aria-label={`${p.nombre}${p.numero ? `, número ${p.numero}` : ''}, chase. Ver la ficha`}>
+              <span class="naipe-dentro">
+                <img src={p.montaje.url} width={p.montaje.ancho} height={p.montaje.alto} alt=""
+                  loading="eager" decoding="async" fetchpriority={i === 1 ? 'high' : 'auto'} />
+                <span class="lam viva-lam naipe-pie">
+                  <span class="mono naipe-tag">CHASE{p.numero && ` · n.º ${p.numero}`}</span>
+                  <span class="dis naipe-nombre">{p.nombre}</span>
+                  {p.precioTexto
+                    ? <span class="mono naipe-precio">{p.precioTexto}</span>
+                    : <span class="naipe-sin">precio por poner</span>}
+                </span>
+              </span>
+            </a>
+          </div>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <div class="cinta" aria-hidden="true">
+    <div class="cinta-pista">
+      {[0, 1].map(() => cinta.map((l) => (
+        <span class="cinta-pieza"><Logo nombre={l.nombre} imagen={l.imagen} alto={44} /><span class="estrella">✦</span></span>
+      )))}
+    </div>
+  </div>
+
+  <section id="mundos" class="caja mundos">
+    <p class="mono antetitulo">POR DÓNDE EMPEZAR</p>
+    <a href="/funko" class="puerta grande">
+      <span class="puerta-cuerpo">
+        <span class="puerta-logo"><Logo nombre="Funko" imagen={null} alto={72} class="logo-grande" /></span>
+        <span class="puerta-texto">Se tiene y se enseña. Chase y los de siempre, por licencia y por número.</span>
+      </span>
+      <span class="puerta-entrar">Entrar en Funko →</span>
+    </a>
+    <div class="puertas">
+      {puertas.map((d) => (
+        <a href={d.href} class="puerta">
+          <span class="puerta-logo">
+            {(!d.logo.soloImagen || d.logo.imagen) && <Logo nombre={d.logo.nombre} imagen={d.logo.imagen} alto={52} class="logo-medio" />}
+            {d.titulo && <span class="dis puerta-titulo">{d.titulo}</span>}
+          </span>
+          <span class="puerta-texto">{d.texto}</span>
+          <span class="puerta-entrar">{d.entrar} →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <div class="claro">
+    <section id="raro" class="caja bloque">
+      <div class="cabeza">
+        <div>
+          <p class="mono antetitulo morado">LO RARO · LO TENEMOS</p>
+          <h2 class="dis">Recién llegados al almacén.</h2>
+        </div>
+        <a href="/lo-raro" class="ver-todos">Ver los {raras.length} cromos raros →</a>
+      </div>
+
+      <div class="leyenda">
+        <span><span class="marco oro muestra" aria-hidden="true"></span><span><b>Chase:</b> marco dorado, con brillo</span></span>
+        <span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"></path><path d="M18 3v4h-4M6 21v-4h4"></path></svg>
+          <span>Gira el cromo para ver su reverso</span>
+        </span>
+      </div>
+
+      <div class="fila4">
+        {recientes.map((p) => <Cromo pieza={p} />)}
+      </div>
+      <div class="mas">
+        <a href="/lo-raro" class="boton tinta">Ver los {raras.length} cromos raros <Fragment set:html={flecha} /></a>
+      </div>
     </section>
 
-    <section id="nov">
-      <div class="sec-head">
-        <h2>Rarezas <span class="spark">&#10022;</span>
-          <span class="sub">Chase, vaulted y exclusivos — lo que no encuentras en otro sitio</span>
-        </h2>
-        <a href="/funko" class="seeall">Ver todo &#8594;</a>
+    {hojas.length > 0 && (
+      <section id="album" class="caja bloque">
+        <p class="mono antetitulo morado">EL ÁLBUM, HOJA A HOJA</p>
+        <h2 class="dis ancho-h2">Cada licencia es una hoja. Mira lo que hay en el almacén.</h2>
+        <div class="pestanas" role="group" aria-label="Elegir licencia">
+          {hojas.map((h, i) => (
+            <button type="button" class="pill" data-hoja={`hoja-${i}`} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={`hoja-${i}`}>
+              {h.licencia}
+            </button>
+          ))}
+        </div>
+        {hojas.map((h, i) => (
+          <div class="hoja" id={`hoja-${i}`} hidden={i !== 0}>
+            <div class="hoja-cabeza">
+              <h3 class="dis">Hoja de {h.licencia}</h3>
+              <p>{h.piezas.length} en el almacén</p>
+            </div>
+            <div class="hoja-cromos">
+              {h.piezas.map((p) => <Cromo pieza={p} />)}
+            </div>
+          </div>
+        ))}
+      </section>
+    )}
+
+    <section id="traemos" class="caja bloque">
+      <div class="raya">
+        <p class="mono antetitulo naranja">A PARTIR DE AQUÍ · LO TRAEMOS</p>
+        <p>No está en nuestro almacén: lo pedimos para ti y te decimos qué día llega.</p>
       </div>
-      {rarezas.length > 0
-        ? <div class="grid">{rarezas.map((p) => <Card p={p} />)}</div>
-        : <p style="color:var(--ink-soft);padding:30px 0">Estamos preparando las primeras piezas. Vuelve pronto.</p>}
+      <div class="traemos">
+        <a href="/funko" class="traido">
+          <span class="dis traido-titulo">Más Funko</span>
+          <span class="traido-texto">Los que el almacén no tiene hoy, por licencia.</span>
+          <span class="traido-plazo">Lo traemos · llega en 5 a 12 días</span>
+        </a>
+        <a href="/model-kit" class="traido">
+          <span class="dis traido-titulo">Model kit</span>
+          <span class="traido-texto">Gundam por grado: Entry, HG, RG, MG. Con lo que hace falta para montarlo.</span>
+          <span class="traido-plazo">Lo traemos · llega en 2 a 3 semanas</span>
+        </a>
+        <div class="traido">
+          <span class="dis traido-titulo">Joy Toy y McFarlane</span>
+          <span class="traido-texto">Figuras de acción ya montadas y pintadas, por línea y por facción.</span>
+          <span class="traido-plazo">Lo traemos · llega entre 10 días y 3 semanas</span>
+          <span class="traido-enlaces"><a href="/joy-toy">Joy Toy →</a><a href="/mcfarlane">McFarlane →</a></span>
+        </div>
+      </div>
     </section>
 
-  </main>
+    <section class="caja bloque ultimo">
+      <div class="promesas">
+        <div>
+          <p class="dis promesa-titulo">Envío</p>
+          <p>4,95 € a domicilio en la península, gratis desde 60 €. A la vista antes de pagar. <a href="/envios">Envíos</a></p>
+        </div>
+        <div>
+          <p class="dis promesa-titulo">Devoluciones</p>
+          <p>30 días para devolver, sin dar motivo. Si cambias de idea, la vuelta la pagas tú; si llega dañado o el fallo es nuestro, la pagamos nosotros. <a href="/devoluciones">Devoluciones</a></p>
+        </div>
+        <div>
+          <p class="dis promesa-titulo">La caja</p>
+          <p>Caja de coleccionista, revisada antes de enviar: sin golpes ni esquinas dobladas. Lo raro, con protector incluido en las cajas de tamaño normal.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Cromos>
 
-  <script>
-    // Carrusel de banners (rota solo + puntos de navegación).
-    const slides = [...document.querySelectorAll('.slide')];
-    const dotsBox = document.getElementById('dots');
-    let ci = 0;
-    if (dotsBox && slides.length) {
-      slides.forEach((_, i) => {
-        const b = document.createElement('button');
-        if (i === 0) b.classList.add('on');
-        b.addEventListener('click', () => { go(i); reset(); });
-        dotsBox.appendChild(b);
-      });
-      const dots = [...dotsBox.children];
-      function go(i) {
-        slides[ci].classList.remove('on'); dots[ci].classList.remove('on');
-        ci = i;
-        slides[ci].classList.add('on'); dots[ci].classList.add('on');
+<script>
+  // Álbum: cada botón enseña su hoja y esconde las demás.
+  const botones = [...document.querySelectorAll<HTMLButtonElement>('[data-hoja]')];
+  for (const b of botones) {
+    b.addEventListener('click', () => {
+      for (const o of botones) {
+        const si = o === b;
+        o.setAttribute('aria-pressed', String(si));
+        const hoja = document.getElementById(o.dataset.hoja ?? '');
+        if (hoja) hoja.hidden = !si;
       }
-      let timer = setInterval(() => go((ci + 1) % slides.length), 5500);
-      function reset() { clearInterval(timer); timer = setInterval(() => go((ci + 1) % slides.length), 5500); }
+    });
+  }
+</script>
+
+<style>
+  /* Arriba, oscuro */
+  .heroe {
+    position: relative; padding-top: 56px; padding-bottom: 48px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 40px 56px;
+  }
+  .halo {
+    position: absolute; width: 760px; height: 760px; right: -140px; top: -120px; max-width: 100vw;
+    background: radial-gradient(closest-side, rgba(232, 185, 49, .20), rgba(183, 156, 255, .09) 55%, transparent);
+    pointer-events: none;
+  }
+  .heroe-texto { flex: 1 1 420px; min-width: 0; position: relative; }
+  .pastilla {
+    margin: 0; display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px;
+    border-radius: 999px; border: 1px solid rgba(244, 239, 230, .3); font-size: 16px; color: var(--hueso-2);
+  }
+  .pastilla b { color: var(--hueso); }
+  .punto { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--oro); }
+  h1 { margin: 24px 0 0; font-size: clamp(32px, 4.6vw, 66px); line-height: 1.06; font-weight: 900; letter-spacing: -.01em; overflow-wrap: break-word; }
+  .entradilla { margin: 22px 0 0; max-width: 540px; font-size: 19px; line-height: 1.55; color: var(--hueso-2); }
+  .botones { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .como { margin: 26px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 16px; color: var(--hueso-2); }
+  .como a { font-weight: 700; color: var(--hueso); text-underline-offset: 3px; }
+
+  .mesa { flex: 1.15 1 440px; min-width: 0; position: relative; aspect-ratio: 1 / 1; max-height: 640px; }
+  .mesa > div { position: absolute; }
+  .sitio-0 { --r: -8deg; left: 0; top: 8%; width: 44%; }
+  .sitio-1 { left: 25%; top: 17%; width: 50%; z-index: 2; }
+  .sitio-2 { --r: 7deg; right: 0; top: 5%; width: 44%; }
+  .naipe {
+    display: block; padding: 3.5%; border-radius: 9% / 6%;
+    box-shadow: 0 34px 60px -22px rgba(0, 0, 0, .85); text-decoration: none; color: var(--tinta);
+    transform: rotate(var(--r, 0deg));
+  }
+  .sitio-1 .naipe { box-shadow: 0 50px 90px -24px rgba(0, 0, 0, .9); }
+  .naipe:hover { color: var(--tinta); }
+  .naipe-dentro { display: flex; flex-direction: column; border-radius: 7% / 4.6%; overflow: hidden; background: var(--papel); }
+  .naipe-dentro img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; background: var(--tinta); }
+  .naipe-pie { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px 10px; }
+  .naipe-tag { font-size: clamp(10px, .9vw, 13px); font-weight: 700; letter-spacing: .08em; }
+  .naipe-nombre { font-size: clamp(11px, 1.1vw, 17px); font-weight: 700; line-height: 1.15; }
+  .naipe-precio { font-size: clamp(11px, 1vw, 15px); font-weight: 700; }
+  .naipe-sin { font-size: clamp(11px, 1vw, 14px); font-weight: 700; color: var(--naranja); }
+  @media (prefers-reduced-motion: no-preference) {
+    .flota .naipe { transform: none; }
+  }
+
+  /* Cinta de licencias */
+  .cinta { border-top: 1px solid rgba(244, 239, 230, .12); border-bottom: 1px solid rgba(244, 239, 230, .12); padding: 20px 0; overflow: hidden; }
+  .cinta-pista { display: flex; align-items: center; width: max-content; gap: 44px; font-size: 26px; color: rgba(244, 239, 230, .82); white-space: nowrap; }
+  .cinta-pieza { display: inline-flex; align-items: center; gap: 44px; }
+  .estrella { color: var(--oro); }
+
+  /* Puertas por marca */
+  .mundos { padding-top: 84px; padding-bottom: 84px; }
+  .antetitulo { margin: 0; font-size: 14px; letter-spacing: .18em; color: var(--oro); }
+  .antetitulo.morado { font-weight: 700; letter-spacing: .14em; color: var(--morado); }
+  .antetitulo.naranja { font-weight: 700; letter-spacing: .14em; color: var(--naranja); }
+  .puerta {
+    display: flex; flex-direction: column; gap: 8px; padding: 24px; border-radius: 18px;
+    border: 1px solid rgba(244, 239, 230, .24); background: var(--noche-2); text-decoration: none; color: var(--hueso);
+    transition: transform .35s cubic-bezier(.2, .8, .2, 1), border-color .35s;
+  }
+  .puerta:hover { transform: translateY(-6px); border-color: rgba(244, 239, 230, .5); color: var(--hueso); }
+  .puerta.grande {
+    margin-top: 18px; flex-direction: row; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+    gap: 16px 40px; padding: 34px; min-height: 220px; border-radius: 26px; border-color: rgba(232, 185, 49, .5);
+    background: linear-gradient(160deg, rgba(232, 185, 49, .16), rgba(232, 185, 49, 0) 60%), var(--noche-2);
+  }
+  .puerta-cuerpo { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  .puerta-logo { display: flex; align-items: center; gap: 14px; min-height: 56px; }
+  .puerta.grande .puerta-logo { min-height: 80px; }
+  .puerta :global(.logo-grande) { font-size: clamp(40px, 6vw, 64px); font-weight: 900; }
+  .puerta :global(.logo-medio) { font-size: 26px; }
+  .puerta-titulo { font-size: 26px; font-weight: 700; }
+  .puerta-texto { font-size: 17px; line-height: 1.5; color: var(--hueso-2); max-width: 620px; }
+  .puerta.grande .puerta-texto { font-size: 18px; line-height: 1.55; }
+  .puerta-entrar { margin-top: auto; padding-top: 6px; font-size: 16px; font-weight: 700; }
+  .puerta.grande .puerta-entrar { flex: none; font-size: 18px; margin-top: 0; }
+  .puertas { margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; }
+
+  /* Abajo, claro */
+  .claro { background: var(--claro); color: var(--tinta); }
+  .bloque { padding-top: 72px; padding-bottom: 24px; }
+  .bloque.ultimo { padding-top: 64px; padding-bottom: 84px; }
+  h2 { margin: 10px 0 0; font-size: clamp(28px, 3.4vw, 46px); line-height: 1.08; font-weight: 700; }
+  .ancho-h2 { max-width: 900px; }
+  .cabeza { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; }
+  .ver-todos { padding: 12px 0; font-size: 17px; font-weight: 700; text-underline-offset: 3px; }
+  .leyenda {
+    margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px 28px; padding: 16px 18px; border-radius: 16px;
+    background: var(--blanco); border: 1px solid var(--linea); font-size: 16px; color: var(--tinta-2);
+  }
+  .leyenda > span { display: inline-flex; align-items: center; gap: 10px; }
+  .muestra { flex: none; width: 30px; height: 40px; border-radius: 6px; }
+
+  .fila4 { margin-top: 30px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  @media (max-width: 1100px) {
+    .fila4 {
+      display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+      margin-right: calc(-1 * var(--margen)); padding: 4px var(--margen) 14px 0;
     }
-  </script>
-</Base>
+    .fila4 > :global(.cromo) { flex: 0 0 270px; scroll-snap-align: start; }
+  }
+  .mas { margin-top: 30px; }
+  @media (max-width: 760px) { .ver-todos { display: none; } }
+
+  .pestanas { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    min-height: 46px; padding: 0 18px; border-radius: 999px; font: inherit; font-size: 16px; font-weight: 700;
+    cursor: pointer; background: transparent; color: var(--tinta); border: 1px solid var(--tinta);
+    transition: background-color .2s, color .2s;
+  }
+  .pill[aria-pressed="true"] { background: var(--tinta); color: var(--hueso); }
+  .hoja {
+    margin-top: 20px; padding: 26px; border-radius: 22px; background: var(--blanco); border: 1px solid var(--linea);
+    box-shadow: 0 30px 50px -40px rgba(21, 18, 31, .5);
+  }
+  .hoja[hidden] { display: none; }
+  .hoja-cabeza {
+    display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 32px;
+    padding-bottom: 18px; border-bottom: 2px solid var(--tinta);
+  }
+  .hoja-cabeza h3 { margin: 0; font-size: clamp(22px, 2.4vw, 32px); font-weight: 700; }
+  .hoja-cabeza p { margin: 0; font-size: 20px; font-weight: 700; }
+  .hoja-cromos { margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr)); gap: 22px; }
+  @media (max-width: 760px) {
+    .pestanas { flex-wrap: nowrap; overflow-x: auto; margin-right: calc(-1 * var(--margen)); padding: 2px var(--margen) 8px 0; }
+    .pill { flex: none; }
+    .hoja { padding: 16px; }
+    /* En el móvil la hoja se pasa de lado, como la fila de recién llegados. */
+    .hoja-cromos { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-right: -16px; padding: 4px 16px 14px 0; }
+    .hoja-cromos > :global(.cromo) { flex: 0 0 250px; scroll-snap-align: start; }
+  }
+
+  .raya {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; padding: 18px 0;
+    border-top: 3px solid var(--tinta); border-bottom: 1px solid var(--linea);
+  }
+  .raya p { margin: 0; }
+  .raya p:last-child { font-size: 17px; color: var(--tinta-2); }
+  .traemos { margin-top: 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 20px; }
+  .traido {
+    display: flex; flex-direction: column; gap: 10px; padding: 26px; border-radius: 20px;
+    border: 2px dashed var(--naranja); background: var(--blanco); text-decoration: none; color: var(--tinta);
+  }
+  .traido-titulo { font-size: 24px; font-weight: 700; }
+  .traido-texto { font-size: 17px; line-height: 1.5; color: var(--tinta-2); }
+  .traido-plazo { margin-top: 6px; font-size: 16px; font-weight: 700; color: var(--naranja); }
+  .traido-enlaces { display: flex; gap: 20px; font-weight: 700; }
+  .traido-enlaces a { padding: 10px 0; }
+
+  .promesas {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px;
+    background: var(--linea); border: 1px solid var(--linea); border-radius: 20px; overflow: hidden;
+  }
+  .promesas > div { background: var(--blanco); padding: 26px; }
+  .promesas p { margin: 10px 0 0; font-size: 16px; line-height: 1.55; color: var(--tinta-2); }
+  .promesas .promesa-titulo { margin: 0; font-size: 19px; font-weight: 700; color: var(--tinta); }
+
+  @media (max-width: 760px) {
+    .heroe { padding-top: 32px; gap: 32px; }
+    .entradilla { font-size: 17px; }
+    .mundos { padding-top: 56px; padding-bottom: 56px; }
+    .puerta.grande { padding: 24px; min-height: 0; }
+    .bloque { padding-top: 56px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .puerta, .puerta:hover { transition: none; transform: none; }
+  }
+</style>
