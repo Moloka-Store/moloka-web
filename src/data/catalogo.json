@@ -1,0 +1,1462 @@
+{
+ "leido_en": "2026-11-23 10:58:51.703694",
+ "origen": "piezas guardadas para la web, solo campos públicos",
+ "piezas": [
+  {
+   "clave": "889698610100-chase",
+   "nombre": "Bleach Fully-Hollowfied Ichigo 1104 CHASE",
+   "ean": "889698610100",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698610100_figura_6144954988728.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698610100_montaje_8574930469391.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698906678-chase",
+   "nombre": "Dan Da Dan Okarun 2100 CHASE",
+   "ean": "889698906678",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698906678_figura_8416305222734.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698906678_montaje_1593710693950.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698864954-chase",
+   "nombre": "DBGT Super Saiyan 4 Gogeta 2074 CHASE",
+   "ean": "889698864954",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698864954_figura_3536765608964.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698864954_montaje_5795911782917.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698736954-chase",
+   "nombre": "DBS Super Saiyan God Vegeta 1868 CHASE",
+   "ean": "889698736954",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698736954_figura_4437084878541.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698736954_montaje_8290277730453.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698503402-chase",
+   "nombre": "DBZ Super Saiyan Goku with Energy 865 CHASE",
+   "ean": "889698503402",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698503402_figura_6651558889142.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698503402_montaje_4328790193654.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698327480-chase",
+   "nombre": "Friends Monica Geller 704 CHASE",
+   "ean": "889698327480",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698327480_figura_9594797937185.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698327480_montaje_0035643027984.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698715560-chase",
+   "nombre": "FUNKO POP DBZ Super Buu With Ghost CHASE",
+   "ean": "889698715560",
+   "es_chase": true,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_figura_1987599496027.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_montaje_8297201493116.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698602945-chase",
+   "nombre": "FUNKO POP Demon Slayer Gyomei Himejima 1091 SE CHASE",
+   "ean": "889698602945",
+   "es_chase": true,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698867986-chase",
+   "nombre": "FUNKO POP Fallout Maximus 1765 CHASE",
+   "ean": "889698867986",
+   "es_chase": true,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698803694-chase",
+   "nombre": "FUNKO POP One Piece Roronoa Zoro w/ 1775 CHASE",
+   "ean": "889698803694",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698803694_figura_0539144560464.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698803694_montaje_9695018504043.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698133180-chase",
+   "nombre": "FUNKO POP Stranger Things Eleven w/Eggos 421 CHASE",
+   "ean": "889698133180",
+   "es_chase": true,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698133180_figura_6869441681002.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698133180_montaje_9612100270320.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698721356-chase",
+   "nombre": "FUNKO POP Stranger Things S4 Eleven 1457 CHASE",
+   "ean": "889698721356",
+   "es_chase": true,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698721356_figura_1799768266884.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698721356_montaje_9816235903989.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698419468-chase",
+   "nombre": "Funko POP! Friends Gunther CHASE",
+   "ean": "889698419468",
+   "es_chase": true,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698756365-chase",
+   "nombre": "Funko Pop! Gohan Beast CHASE",
+   "ean": "889698756365",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698756365_figura_3957435234499.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698756365_montaje_4716245804304.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698886659-chase",
+   "nombre": "Funko POP! Vinyl (Exc) DBZ- Goku Yardrat (GW) CHASE",
+   "ean": "889698886659",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698886659_figura_3889790606963.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698886659_montaje_9605474583705.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698295208-chase",
+   "nombre": "IT Georgie Denbrough 536 CHASE",
+   "ean": "889698295208",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698515276-chase",
+   "nombre": "LOTR Eowyn 1743 CHASE",
+   "ean": "889698515276",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698515276_figura_2851202693322.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698515276_montaje_1881493515053.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698581493-chase",
+   "nombre": "Naruto Anbu Itachi 1027 CHASE",
+   "ean": "889698581493",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698581493_figura_2040038996145.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698581493_montaje_5837370703901.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698602839-chase",
+   "nombre": "Naruto Kakashi Hatake 1199 CHASE",
+   "ean": "889698602839",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698602839_figura_9523675545888.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698602839_montaje_0593203814625.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698656177-chase",
+   "nombre": "Nosferatu Count Orlok 1267 CHASE",
+   "ean": "889698656177",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698632218-chase",
+   "nombre": "One Piece Armored Luffy 1262 CHASE",
+   "ean": "889698632218",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698626460-chase",
+   "nombre": "One Piece Luffy Gear Two 1269 CHASE",
+   "ean": "889698626460",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698626460_figura_1481870743496.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698626460_montaje_6856971432993.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698849913-chase",
+   "nombre": "One Piece Smoker 1914 CHASE",
+   "ean": "889698849913",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698849913_figura_3038970472734.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698849913_montaje_8403001925863.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698755597-chase",
+   "nombre": "POP! Case 5+1 Chase - Ochaco Uraraka Case 5+1 Chase (CHASE)",
+   "ean": "889698755597",
+   "es_chase": true,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698755597_figura_2082522685843.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698755597_montaje_6205335475097.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698124393-chase",
+   "nombre": "Rick and Morty Weaponized Rick 172 CHASE",
+   "ean": "889698124393",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698826174-chase",
+   "nombre": "Tails Flocked 978 CHASE",
+   "ean": "889698826174",
+   "es_chase": true,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698826174_figura_9894129717737.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698826174_montaje_1651589817212.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698363181",
+   "nombre": "AC/DC POP! Rocks Angus Young CHASE (anuncio Chase)",
+   "ean": "889698363181",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698838221",
+   "nombre": "Aerosmith POP! Rocks Vinyl Figura Steven Tyler (Leopard Outfit) Exclusive Edition 9 cm",
+   "ean": "889698838221",
+   "es_chase": false,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698828451",
+   "nombre": "Attack on Titan Reiner Braun 1996",
+   "ean": "889698828451",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698848749",
+   "nombre": "Batman Beyond Bruce Wayne & Ace 550",
+   "ean": "889698848749",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698848749_figura_0701362121556.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698848749_montaje_2757966201473.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698477079",
+   "nombre": "Batman Returns Catwoman 338",
+   "ean": "889698477079",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698783385",
+   "nombre": "Batman/Superman Fusion 506 (Summer Con 2024)",
+   "ean": "889698783385",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698783385_figura_0805840278482.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698783385_montaje_1364728637468.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698913881",
+   "nombre": "Bitty Bot Captain America Mech (What If)",
+   "ean": "889698913881",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698782678",
+   "nombre": "D&D Lord Soth 979 (Summer Con 2024)",
+   "ean": "889698782678",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698782678_figura_9459622851154.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698782678_montaje_7294311495543.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698658935",
+   "nombre": "DBS Goku Ultra Instinct Sign 1232 (Fall Con 2022)",
+   "ean": "889698658935",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698602433",
+   "nombre": "DBS SSGSS Goku Kaio-Ken 1256 Special Edition",
+   "ean": "889698602433",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698602433_figura_5615602597460.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698602433_montaje_7836294302707.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698786478",
+   "nombre": "DBZ Dabura 1712 (Fall Con 2024)",
+   "ean": "889698786478",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698880930",
+   "nombre": "Deadpool & Wolverine Nicepool 1508",
+   "ean": "889698880930",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698556606",
+   "nombre": "DRAGON BALL Z - POP N° 948 - SSGoku w/KamehmaWve (DGLT)",
+   "ean": "889698556606",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698556606_figura_3415682192574.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698556606_montaje_2931531568912.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698364065",
+   "nombre": "Dragon Ball Z Figura POP! Animation Vinyl King Kai & Bubbles",
+   "ean": "889698364065",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698364065_figura_2269628784565.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698364065_montaje_3197953784642.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698144254",
+   "nombre": "Funko Hopper 512",
+   "ean": "889698144254",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698144254_figura_6779243053026.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698144254_montaje_9547592248475.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698545419",
+   "nombre": "Funko Michael Jordan 84",
+   "ean": "889698545419",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698769440",
+   "nombre": "Funko Pop Animation Goku Rose",
+   "ean": "889698769440",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698872126",
+   "nombre": "FUNKO POP Hello Kitty Kuromi as Baku Flocked 111",
+   "ean": "889698872126",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": 17.9,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698872126_figura_7698860377249.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698872126_montaje_0770668762994.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698769136",
+   "nombre": "FUNKO POP ONE PIECE SNIPER KING 1514",
+   "ean": "889698769136",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698769136_figura_3225102243627.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698769136_montaje_3866306483133.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698615297",
+   "nombre": "FUNKO POP The Godfather 50th Vito 1200",
+   "ean": "889698615297",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": 22.99,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698615297_figura_0960010947590.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698615297_montaje_9555542495851.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": [
+    {
+     "tipo": "frente",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos-v2/889698615297_frente_1794123048217.jpg"
+    },
+    {
+     "tipo": "frente",
+     "url": null
+    },
+    {
+     "tipo": "frente",
+     "url": null
+    },
+    {
+     "tipo": "frente",
+     "url": null
+    },
+    {
+     "tipo": "frente",
+     "url": null
+    }
+   ]
+  },
+  {
+   "clave": "889698584500",
+   "nombre": "Funko POP! Convention Vinyl (Exc) Goku Ultra Instinct with Kamehameha (NYCC Shared)",
+   "ean": "889698584500",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": 27.99,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698584500_figura_3114380156488.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698584500_montaje_7702595075804.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698886659",
+   "nombre": "Funko POP! Vinyl (Exc) DBZ- Goku Yardrat (GW)",
+   "ean": "889698886659",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": 23.95,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": [
+    {
+     "tipo": "frente",
+     "url": null
+    },
+    {
+     "tipo": "frente",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos-v2/889698886659_frente_1794161814884.jpg"
+    }
+   ]
+  },
+  {
+   "clave": "889698501439",
+   "nombre": "Funko Vampire Krusty",
+   "ean": "889698501439",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698501439_figura_3767523795102.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698501439_montaje_7847190542919.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698725651",
+   "nombre": "Ghost Papa Emeritus IV 336",
+   "ean": "889698725651",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698725651_figura_2803870509700.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698725651_montaje_4153381934748.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698828086",
+   "nombre": "Harry Potter Figura POP! Movies Vinyl Gold Harry Potter *Exclusive Version*",
+   "ean": "889698828086",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698421928",
+   "nombre": "Harry Potter POP! Movies Vinyl Figura Professor Sybill Trelawney",
+   "ean": "889698421928",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698756976",
+   "nombre": "House of the Dragon Daemon Targaryen 11 (Wondrous Con 2025)",
+   "ean": "889698756976",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698907439",
+   "nombre": "Infinity Saga Iron Man 1571",
+   "ean": "889698907439",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698510103",
+   "nombre": "Lakers LeBron James 90",
+   "ean": "889698510103",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698510103_figura_0783734435445.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698510103_montaje_2875357408100.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698918725",
+   "nombre": "Marvel Rivals Cuddly Fuzzlefin Jeff 1152",
+   "ean": "889698918725",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698918725_figura_8836925005842.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698918725_montaje_5602197916385.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698581493",
+   "nombre": "Naruto Anbu Itachi 1027 Special Edition",
+   "ean": "889698581493",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698489317",
+   "nombre": "Naruto Kakashi Lightning Blade 822 Special Edition",
+   "ean": "889698489317",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698688611",
+   "nombre": "Naruto Madara Uchiha 1278 Special Edition",
+   "ean": "889698688611",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698688611_figura_8708501744346.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698688611_montaje_5438630388475.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698581523",
+   "nombre": "Naruto on Gamakichi 106 (Rides)",
+   "ean": "889698581523",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698581523_figura_8410159740179.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698581523_montaje_8079474248776.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698879385",
+   "nombre": "One Piece Koby 1943 (Animation Expo 2025)",
+   "ean": "889698879385",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698779593",
+   "nombre": "One Piece Luffy 1620 Special Edition",
+   "ean": "889698779593",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698779593_figura_6171837371195.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698779593_montaje_2732864124857.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698852814",
+   "nombre": "One Piece Nami with White Hobby Horse 128 (Wondrous Con 2025)",
+   "ean": "889698852814",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698879422",
+   "nombre": "One Piece Nico Robin with Mini Merry II 132 (Summer Con 2025)",
+   "ean": "889698879422",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698470964",
+   "nombre": "POP! Metallic - I Am Iron Man (MT) (GW)",
+   "ean": "889698470964",
+   "es_chase": false,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698623940",
+   "nombre": "POP! Vinyl - 1240 DUSTIN",
+   "ean": "889698623940",
+   "es_chase": false,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698623940_figura_0363905392106.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698623940_montaje_1422934909667.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698682701",
+   "nombre": "POP! Vinyl - Unmasked Obito (Exc)",
+   "ean": "889698682701",
+   "es_chase": false,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698682701_figura_9372095337552.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698682701_montaje_6434816694700.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698851909",
+   "nombre": "Pop! Vinyl (Exc) - Rey Skywalker (Exc)",
+   "ean": "889698851909",
+   "es_chase": false,
+   "marca": null,
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": [
+    {
+     "tipo": "frente",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos-v2/889698851909_frente_1794156459758.jpg"
+    }
+   ]
+  },
+  {
+   "clave": "889698673891",
+   "nombre": "PSG Lionel Messi 50",
+   "ean": "889698673891",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698673891_figura_9416335415161.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698673891_montaje_2370595228921.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698819596",
+   "nombre": "Shrek 30th Shrek 1599 Special Edition",
+   "ean": "889698819596",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698880961",
+   "nombre": "SpongeBob SquarePants 2117",
+   "ean": "889698880961",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698827270",
+   "nombre": "Star Wars Darth Vader 288 Bronze Special Edition",
+   "ean": "889698827270",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698623896",
+   "nombre": "Stranger Things Lucas 1246 Special Edition",
+   "ean": "889698623896",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [
+    {
+     "tipo": "figura",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698623896_figura_4024463251032.jpg",
+     "es_montaje": false,
+     "cesion": "por_averiguar"
+    },
+    {
+     "tipo": "montaje",
+     "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698623896_montaje_2660402993688.jpg",
+     "es_montaje": true,
+     "cesion": null
+    }
+   ],
+   "fotos_caja": []
+  },
+  {
+   "clave": "889698880992",
+   "nombre": "TMNT Michelangelo 1749",
+   "ean": "889698880992",
+   "es_chase": false,
+   "marca": "Funko",
+   "precio_venta": null,
+   "en_almacen": true,
+   "lanzamiento": null,
+   "fotos_web": [],
+   "fotos_caja": []
+  }
+ ]
+}

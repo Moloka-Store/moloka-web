@@ -1,0 +1,22 @@
+---
+// Hueco para un logotipo (de marca o de licencia). Hoy van en texto: los ficheros
+// oficiales todavía no están y no se suben imágenes de prueba al repo (es público).
+// Cuando llegue el bueno, se pasa `imagen` ({ src, ancho, alto }) y el hueco lo
+// enseña en vez del texto, sin tocar nada más.
+interface Props {
+  nombre: string;
+  imagen?: { src: string; ancho: number; alto: number } | null;
+  alto?: number;          // alto en px con el que se pinta la imagen
+  class?: string;
+}
+const { nombre, imagen = null, alto = 40, class: clase = '' } = Astro.props;
+---
+{imagen
+  ? <img class={`logo ${clase}`} src={imagen.src} alt={nombre} width={imagen.ancho} height={imagen.alto}
+      style={`height:${alto}px;width:auto`} loading="lazy" decoding="async" />
+  : <span class={`logo logo-texto dis ${clase}`}>{nombre}</span>}
+
+<style>
+  .logo { display: block; }
+  .logo-texto { font-weight: 700; line-height: 1.1; letter-spacing: .01em; }
+</style>
