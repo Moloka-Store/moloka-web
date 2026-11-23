@@ -1,0 +1,29 @@
+---
+// «Lo raro»: los cromos raros que están hoy en el almacén (hoy, los chase).
+// Las piezas salen de src/lib/catalogo.js: aquí no se escribe ningún dato a mano.
+import Cromos from '../layouts/Cromos.astro';
+import CabezaListado from '../components/cromos/CabezaListado.astro';
+import Listado from '../components/cromos/Listado.astro';
+import { paraListado } from '../lib/catalogo.js';
+
+const piezas = paraListado({ soloRaras: true });
+---
+<Cromos
+  title="Funko Pop chase en el almacén · Lo raro | MOLOKA"
+  description={`Los ${piezas.length} Funko Pop chase que tenemos hoy en el almacén. Cada cromo dice su número, su precio y qué día llega. Busca por nombre o por número.`}
+>
+  <div class="claro">
+    <CabezaListado
+      migas={[{ texto: 'Inicio', href: '/' }, { texto: 'Lo raro', href: '/lo-raro' }]}
+      antetitulo="LO RARO · EN EL ALMACÉN"
+      titulo="Funko Pop chase en el almacén"
+    >
+      <p>Los chase que tenemos hoy en el almacén, con su marco dorado. Cada cromo dice su número, su precio y qué día llega; por detrás, su serie y su rareza. Filtra por licencia o busca por nombre o por número.</p>
+    </CabezaListado>
+    <Listado piezas={piezas} />
+  </div>
+</Cromos>
+
+<style>
+  .claro { background: var(--claro); color: var(--tinta); }
+</style>

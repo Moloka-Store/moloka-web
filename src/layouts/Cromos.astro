@@ -2,9 +2,10 @@
 // Layout de la web nueva («los cromos»): cabecera, pie y la base de diseño.
 // Las páginas viejas siguen con Base.astro hasta que cada tramo las sustituya.
 //
-// Algunos enlaces apuntan a páginas que todavía no existen (cesta, búsqueda,
-// «Cómo funciona», Joy Toy, McFarlane, las legales): son las direcciones que
-// tendrán cuando se construyan en sus tramos.
+// Algunos enlaces apuntan a páginas que todavía no existen (cesta, «Cómo
+// funciona», Joy Toy, McFarlane, las legales): son las direcciones que tendrán
+// cuando se construyan en sus tramos. La búsqueda de la cabecera lleva al
+// listado de Funko, que filtra por lo escrito (`/funko?q=…`).
 import '../styles/cromos.css';
 
 interface Props {
@@ -21,11 +22,13 @@ const {
 // La dirección buena es con www (astro.config.mjs aún dice moloka.es sin www;
 // se cambia en su propio PR).
 const SITIO = 'https://www.moloka.es';
-const canonical = new URL(Astro.url.pathname, SITIO).href;
+// Sin barra al final (salvo la portada): `/funko`, como la enlazan todas las páginas.
+const ruta = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const canonical = new URL(ruta, SITIO).href;
 const ogImg = new URL(image, SITIO).href;
 
 const secciones = [
-  { texto: 'Lo raro', href: '/#raro' },
+  { texto: 'Lo raro', href: '/lo-raro' },
   { texto: 'Funko', href: '/funko' },
   { texto: 'Model kit', href: '/model-kit' },
   { texto: 'Joy Toy', href: '/joy-toy' },
@@ -81,10 +84,10 @@ const legales = [
       </button>
       <a href="/" class="marca dis">MOLOKA</a>
       <nav aria-label="Principal" class="principal solo-escritorio">
-        {secciones.map((s) => <a href={s.href}>{s.texto}</a>)}
+        {secciones.map((s) => <a href={s.href} aria-current={s.href === ruta ? 'page' : undefined}>{s.texto}</a>)}
       </nav>
       <div class="derecha">
-        <form role="search" action="/buscar" method="get" class="busca solo-escritorio">
+        <form role="search" action="/funko" method="get" class="busca solo-escritorio">
           <label for="busca" class="solo-lector">Buscar por nombre o por número</label>
           <input id="busca" name="q" type="search" placeholder="Busca por nombre o por número" />
           <button type="submit">Buscar</button>
@@ -99,13 +102,13 @@ const legales = [
       </div>
     </div>
     <div id="menu-movil" class="menu-movil solo-movil" hidden>
-      <form role="search" action="/buscar" method="get" class="busca">
+      <form role="search" action="/funko" method="get" class="busca">
         <label for="busca-m" class="solo-lector">Buscar por nombre o por número</label>
         <input id="busca-m" name="q" type="search" placeholder="Nombre o número" />
         <button type="submit">Buscar</button>
       </form>
       <nav aria-label="Secciones">
-        {secciones.map((s) => <a href={s.href}>{s.texto}<span aria-hidden="true">→</span></a>)}
+        {secciones.map((s) => <a href={s.href} aria-current={s.href === ruta ? 'page' : undefined}>{s.texto}<span aria-hidden="true">→</span></a>)}
         <a href="/como-funciona" class="menor">Cómo funciona<span aria-hidden="true">→</span></a>
       </nav>
     </div>
@@ -163,6 +166,7 @@ const legales = [
   .marca { font-size: 23px; font-weight: 900; letter-spacing: .06em; text-decoration: none; color: var(--hueso); }
   .principal { display: flex; flex-wrap: wrap; gap: 0 24px; font-size: 16px; font-weight: 600; }
   .principal a { text-decoration: none; padding: 12px 0; }
+  .principal a[aria-current="page"] { color: var(--oro); box-shadow: inset 0 -2px 0 var(--oro); }
   .derecha { flex: 1 1 360px; min-width: 0; display: flex; gap: 10px; justify-content: flex-end; }
 
   .busca { flex: 1 1 240px; min-width: 0; max-width: 440px; display: flex; }
