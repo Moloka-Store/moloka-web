@@ -47,7 +47,15 @@ test('nombre limpio: sin marca, formato, número, serie ni «CHASE»', () => {
 });
 
 test('nombre limpio: la serie se queda cuando es parte del nombre', () => {
-  assert.equal(nombreLimpio('Naruto on Gamakichi 106 (Rides)'), 'Naruto on Gamakichi');
-  assert.equal(nombreLimpio('Batman/Superman Fusion 506 (Summer Con 2024)'), 'Batman/Superman Fusion');
+  assert.equal(nombreLimpio('Naruto on Gamakichi 106 (Rides)'), 'Naruto on Gamakichi (Rides)');
   assert.equal(nombreLimpio('FUNKO POP The Godfather 50th Vito 1200'), 'The Godfather 50th Vito');
+});
+
+test('nombre limpio: se quitan solo las notas de la lista; los demás paréntesis se quedan', () => {
+  assert.equal(nombreLimpio('AC/DC POP! Rocks Angus Young CHASE (anuncio Chase)'), 'Angus Young');
+  assert.equal(nombreLimpio('Funko POP! Vinyl (Exc) DBZ- Goku Yardrat (GW) CHASE'), 'Goku Yardrat');
+  assert.equal(nombreLimpio('POP! Metallic - I Am Iron Man (MT) (GW)'), 'I Am Iron Man');
+  assert.equal(nombreLimpio('DRAGON BALL Z - POP N° 948 - SSGoku w/KamehmaWve (DGLT)'), 'SSGoku w/KamehmaWve');
+  assert.equal(nombreLimpio('Batman/Superman Fusion 506 (Summer Con 2024)'), 'Batman/Superman Fusion (Summer Con 2024)');
+  assert.equal(nombreLimpio('D&D Lord Soth 979 (Summer Con 2024)'), 'Lord Soth (Summer Con 2024)');
 });

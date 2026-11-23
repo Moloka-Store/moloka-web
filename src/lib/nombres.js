@@ -78,9 +78,16 @@ export function numeroDe(nombre) {
   return sueltos.length === 1 ? sueltos[0] : null;
 }
 
-// Palabras que no son el nombre de la figura: marca, formato y la marca de chase
-// (la rareza se enseña aparte, con el dato `es_chase`).
+// Lo que se quita al enseñar el nombre, regla a regla. Nada más: lo que no esté
+// aquí se enseña tal cual, paréntesis incluidos («(Summer Con 2024)»).
+// - Notas del alta que no son el nombre: «(anuncio Chase)», «(GW)», «(MT)», «(DGLT)»,
+//   «(Exc)», «(CHASE)» y «Case 5+1 Chase».
+// - Marca y formato: «Funko», «POP!», «Vinyl», «Figura», «Animation», «Movies»,
+//   «Rocks», «Convention», «Metallic».
+// - La marca de chase («CHASE», «SE»): la rareza se enseña aparte, con el dato `es_chase`.
 const QUITAR = [
+  /\(anuncio Chase\)/gi,
+  /\((?:GW|MT|DGLT|Exc|CHASE)\)/gi,
   /\bCase 5\+1 Chase\b/gi,
   /\bFunko\b/gi,
   /\bPOP!?(?=\s|$|-)/gi,
@@ -99,9 +106,9 @@ function capitalizar(texto) {
   return texto.toLowerCase().replace(/(^|[\s/-])(\p{L})/gu, (_, a, b) => a + b.toUpperCase());
 }
 
-/** El nombre para enseñar: el del alta sin marca, formato, número, serie ni «CHASE». */
+/** El nombre para enseñar: el del alta sin notas, marca, formato, número, serie ni «CHASE». */
 export function nombreLimpio(nombre) {
-  let t = sinRuido(nombre).replace(/N°\s*\d{1,4}\b/gi, ' ');
+  let t = nombre.replace(/N°\s*\d{1,4}\b/gi, ' ');
   const s = serieDe(nombre);
   if (s && !s.seQueda) {
     const sinSerie = t.replace(new RegExp(s.re.source, s.re.flags.replace('g', '')), ' ');
