@@ -7,7 +7,7 @@
 // «Añadir a la cesta» no está todavía: llega con la cesta, en su propio tramo.
 //
 // La imagen: el montaje si lo hay. Si no (solo en los listados; la portada solo
-// enseña piezas con montaje), nuestra foto de la caja por delante, entera y sin
+// enseña piezas con montaje), la figura o, si no, la caja por delante, entera y sin
 // tocar, sobre un panel claro. Y si tampoco hay, un panel que dice «foto por hacer».
 interface Props {
   pieza: {
@@ -19,6 +19,7 @@ interface Props {
     precioTexto: string | null;
     montaje: { url: string; ancho: number; alto: number } | null;
     fotoCaja?: { url: string } | null;
+    fotoPanel?: { url: string; que: 'figura' | 'caja' } | null;
     url: string;
   };
   carga?: 'lazy' | 'eager';
@@ -26,7 +27,8 @@ interface Props {
 const { pieza: p, carga = 'lazy' } = Astro.props;
 const marco = p.esChase ? 'marco oro' : 'marco liso';
 const conNumero = p.numero ? `, número ${p.numero}` : '';
-const caja = !p.montaje && p.fotoCaja ? p.fotoCaja : null;
+const panel = p.montaje ? null : p.fotoPanel ?? (p.fotoCaja ? { url: p.fotoCaja.url, que: 'caja' as const } : null);
+const caja = panel;
 ---
 <article class="cromo" data-cromo>
   <div class="sube">
@@ -39,7 +41,7 @@ const caja = !p.montaje && p.fotoCaja ? p.fotoCaja : null;
               ? <img src={p.montaje.url} width={p.montaje.ancho} height={p.montaje.alto}
                   alt={`${p.nombre}, la figura en un decorado`} loading={carga} decoding="async" />
               : caja
-                ? <img src={caja.url} alt={`${p.nombre}, la caja por delante`} loading={carga} decoding="async" />
+                ? <img src={caja.url} alt={caja.que === 'figura' ? `${p.nombre}, la figura fuera de la caja` : `${p.nombre}, la caja por delante`} loading={carga} decoding="async" />
                 : <span class="por-hacer mono">foto por hacer</span>}
           </a>
           {p.numero && <span class="num mono">n.º {p.numero}</span>}

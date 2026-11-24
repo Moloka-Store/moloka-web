@@ -197,6 +197,9 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
     // Para el cromo de la portada y los listados: el montaje y, si no, la caja.
     montaje: fotos.montaje,
     fotoCaja: fotos.caja,
+    // Para el cromo de los listados cuando no hay montaje: la figura y, si no, la caja
+    // (Fernando, 24-nov-2026: «no tenemos por qué hacer montaje de todas»).
+    fotoPanel: fotos.figura ? { url: fotos.figura.url, que: 'figura' } : fotos.caja ? { url: fotos.caja.url, que: 'caja' } : null,
     // Para la ficha: las cuatro, en su orden, y con cuál arranca.
     fotos,
     vistaInicial,
