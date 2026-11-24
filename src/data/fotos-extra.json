@@ -4,12 +4,12 @@
   "figura": {
    "url": "/fotos/889698715560-chase-figura.jpg",
    "origen": "fabricante",
-   "fuente": "Recorte de la figura de la imagen del fabricante (caja y figura juntas) guardada en la base (https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_figura_1987599496027.jpg), que es la foto de la ficha y venía de Amazon: https://m.media-amazon.com/images/I/714Xe+BGm6L.jpg"
+   "fuente": "Imagen del fabricante: la figura del dibujo de la ficha (CromoFicha, 20-nov-2026); de dónde salió no está apuntado. No es un recorte de la imagen que guarda la base (caja y figura juntas, con las pegatinas Glow Chase y Chalice; la figura de esa imagen es más pequeña): https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_figura_1987599496027.jpg"
   },
   "caja": {
    "url": "/fotos/889698715560-chase-caja.jpg",
    "origen": "fabricante",
-   "fuente": "Recorte de la caja de la imagen del fabricante (caja y figura juntas) guardada en la base (https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_figura_1987599496027.jpg), que es la foto de la ficha y venía de Amazon: https://m.media-amazon.com/images/I/714Xe+BGm6L.jpg"
+   "fuente": "Imagen del fabricante: la caja del dibujo de la ficha (CromoFicha, 20-nov-2026), que parece el recorte de la caja de la imagen que guarda la base; no está apuntado: https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_figura_1987599496027.jpg"
   },
   "base": {
    "url": "/fotos/889698715560-chase-base.jpg",
@@ -43,6 +43,11 @@
    "url": "/fotos/889698602945-chase-caja.webp",
    "origen": "fabricante",
    "fuente": "Render de Funko, del catálogo de BEMS (la caja y la figura juntas): https://www.pro-bems.com/IMAGES/images_1/FIGFUN60294/g/FIGFUN60294_2.jpg"
+  },
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos/20260625_1128_0889698602945.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
   }
  },
  "889698867986-chase": {
@@ -50,6 +55,11 @@
    "url": "/fotos/889698867986-chase-caja.webp",
    "origen": "fabricante",
    "fuente": "Render de Funko, del catálogo de BEMS (la caja y la figura juntas): https://www.pro-bems.com/IMAGES/images_1/FIGFUN86798/g/FIGFUN86798_2.jpg"
+  },
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos-v2/889698867986_culo_1794139705626.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
   }
  },
  "889698363181": {
@@ -57,6 +67,11 @@
    "url": "/fotos/889698363181-caja.webp",
    "origen": "fabricante",
    "fuente": "Render de Funko, copia en ToyWiz (la caja y la figura juntas): https://tools.toywiz.com/_images/_webp/_products/lg/funko36318chase.webp"
+  },
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos/20260625_1555_0889698363181.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
   }
  },
  "889698828451": {
@@ -190,6 +205,11 @@
    "url": "/fotos/889698470964-figura.webp",
    "origen": "fabricante",
    "fuente": "Render de Funko, de funko.com: https://funko.com/on/demandware.static/-/Sites-funko-master-catalog/default/images/funko/47096-2.png"
+  },
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos/20260625_1527_0889698470964.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
   }
  },
  "889698623896": {
@@ -239,6 +259,11 @@
    "url": "/fotos/889698133180-chase-figura.webp",
    "origen": "fabricante",
    "fuente": "Recorte de la figura de la imagen del fabricante (caja y figura juntas) guardada en la base como foto de la ficha, de origen sin apuntar: https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698133180_figura_6869441681002.jpg"
+  },
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos/20260625_1319_0889698133180.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
   }
  },
  "889698736954-chase": {
@@ -246,6 +271,53 @@
    "url": "/fotos/889698736954-chase-figura.webp",
    "origen": "fabricante",
    "fuente": "Render de Funko, de funko.com: https://funko.com/dw/image/v2/BGTS_PRD/on/demandware.static/-/Sites-funko-master-catalog/default/dw4a616e28/images/funko/upload/73695b_DBSB_SuperSaiyanGodVegetaGWChase_POP_GLAM-WEB.png"
+  },
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos/20260625_1507_0889698736954.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
+  }
+ },
+ "889698721356-chase": {
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos/20260625_1551_0889698721356.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
+  }
+ },
+ "889698886659-chase": {
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos-v2/889698886659_culo_1794156215431.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
+  }
+ },
+ "889698615297": {
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos-v2/889698615297_culo_1794133289210.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
+  }
+ },
+ "889698584500": {
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos/20260625_1521_0889698584500.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
+  }
+ },
+ "889698886659": {
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos-v2/889698886659_culo_1794156215431.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
+  }
+ },
+ "889698851909": {
+  "base": {
+   "url": "https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/culos-v2/889698851909_culo_1794156449265.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
   }
  }
 }

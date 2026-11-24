@@ -70,7 +70,7 @@ export function preparaBusqueda(consulta) {
  * Nunca el nombre del alta tal cual: lleva notas que no son para el cliente.
  */
 export function datosDeBusqueda(pieza) {
-  const texto = normaliza([pieza.nombre, pieza.serie, pieza.licencia].filter(Boolean).join(' '));
+  const texto = normaliza([pieza.nombre, pieza.nombreCaja, pieza.serie, pieza.licencia].filter(Boolean).join(' '));
   const numeros = new Set();
   if (pieza.numero) numeros.add(cifra(pieza.numero));
   for (const x of texto.split(' ')) if (/^\d+$/.test(x)) numeros.add(cifra(x));

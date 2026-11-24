@@ -23,11 +23,13 @@ const e = p.escrito;
 const num = p.numero ? ` n.º ${p.numero}` : '';
 const titulo = `${p.nombre}${num}${p.esChase ? ' · Chase' : ''}`;
 const protector1 = precioTexto(PRECIO_PROTECTOR);
+// «Super Buu con fantasma, el chase que brilla en la oscuridad», como el dibujo, si se sabe qué cambia.
+const tituloPieza = p.esChase && e?.rareza ? `${p.nombre}, el chase que ${e.rareza}` : titulo;
 
 // Para los buscadores: personaje, número y «Chase» delante; la serie después; la tienda una vez.
-const tituloPagina = `Funko Pop! ${p.nombre}${p.numero ? ` ${p.numero}` : ''}${p.esChase ? ' Chase' : ''}${p.serie ? ` – ${p.serie}` : ''} | MOLOKA`;
+const tituloPagina = `Funko Pop! ${p.nombreCaja}${p.numero ? ` ${p.numero}` : ''}${p.esChase ? ' Chase' : ''}${p.serie ? ` – ${p.serie}` : ''} | MOLOKA`;
 const descripcion = [
-  `Funko Pop! ${p.nombre}${num}${p.esChase ? ', el chase' : ''}${p.serie ? ` de ${p.serie}` : ''}${p.enAlmacen ? ', en nuestro almacén' : ''}.`,
+  `Funko Pop! ${p.nombreCaja}${num}${p.esChase ? ', el chase' : ''}${p.serie ? ` de ${p.serie}` : ''}${p.enAlmacen ? ', en nuestro almacén' : ''}.`,
   p.precioTexto ? `${p.precioTexto} con IVA.` : null,
   p.enAlmacen ? 'Pedido antes de las 13:00 de lunes a viernes, sale ese día y llega en 2 a 4 días laborables.' : null,
   'Envío 4,95 € en la península, gratis desde 60 €. 30 días para devolver.',
@@ -56,26 +58,32 @@ const hoja = misma?.length
     : { titulo: 'Más en el almacén', total: null, lista: paraListado().filter((x) => x.clave !== p.clave && !x.esChase), href: '/funko', ver: 'Ver todos los Funko del almacén' };
 
 // La ficha técnica: solo las filas con dato.
+// La ficha técnica, en el orden del dibujo (CromoFicha). Solo las filas con dato; las de
+// fábrica (material y fabricante), en todo Funko: son iguales en todas sus cajas.
 const tecnica = [
-  p.marca && ['marca', p.marca],
-  p.serie && ['serie', p.serie],
-  p.numero && ['número', p.numero],
+  e?.nombreCaja && ['nombre en la caja', e.nombreCaja],
+  p.serie && ['licencia', p.serie],
+  e?.linea && ['línea', e.linea],
+  p.numero && ['número', 'NUMERO'],
   p.esChase && ['rareza', `Chase${e?.rareza ? ` · ${e.rareza}` : ''}`],
   e?.pegatinas?.length && ['pegatina', e.pegatinas.map((x) => x.texto).join(' · ')],
   p.anio && ['salió', String(p.anio)],
-  p.ean && ['código de barras', p.ean],
+  p.esFunko && ['material', 'Vinilo'],
+  e?.caja && ['caja', e.caja],
   ['estado de la caja', 'Caja de coleccionista: revisada antes de enviar, sin golpes ni esquinas dobladas'],
   p.protector === 'incluido' && ['protector', 'Incluido'],
   p.protector === 'opcional' && ['protector', `Opcional, ${protector1}`],
+  p.esFunko && ['fabricante', 'Funko · en la UE, Funko EU BV (Ámsterdam)'],
+  p.ean && ['código de barras', p.ean],
 ].filter(Boolean);
 
 // «Nuestra foto» solo cuando la hicimos nosotros; si es la imagen de fábrica, se dice.
 const nuestra = (k) => p.fotos[k]?.origen === 'nuestra';
 const FOTOS_GALERIA = [
-  ['caja', 'La caja.', nuestra('caja') ? 'Nuestra foto de la caja por delante: lo que recibes, la figura dentro de su caja.' : 'Así es la caja por delante, en la imagen del fabricante.', `${p.nombre}${num}: ${nuestra('caja') ? 'nuestra foto' : 'foto del fabricante'} de la caja por delante`],
-  ['figura', 'La figura.', 'Fuera de la caja, para ver el detalle. Es la foto de referencia.', `${p.nombre}: la figura fuera de la caja`],
-  ['montaje', 'En su mundo.', 'Es un montaje: la figura está redibujada en un decorado de su serie. No es una foto de la pieza.', `Montaje: ${p.nombre} redibujada en un decorado de su serie (no es una foto de la pieza)`],
-  ['base', 'La base.', nuestra('base') ? 'Nuestra foto de la base de la caja.' : 'La base de la caja, en la imagen del fabricante.', `${p.nombre}: ${nuestra('base') ? 'nuestra foto' : 'foto del fabricante'} de la base de la caja`],
+  ['caja', 'La caja.', nuestra('caja') ? 'Lo que recibes: la figura dentro de su caja, con la pegatina.' : 'Así es la caja por delante, en la imagen del fabricante.', `${p.nombre}${num}: ${nuestra('caja') ? 'nuestra foto' : 'foto del fabricante'} de la caja por delante`],
+  ['figura', 'La figura.', 'Fuera de la caja, para ver el detalle.', `${p.nombre}: la figura fuera de la caja`],
+  ['montaje', 'En su mundo.', 'Imagen de ambientación: es un montaje, no una foto de la pieza.', `Montaje: ${p.nombre} redibujada en un decorado de su serie (no es una foto de la pieza)`],
+  ['base', 'La base.', nuestra('base') ? 'Nuestra foto, con el código de barras y los datos del fabricante.' : 'La base de la caja, en la imagen del fabricante.', `${p.nombre}: ${nuestra('base') ? 'nuestra foto' : 'foto del fabricante'} de la base de la caja`],
 ].filter(([k]) => p.fotos[k]);
 
 // Los datos para los buscadores. Sin precio no hay oferta (no se inventa un precio).
@@ -83,7 +91,7 @@ const ld = [
   {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: `Funko Pop! ${p.nombre}${p.numero ? ` ${p.numero}` : ''}${p.esChase ? ' Chase' : ''}`,
+    name: `Funko Pop! ${p.nombreCaja}${p.numero ? ` ${p.numero}` : ''}${p.esChase ? ' Chase' : ''}`,
     description: e?.texto?.[0] ?? descripcion,
     ...(limpias.length ? { image: limpias } : {}),
     sku: p.clave,
@@ -137,7 +145,7 @@ const ld = [
 
         <div class="precio">
           {p.precioTexto
-            ? <><span class="dis cifra">{p.precioTexto}</span><span class="iva">IVA incluido</span></>
+            ? <><span class="dis cifra">{p.precioTexto}</span><span class="iva">IVA incluido · envío 4,95 €, gratis desde 60 €, lo ves antes de pagar</span></>
             : <span class="sin-precio">precio por poner</span>}
         </div>
 
@@ -204,7 +212,7 @@ const ld = [
     {FOTOS_GALERIA.length > 0 && (
       <section id="fotos" class="caja bloque">
         <p class="mono antetitulo-c">LAS FOTOS</p>
-        <h2 class="dis">Las fotos de {p.nombre}</h2>
+        <h2 class="dis">La figura en su mundo, y lo que te llega a casa.</h2>
         <div class="galeria">
           {FOTOS_GALERIA.map(([k, t, texto, alt]) => (
             <figure>
@@ -219,7 +227,7 @@ const ld = [
               <span class="foto">
                 <img src="/fotos/protector-abierto.jpg" alt="Protector plegable oficial de Funko, abierto, con la corona de Funko" width="1200" height="1200" loading="lazy" decoding="async" />
               </span>
-              <figcaption><b>El protector.</b> {p.protector === 'incluido' ? 'El plegable oficial de Funko, incluido en el precio: la caja viaja dentro.' : `El plegable oficial de Funko, a la medida de la caja: si lo quieres, ${protector1}.`}</figcaption>
+              <figcaption><b>El protector.</b> {p.protector === 'incluido' ? 'El plegable oficial de Funko. Va uno, ya puesto en la caja.' : `El plegable oficial de Funko, a la medida de la caja: si lo quieres, ${protector1}.`}</figcaption>
             </figure>
           )}
         </div>
@@ -230,7 +238,7 @@ const ld = [
       <section class="caja bloque">
         <div class="panel">
           <p class="mono antetitulo-c">LA PIEZA</p>
-          <h2 class="dis">{titulo}</h2>
+          <h2 class="dis">{tituloPieza}</h2>
           {e.texto.map((t) => <p class="texto-pieza">{t}</p>)}
           <p class="texto-pieza">
             {p.precioTexto ? `Cuesta ${p.precioTexto} con IVA` : 'El precio está por poner'}{p.protector === 'incluido' && ', con protector incluido'}{p.enAlmacen && <>; está en nuestro almacén y <span data-fecha-ficha-min>{LLEGA.toLowerCase()}</span></>}.
@@ -245,7 +253,7 @@ const ld = [
           <h2 class="mono antetitulo-c">FICHA TÉCNICA · EL REVERSO, ENTERO</h2>
           <table>
             <tbody>
-              {tecnica.map(([k, v]) => <tr><th scope="row" class="mono">{k}</th><td>{v}</td></tr>)}
+              {tecnica.map(([k, v]) => <tr><th scope="row" class="mono">{k}</th><td>{v === 'NUMERO' ? <b>{p.numero}</b> : v}</td></tr>)}
             </tbody>
           </table>
         </div>
@@ -266,7 +274,12 @@ const ld = [
               <>
                 <h2 class="mono antetitulo-o raya">LAS PEGATINAS DE LA CAJA</h2>
                 <ul class="pegatinas">
-                  {e.pegatinas.map((x) => <li><b>{x.texto}</b>{x.significado && <span>{x.significado}</span>}</li>)}
+                  {e.pegatinas.map((x) => (
+                    <li class={x.imagen ? 'con-imagen' : ''}>
+                      {x.imagen && <img class="pegatina-img" src={x.imagen} alt={`Pegatina «${x.texto}»`} width="104" height="104" loading="lazy" decoding="async" />}
+                      <span class="pegatina-txt"><b>{x.texto}</b>{x.significado && <span>{x.significado}</span>}</span>
+                    </li>
+                  ))}
                 </ul>
               </>
             )}
@@ -286,7 +299,9 @@ const ld = [
             {hoja.total && <p class="hoja-n">{hoja.total} en el almacén</p>}
           </div>
           <ul class="rejilla" role="list">
-            {hoja.lista.slice(0, MAX_HOJA).map((x) => <li><Cromo pieza={x} /></li>)}
+            {/* Como el dibujo: la pieza que se está viendo, la primera y marcada «Estás aquí». */}
+            <li><Cromo pieza={p} aqui /></li>
+            {hoja.lista.slice(0, MAX_HOJA - 1).map((x) => <li><Cromo pieza={x} /></li>)}
           </ul>
           <a href={hoja.href} class="boton tinta ver-hoja">{hoja.ver} <span aria-hidden="true">→</span></a>
         </div>
@@ -430,6 +445,12 @@ const ld = [
   .pegatinas { margin: 14px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
   .pegatinas li { font-size: 16px; line-height: 1.5; }
   .pegatinas b { display: block; font-size: 17px; }
+  .pegatinas li.con-imagen { display: flex; align-items: center; gap: 18px; }
+  .pegatina-img {
+    flex: none; display: block; width: 104px; height: 104px; border-radius: 50%; object-fit: cover;
+    background: var(--tinta); box-shadow: 0 0 0 3px rgba(244, 239, 230, .22);
+  }
+  .pegatina-txt { min-width: 0; }
 
   .hoja-cabeza {
     display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 32px;

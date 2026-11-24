@@ -1,6 +1,9 @@
 {
- "_léeme": "Lo escrito de cada pieza, por clave. Todos los campos son opcionales: lo que no está, la ficha no lo pinta. numero (solo si el nombre no lo da), anio, rareza (lo que cambia el chase, tras «Chase ·»), texto (párrafos), por_que_es_rara y pegatinas (texto y significado). Se lee solo por src/lib/catalogo.js.",
+ "_léeme": "Lo escrito de cada pieza, por clave. Todos los campos son opcionales: lo que no está, la ficha no lo pinta. nombre (el que se enseña, en español; si no, el de la caja), nombre_caja (como lo dice la caja), linea (Pop! Animation…), numero (solo si el nombre no lo da), anio, rareza (lo que cambia el chase, tras «Chase ·»), caja (medidas y peso, con caja_fuente), texto (párrafos), por_que_es_rara, por_que_reverso (la versión corta del reverso del cromo) y pegatinas (texto, significado e imagen, con imagen_fuente). Se lee solo por src/lib/catalogo.js.",
  "889698715560-chase": {
+  "nombre": "Super Buu con fantasma",
+  "nombre_caja": "Super Buu with Ghost",
+  "linea": "Pop! Animation",
   "numero": "1464",
   "anio": 2023,
   "rareza": "brilla en la oscuridad",
@@ -11,8 +14,13 @@
   "pegatinas": [
    {
     "texto": "Limited Glow Chase Edition",
-    "significado": "La que la marca como chase: esta versión brilla en la oscuridad."
+    "significado": "La que la marca como chase: esta versión brilla en la oscuridad.",
+    "imagen": "/fotos/pegatina-limited-glow-chase-edition.png",
+    "imagen_fuente": "Recorte de la pegatina en la imagen del fabricante de la caja que usamos en Miravia: https://fb-es.mrvcdn.com/kf/E4eca3d91a14347f49fd9405c08b995c3A.png"
    }
-  ]
+  ],
+  "caja": "9,4 × 12,1 × 16,6 cm · 220 g con la figura",
+  "caja_fuente": "Medidas y peso del paquete en Amazon (amz_ficha, ASIN B0CJ2QRHWD, la normal con el mismo código de barras), las del dibujo del 20-nov",
+  "por_que_reverso": "Es el chase de Super Buu con fantasma: brilla en la oscuridad y la normal no. Se reconoce por la pegatina «Limited Glow Chase Edition»."
  }
 }
