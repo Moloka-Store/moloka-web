@@ -219,6 +219,25 @@ test('precio de la web: cada clave tiene pieza, cada precio acaba en ,95 y los c
     if (porClave.get(clave).es_chase) assert.ok(precio === 29.95 || precio === 34.95 || precio >= 44.95, `chase ${clave}: ${precio}`);
   }
   const todas = catalogoDe(DATOS.piezas, { fichas: FICHAS, precios: PRECIOS, figuraSoloConCesion: false });
-  // Sin precio todavía: Reiner Braun 1996 y Angus Young (¿chase o normal en la web?).
-  assert.deepEqual(todas.filter((p) => p.precio == null).map((p) => p.clave).sort(), ['889698363181', '889698828451']);
+  // Sin precio todavía: Reiner Braun 1996.
+  assert.deepEqual(todas.filter((p) => p.precio == null).map((p) => p.clave), ['889698828451']);
+});
+
+// ── Chase en la web aunque la base no lo marque (Angus Young) ───────────────────
+import { CHASE_EN_LA_WEB } from '../src/lib/pieza.js';
+
+test('Angus Young sale como chase en la web: marco, La Cámara, protector incluido y escalón de chase', () => {
+  const fila = DATOS.piezas.find((p) => p.clave === '889698363181');
+  assert.equal(fila.es_chase, false); // la base no lo marca, y no se toca
+  assert.ok(CHASE_EN_LA_WEB.has(fila.clave));
+  const todas = catalogoDe(DATOS.piezas, { fichas: FICHAS, precios: PRECIOS, figuraSoloConCesion: false });
+  const angus = todas.find((p) => p.clave === '889698363181');
+  assert.equal(angus.esChase, true);
+  assert.equal(angus.protector, 'incluido');
+  assert.equal(angus.precio, 34.95);
+  assert.ok(angus.url.endsWith('-chase'));
+  // Su dirección no choca con la de ninguna otra pieza.
+  assert.equal(todas.filter((p) => p.url === angus.url).length, 1);
+  // Solo esta pieza tiene la excepción.
+  assert.deepEqual([...CHASE_EN_LA_WEB], ['889698363181']);
 });
