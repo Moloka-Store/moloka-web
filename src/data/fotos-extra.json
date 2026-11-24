@@ -205,5 +205,21 @@
    "url": "/fotos/889698827270-figura.webp",
    "origen": "fabricante"
   }
+ },
+ "889698133180-chase": {
+  "figura": {
+   "url": "/fotos/889698133180-chase-figura.webp",
+   "origen": "fabricante"
+  },
+  "caja": {
+   "url": "/fotos/889698133180-chase-caja.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698736954-chase": {
+  "figura": {
+   "url": "/fotos/889698736954-chase-figura.webp",
+   "origen": "fabricante"
+  }
  }
 }
