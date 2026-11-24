@@ -91,7 +91,8 @@ const conUrl = (f) => f && typeof f.url === 'string' && f.url.trim() !== '';
 // ── Fotos que pone la web encima de las de la base (src/data/fotos-extra.json) ──────
 // Mientras la web lee una copia fija, las fotos buenas que aún no están en la base van en
 // el repo (public/fotos/) y se apuntan por clave: `figura`, `caja` y `base`, cada una con
-// `url` y `origen` («fabricante» o «nuestra»). Sustituyen a la de la base del mismo tipo.
+// `url`, `origen` («fabricante» o «nuestra») y `fuente` (de dónde sale, con la dirección
+// exacta de la imagen; «almacén» si es nuestra). Sustituyen a la de la base del mismo tipo.
 export const ORIGEN_FABRICANTE = 'fabricante';
 export const ORIGEN_NUESTRA = 'nuestra';
 const ORIGENES = new Set([ORIGEN_FABRICANTE, ORIGEN_NUESTRA]);
@@ -102,8 +103,8 @@ export function extrasDe(extra) {
   if (!extra || typeof extra !== 'object') return out;
   for (const k of Object.keys(out)) {
     const f = extra[k];
-    if (conUrl(f) && ORIGENES.has(f.origen)) {
-      out[k] = { url: f.url, origen: f.origen, cesion: typeof f.cesion === 'string' ? f.cesion : null };
+    if (conUrl(f) && ORIGENES.has(f.origen) && typeof f.fuente === 'string' && f.fuente.trim()) {
+      out[k] = { url: f.url, origen: f.origen, fuente: f.fuente, cesion: typeof f.cesion === 'string' ? f.cesion : null };
     }
   }
   return out;
@@ -143,7 +144,8 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
   const montaje = fotosWeb.find((f) => f.tipo === 'montaje') || null;
   // La figura: la de fotos-extra.json si la hay (sustituye a la de la base), si no la de la base.
   const figuraBase = fotosWeb.find((f) => f.tipo === 'figura') || null;
-  const figuraCandidata = x.figura || (figuraBase && { ...figuraBase, origen: ORIGEN_FABRICANTE });
+  // La de la base no dice de quién es (no todas son de fábrica): origen null.
+  const figuraCandidata = x.figura || (figuraBase && { ...figuraBase, origen: null });
   const figura = figuraVisible(figuraCandidata, figuraSoloConCesion) ? figuraCandidata : null;
   // La caja por delante y la base: las de fotos-extra.json si las hay; si no, nuestras fotos.
   const frenteBase = fotosCaja.find((f) => f.tipo === 'frente') || null;

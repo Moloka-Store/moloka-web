@@ -72,7 +72,7 @@ const tecnica = [
 // «Nuestra foto» solo cuando la hicimos nosotros; si es la imagen de fábrica, se dice.
 const nuestra = (k) => p.fotos[k]?.origen === 'nuestra';
 const FOTOS_GALERIA = [
-  ['caja', 'La caja.', nuestra('caja') ? 'Nuestra foto de la caja por delante: lo que recibes, la figura dentro de su caja.' : 'La caja por delante, en la imagen del fabricante: lo que recibes, la figura dentro de su caja.', `${p.nombre}${num}: ${nuestra('caja') ? 'nuestra foto' : 'foto del fabricante'} de la caja por delante`],
+  ['caja', 'La caja.', nuestra('caja') ? 'Nuestra foto de la caja por delante: lo que recibes, la figura dentro de su caja.' : 'Así es la caja por delante, en la imagen del fabricante.', `${p.nombre}${num}: ${nuestra('caja') ? 'nuestra foto' : 'foto del fabricante'} de la caja por delante`],
   ['figura', 'La figura.', 'Fuera de la caja, para ver el detalle. Es la foto de referencia.', `${p.nombre}: la figura fuera de la caja`],
   ['montaje', 'En su mundo.', 'Es un montaje: la figura está redibujada en un decorado de su serie. No es una foto de la pieza.', `Montaje: ${p.nombre} redibujada en un decorado de su serie (no es una foto de la pieza)`],
   ['base', 'La base.', nuestra('base') ? 'Nuestra foto de la base de la caja.' : 'La base de la caja, en la imagen del fabricante.', `${p.nombre}: ${nuestra('base') ? 'nuestra foto' : 'foto del fabricante'} de la base de la caja`],
