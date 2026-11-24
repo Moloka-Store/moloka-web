@@ -129,6 +129,7 @@ function escritoDe(f) {
           texto: x.texto,
           significado: typeof x.significado === 'string' ? x.significado : null,
           imagen: typeof x.imagen === 'string' && x.imagen.trim() ? x.imagen : null,
+          redonda: x.redonda === true,
         }))
     : [];
   const txt = (v) => (typeof v === 'string' && v.trim() ? v : null);
@@ -136,7 +137,6 @@ function escritoDe(f) {
     nombre: txt(f.nombre),
     nombreCaja: txt(f.nombre_caja),
     linea: txt(f.linea),
-    caja: txt(f.caja),
     porQueReverso: txt(f.por_que_reverso),
     numero: typeof f.numero === 'string' && /^\d{1,4}$/.test(f.numero) ? f.numero : null,
     anio: Number.isInteger(f.anio) ? f.anio : null,
