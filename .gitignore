@@ -1,0 +1,16 @@
+# Lo que se genera al instalar y al construir: no va al repo (el repo es público).
+node_modules/
+dist/
+.astro/
+# La genera Astro al construir.
+src/env.d.ts
+
+# Vercel en local y las claves: nunca al repo.
+.vercel/
+.env
+.env.*
+
+# Del sistema y de los editores.
+.DS_Store
+Thumbs.db
+*.log
