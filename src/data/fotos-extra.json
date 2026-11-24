@@ -1,0 +1,20 @@
+{
+ "_léeme": "Fotos buenas que aún no están en la base, por clave. Cada una sustituye a la de la base del mismo tipo (figura, caja, base). url: el fichero en public/fotos/; origen: «fabricante» (imagen de fábrica o de catálogo) o «nuestra» (foto hecha por nosotros); fuente: de dónde sale, con la dirección exacta de la imagen («almacén» si es nuestra). Se lee solo por src/lib/catalogo.js. Cuando estén en la base, salen de aquí.",
+ "889698715560-chase": {
+  "figura": {
+   "url": "/fotos/889698715560-chase-figura.jpg",
+   "origen": "fabricante",
+   "fuente": "Recorte de la figura de la imagen del fabricante (caja y figura juntas) guardada en la base (https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_figura_1987599496027.jpg), que es la foto de la ficha y venía de Amazon: https://m.media-amazon.com/images/I/714Xe+BGm6L.jpg"
+  },
+  "caja": {
+   "url": "/fotos/889698715560-chase-caja.jpg",
+   "origen": "fabricante",
+   "fuente": "Recorte de la caja de la imagen del fabricante (caja y figura juntas) guardada en la base (https://ogfbjjdxcltzpygzuyla.supabase.co/storage/v1/object/public/fotos-fabrica/web/889698715560_figura_1987599496027.jpg), que es la foto de la ficha y venía de Amazon: https://m.media-amazon.com/images/I/714Xe+BGm6L.jpg"
+  },
+  "base": {
+   "url": "/fotos/889698715560-chase-base.jpg",
+   "origen": "nuestra",
+   "fuente": "almacén"
+  }
+ }
+}

@@ -151,3 +151,48 @@ test('lo escrito: en lo escrito no hay precios ni huecos por rellenar', () => {
     assert.ok(!/[[\]]/.test(s), s);
   }
 });
+
+// ── Las fotos de fotos-extra.json ───────────────────────────────────────────────
+import { existsSync } from 'node:fs';
+import { extrasDe, ORIGEN_FABRICANTE, ORIGEN_NUESTRA } from '../src/lib/pieza.js';
+const EXTRAS = leer('../src/data/fotos-extra.json');
+
+test('fotos extra: sustituyen a la de la base y dicen de quién son', () => {
+  const p = aPieza(BUU, { extra: EXTRAS[BUU.clave], figuraSoloConCesion: false });
+  assert.equal(p.fotos.figura.url, '/fotos/889698715560-chase-figura.jpg');
+  assert.equal(p.fotos.figura.origen, ORIGEN_FABRICANTE);
+  assert.equal(p.fotos.caja.origen, ORIGEN_FABRICANTE);
+  assert.equal(p.fotos.base.origen, ORIGEN_NUESTRA);
+  assert.equal(p.vistaInicial, 'figura');
+  // Sin extra, la figura de la base sigue ahí, como imagen de fábrica.
+  const sin = aPieza(BUU, { figuraSoloConCesion: false });
+  assert.ok(/_figura_/.test(sin.fotos.figura.url));
+  assert.equal(sin.fotos.figura.origen, null); // la base no dice de quién es
+});
+
+test('fotos extra: con el interruptor puesto, la figura extra sin cesión confirmada tampoco sale', () => {
+  const p = aPieza(BUU, { extra: EXTRAS[BUU.clave], figuraSoloConCesion: true });
+  assert.equal(p.fotos.figura, null);
+  assert.ok(p.fotos.caja && p.fotos.base);
+});
+
+test('fotos extra: se ignora lo que no se entiende', () => {
+  const x = extrasDe({ figura: { url: '/a.jpg', fuente: 'x' }, caja: { url: '', origen: 'nuestra', fuente: 'almacén' }, base: { url: '/b.jpg', origen: 'otra', fuente: 'x' } });
+  assert.deepEqual(x, { figura: null, caja: null, base: null });
+  // Sin fuente no entra: «fabricante» tiene que poder comprobarse.
+  assert.equal(extrasDe({ figura: { url: '/a.jpg', origen: 'fabricante' } }).figura, null);
+});
+
+test('fotos extra: cada clave existe en el catálogo y cada fichero está en public/', () => {
+  const claves = new Set(DATOS.piezas.map((p) => p.clave));
+  for (const [clave, fotos] of Object.entries(EXTRAS)) {
+    if (clave.startsWith('_')) continue;
+    assert.ok(claves.has(clave), `clave sin pieza: ${clave}`);
+    for (const [tipo, f] of Object.entries(fotos)) {
+      assert.ok(existsSync(new URL(`../public${f.url}`, import.meta.url)), `falta ${f.url}`);
+      assert.ok(typeof f.fuente === 'string' && f.fuente.trim(), `${clave} ${tipo}: sin fuente`);
+      if (f.origen === ORIGEN_FABRICANTE) assert.match(f.fuente, /https?:\/\//, `${clave} ${tipo}: la fuente de fábrica lleva su dirección`);
+      if (f.origen === ORIGEN_NUESTRA) assert.equal(f.fuente, 'almacén', `${clave} ${tipo}`);
+    }
+  }
+});

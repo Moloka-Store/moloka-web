@@ -1,7 +1,8 @@
 // El catálogo de la web: el ÚNICO sitio por donde las páginas leen las piezas.
 //
 // Hoy lee una copia fija (`src/data/catalogo.json`, las piezas guardadas para la web
-// leídas el 23-nov-2026) y lo escrito de cada pieza (`src/data/fichas.json`). Más
+// leídas el 23-nov-2026), lo escrito de cada pieza (`src/data/fichas.json`) y las fotos
+// buenas que aún no están en la base (`src/data/fotos-extra.json`, en public/fotos/). Más
 // adelante leerá de la base, y las páginas no deben enterarse: lo que exporta este
 // módulo es el contrato. Cómo se pasa cada fila a pieza está en pieza.js.
 //
@@ -10,6 +11,7 @@
 // del nombre solo cuando es inequívoco (ver nombres.js); si no, null.
 import datos from '../data/catalogo.json';
 import fichas from '../data/fichas.json';
+import extras from '../data/fotos-extra.json';
 import { catalogoDe } from './pieza.js';
 import { ordenListado } from './listado.js';
 
@@ -18,9 +20,13 @@ export { precioTexto, PRECIO_PROTECTOR } from './pieza.js';
 // EL INTERRUPTOR DE LAS FOTOS DE LA FIGURA. Mientras la web está en obras, `false`: se
 // enseñan todas. El día del lanzamiento se pone a `true` y solo se enseña la foto de la
 // figura cuya cesión esté confirmada; en las demás, la ficha arranca con el montaje.
+// Antes de ponerlo a `true` (quien dirige, 24-nov-2026, con lo decidido por Fernando el
+// 23-nov: la imagen oficial del fabricante se puede publicar; el riesgo es la foto hecha
+// por otro vendedor): el interruptor NO debe tapar las fotos de origen «fabricante» con
+// fuente oficial de fotos-extra.json. Hoy las tapa si su cesión no es «confirmada».
 export const FIGURA_SOLO_CON_CESION = false;
 
-const PIEZAS = catalogoDe(datos.piezas, { fichas, figuraSoloConCesion: FIGURA_SOLO_CON_CESION });
+const PIEZAS = catalogoDe(datos.piezas, { fichas, extras, figuraSoloConCesion: FIGURA_SOLO_CON_CESION });
 const POR_CLAVE = new Map(PIEZAS.map((p) => [p.clave, p]));
 
 /** Dirección de la ficha de una pieza, por su clave. */
