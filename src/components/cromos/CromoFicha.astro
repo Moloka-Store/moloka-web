@@ -29,7 +29,6 @@ const inicial = p.vistaInicial;
 const marco = p.esChase ? 'marco oro viva' : 'marco liso';
 const e = p.escrito;
 const pegatinas = e?.pegatinas ?? [];
-const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la caja' : null;
 ---
 <div class={`vista${inicial ? ` v-${inicial}` : ''}`} data-ficha-vista>
   <div class="cromo-f" data-ficha-cromo>
@@ -93,11 +92,6 @@ const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la
       ))}
     </div>
   )}
-  {p.fotos.montaje && (
-    <p class="aviso-montaje">
-      <b>El montaje es una ilustración, no una foto de la pieza:</b> la figura está redibujada en un decorado de su serie.{referencia && ` La foto de referencia es ${referencia}.`}
-    </p>
-  )}
 </div>
 
 <script>
@@ -148,15 +142,20 @@ const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la
     border-radius: 17px; overflow: hidden; background: var(--papel); color: var(--tinta);
   }
 
-  /* Las fotos, enteras y sin tocar. Se ve la de la vista elegida. */
-  /* Más alto que ancho, como el cromo del dibujo (5 / 7,7 con su pie): la figura lo llena. */
-  .arte { position: relative; aspect-ratio: 4 / 5; background: var(--blanco); }
+  /* Como el dibujo: la cara del cromo mide 5 / 7,7 y la foto ocupa lo que deja el pie.
+     Las fotos, enteras y sin tocar; se ve la de la vista elegida. */
+  .frente { aspect-ratio: 5 / 7.7; display: flex; flex-direction: column; }
+  .frente .dentro { flex: 1 1 auto; min-height: 0; height: auto; }
+  .frente .texto { flex: 0 0 auto; }
+  .arte { position: relative; flex: 1 1 auto; min-height: 0; background: var(--blanco); }
   .capa {
     position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain;
     opacity: 0; visibility: hidden; transition: opacity .25s; background: var(--blanco);
-    padding: 52px 18px 14px;
+    padding: 58px 22px 20px;
   }
-  .c-montaje { padding: 0; background: var(--tinta); }
+  .c-caja { padding: 58px 18px 18px; }
+  .c-base { padding: 58px 14px 14px; }
+  .c-montaje { padding: 0; object-fit: cover; background: var(--tinta); }
   .v-caja .c-caja, .v-figura .c-figura, .v-montaje .c-montaje, .v-base .c-base { opacity: 1; visibility: visible; }
   .arte-vacia {
     display: grid; place-items: center;
@@ -211,8 +210,6 @@ const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la
   .mini-foto.oscura { background: var(--tinta); }
   .mini-foto img { display: block; width: 100%; height: 100%; object-fit: contain; }
   .mini-txt { display: block; padding: 7px 4px 8px; font-size: 14px; font-weight: 700; line-height: 1.2; color: var(--tinta); }
-  .aviso-montaje { margin: 0; font-size: 15px; line-height: 1.5; color: var(--hueso-2); }
-  .aviso-montaje b { color: var(--hueso); }
 
   @media (max-width: 420px) {
     .cara { padding: 10px; border-radius: 22px; }
