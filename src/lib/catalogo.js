@@ -20,6 +20,10 @@ export { precioTexto, PRECIO_PROTECTOR } from './pieza.js';
 // EL INTERRUPTOR DE LAS FOTOS DE LA FIGURA. Mientras la web está en obras, `false`: se
 // enseñan todas. El día del lanzamiento se pone a `true` y solo se enseña la foto de la
 // figura cuya cesión esté confirmada; en las demás, la ficha arranca con el montaje.
+// Antes de ponerlo a `true` (quien dirige, 24-nov-2026, con lo decidido por Fernando el
+// 23-nov: la imagen oficial del fabricante se puede publicar; el riesgo es la foto hecha
+// por otro vendedor): el interruptor NO debe tapar las fotos de origen «fabricante» con
+// fuente oficial de fotos-extra.json. Hoy las tapa si su cesión no es «confirmada».
 export const FIGURA_SOLO_CON_CESION = false;
 
 const PIEZAS = catalogoDe(datos.piezas, { fichas, extras, figuraSoloConCesion: FIGURA_SOLO_CON_CESION });
