@@ -133,7 +133,10 @@ function escritoDe(f) {
  * - `figuraSoloConCesion`: el interruptor (ver catalogo.js).
  * - `slug`: su trozo de dirección (de `direccionesDe`).
  */
-export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = null, extra = null } = {}) {
+export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = null, extra = null, precioWeb } = {}) {
+  // El precio de la web (precios-web.json) manda; si la pieza no está ahí, el de la copia.
+  const precio = typeof precioWeb === 'number' && precioWeb > 0 ? precioWeb
+    : typeof p.precio_venta === 'number' ? p.precio_venta : null;
   const fotosWeb = (p.fotos_web || []).filter(conUrl);
   const fotosCaja = (p.fotos_caja || []).filter(conUrl);
   const x = extrasDe(extra);
@@ -176,8 +179,8 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
     esChase,
     marca: typeof p.marca === 'string' && p.marca.trim() ? p.marca : null,
     ean: typeof p.ean === 'string' && p.ean.trim() ? p.ean.trim() : null,
-    precio: typeof p.precio_venta === 'number' ? p.precio_venta : null,
-    precioTexto: precioTexto(p.precio_venta),
+    precio,
+    precioTexto: precioTexto(precio),
     enAlmacen: p.en_almacen === true,
     anio: anioDatos || (e && e.anio) || null,
     protector: protectorDe({ esChase, nombre: p.nombre }),
@@ -197,8 +200,8 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
  * El catálogo entero: cada fila pasada a pieza, con su dirección única.
  * `fichas` es lo escrito de cada pieza, por clave (las claves que empiezan por «_» son notas).
  */
-export function catalogoDe(filas, { fichas = {}, extras = {}, figuraSoloConCesion = true } = {}) {
-  const sinDireccion = filas.map((p) => aPieza(p, { escrito: fichas[p.clave], extra: extras[p.clave], figuraSoloConCesion }));
+export function catalogoDe(filas, { fichas = {}, extras = {}, precios = {}, figuraSoloConCesion = true } = {}) {
+  const sinDireccion = filas.map((p) => aPieza(p, { escrito: fichas[p.clave], extra: extras[p.clave], precioWeb: precios[p.clave], figuraSoloConCesion }));
   const direcciones = direccionesDe(sinDireccion);
   return sinDireccion.map((p) => {
     const slug = direcciones.get(p.clave);
