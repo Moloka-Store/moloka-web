@@ -24,6 +24,14 @@ export function figuraVisible(foto, soloConCesion) {
   return !soloConCesion || foto.cesion === CESION_CONFIRMADA;
 }
 
+// ── Chase en la web aunque la base no lo marque ─────────────────────────────────
+// Angus Young de AC/DC (la unidad de la gorra con cuernos, ASIN B07NGK9RFZ): en la base no
+// lleva `es_chase` porque es la excepción que se vende en Amazon con anuncio propio, y la
+// app deja fuera de todo lo de Amazon a lo que lleva `es_chase`. Eso no se toca. En la web
+// sale como chase: marco, La Cámara y protector incluido (Fernando, 24-nov-2026: «Si Angus
+// Young ponemos el chase en la web»).
+export const CHASE_EN_LA_WEB = new Set(['889698363181']);
+
 // ── El tamaño de la caja ────────────────────────────────────────────────────────
 // Caja de tamaño especial (donde el protector no cabe): solo la que el nombre dice que es
 // de un formato grande. `caja_cm` NO vale para esto: son las medidas del paquete con el
@@ -155,7 +163,7 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
 
   const e = escritoDe(escrito);
   const s = serieDe(p.nombre);
-  const esChase = p.es_chase === true;
+  const esChase = p.es_chase === true || CHASE_EN_LA_WEB.has(p.clave);
   const nombre = nombreLimpio(p.nombre);
   const numero = numeroDe(p.nombre) || (e && e.numero) || null;
   const anioDatos = typeof p.lanzamiento === 'string' && /^\d{4}/.test(p.lanzamiento)
