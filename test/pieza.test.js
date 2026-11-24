@@ -219,5 +219,6 @@ test('precio de la web: cada clave tiene pieza, cada precio acaba en ,95 y los c
     if (porClave.get(clave).es_chase) assert.ok(precio === 29.95 || precio === 34.95 || precio >= 44.95, `chase ${clave}: ${precio}`);
   }
   const todas = catalogoDe(DATOS.piezas, { fichas: FICHAS, precios: PRECIOS, figuraSoloConCesion: false });
-  assert.equal(todas.filter((p) => p.precio == null).length, 1); // Reiner Braun 1996, sin precio todavía
+  // Sin precio todavía: Reiner Braun 1996 y Angus Young (¿chase o normal en la web?).
+  assert.deepEqual(todas.filter((p) => p.precio == null).map((p) => p.clave).sort(), ['889698363181', '889698828451']);
 });

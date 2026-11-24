@@ -1,5 +1,5 @@
 {
- "_léeme": "Precio de venta en la web, con IVA, por clave (Fernando, 24-nov-2026: «pon los que tú propones»). Sustituye al precio_venta de la copia de la base. Los 48 que no son chase, de la propuesta del 23-nov (bandeja/2026-11-23-1200-web-precios-48-piezas.md); los chase, en los tres escalones decididos el 23-nov (29,95 / 34,95 / desde 44,95). Se lee solo por src/lib/catalogo.js. La pieza que no está aquí sale con «precio por poner».",
+ "_léeme": "Precio de venta en la web, con IVA, por clave (Fernando, 24-nov-2026: «pon los que tú propones»). Sustituye al precio_venta de la copia de la base. Los 48 que no son chase, de la propuesta del 23-nov (bandeja/2026-11-23-1200-web-precios-48-piezas.md); los chase, en los tres escalones decididos el 23-nov (29,95 / 34,95 / desde 44,95). PROVISIONAL: vive aquí mientras la web lee una copia fija; cuando se diseñe dónde vive el precio de la web en la base, la lista pasa allí y este fichero se borra (que no haya dos verdades). Se lee solo por src/lib/catalogo.js. La pieza que no está aquí sale con «precio por poner»: Reiner Braun 1996 (sin oferta ni guía) y Angus Young (falta que Fernando diga si en la web va como chase o como normal).",
  "889698610100-chase": 44.95,
  "889698906678-chase": 34.95,
  "889698864954-chase": 44.95,
@@ -40,7 +40,6 @@
  "889698827270": 19.95,
  "889698783385": 22.95,
  "889698725651": 22.95,
- "889698363181": 34.95,
  "889698838221": 24.95,
  "889698584500": 24.95,
  "889698501439": 24.95,
