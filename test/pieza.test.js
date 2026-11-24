@@ -167,7 +167,7 @@ test('fotos extra: sustituyen a la de la base y dicen de quién son', () => {
   // Sin extra, la figura de la base sigue ahí, como imagen de fábrica.
   const sin = aPieza(BUU, { figuraSoloConCesion: false });
   assert.ok(/_figura_/.test(sin.fotos.figura.url));
-  assert.equal(sin.fotos.figura.origen, ORIGEN_FABRICANTE);
+  assert.equal(sin.fotos.figura.origen, null); // la base no dice de quién es
 });
 
 test('fotos extra: con el interruptor puesto, la figura extra sin cesión confirmada tampoco sale', () => {
@@ -177,8 +177,10 @@ test('fotos extra: con el interruptor puesto, la figura extra sin cesión confir
 });
 
 test('fotos extra: se ignora lo que no se entiende', () => {
-  const x = extrasDe({ figura: { url: '/a.jpg' }, caja: { url: '', origen: 'nuestra' }, base: { url: '/b.jpg', origen: 'otra' } });
+  const x = extrasDe({ figura: { url: '/a.jpg', fuente: 'x' }, caja: { url: '', origen: 'nuestra', fuente: 'almacén' }, base: { url: '/b.jpg', origen: 'otra', fuente: 'x' } });
   assert.deepEqual(x, { figura: null, caja: null, base: null });
+  // Sin fuente no entra: «fabricante» tiene que poder comprobarse.
+  assert.equal(extrasDe({ figura: { url: '/a.jpg', origen: 'fabricante' } }).figura, null);
 });
 
 test('fotos extra: cada clave existe en el catálogo y cada fichero está en public/', () => {
@@ -186,8 +188,11 @@ test('fotos extra: cada clave existe en el catálogo y cada fichero está en pub
   for (const [clave, fotos] of Object.entries(EXTRAS)) {
     if (clave.startsWith('_')) continue;
     assert.ok(claves.has(clave), `clave sin pieza: ${clave}`);
-    for (const f of Object.values(fotos)) {
+    for (const [tipo, f] of Object.entries(fotos)) {
       assert.ok(existsSync(new URL(`../public${f.url}`, import.meta.url)), `falta ${f.url}`);
+      assert.ok(typeof f.fuente === 'string' && f.fuente.trim(), `${clave} ${tipo}: sin fuente`);
+      if (f.origen === ORIGEN_FABRICANTE) assert.match(f.fuente, /https?:\/\//, `${clave} ${tipo}: la fuente de fábrica lleva su dirección`);
+      if (f.origen === ORIGEN_NUESTRA) assert.equal(f.fuente, 'almacén', `${clave} ${tipo}`);
     }
   }
 });
@@ -214,5 +219,6 @@ test('precio de la web: cada clave tiene pieza, cada precio acaba en ,95 y los c
     if (porClave.get(clave).es_chase) assert.ok(precio === 29.95 || precio === 34.95 || precio >= 44.95, `chase ${clave}: ${precio}`);
   }
   const todas = catalogoDe(DATOS.piezas, { fichas: FICHAS, precios: PRECIOS, figuraSoloConCesion: false });
-  assert.equal(todas.filter((p) => p.precio == null).length, 1); // Reiner Braun 1996, sin precio todavía
+  // Sin precio todavía: Reiner Braun 1996 y Angus Young (¿chase o normal en la web?).
+  assert.deepEqual(todas.filter((p) => p.precio == null).map((p) => p.clave).sort(), ['889698363181', '889698828451']);
 });
