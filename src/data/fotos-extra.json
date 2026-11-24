@@ -1,0 +1,8 @@
+{
+ "_léeme": "Fotos buenas que aún no están en la base, por clave. Cada una sustituye a la de la base del mismo tipo (figura, caja, base). url: el fichero en public/fotos/; origen: «fabricante» (imagen de fábrica o de catálogo) o «nuestra» (foto hecha por nosotros). Se lee solo por src/lib/catalogo.js. Cuando estén en la base, salen de aquí.",
+ "889698715560-chase": {
+  "figura": { "url": "/fotos/889698715560-chase-figura.jpg", "origen": "fabricante" },
+  "caja": { "url": "/fotos/889698715560-chase-caja.jpg", "origen": "fabricante" },
+  "base": { "url": "/fotos/889698715560-chase-base.jpg", "origen": "nuestra" }
+ }
+}

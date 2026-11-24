@@ -69,11 +69,13 @@ const tecnica = [
   p.protector === 'opcional' && ['protector', `Opcional, ${protector1}`],
 ].filter(Boolean);
 
+// «Nuestra foto» solo cuando la hicimos nosotros; si es la imagen de fábrica, se dice.
+const nuestra = (k) => p.fotos[k]?.origen === 'nuestra';
 const FOTOS_GALERIA = [
-  ['caja', 'La caja.', 'Nuestra foto de la caja por delante: lo que recibes, la figura dentro de su caja.', `${p.nombre}${num}: nuestra foto de la caja por delante`],
+  ['caja', 'La caja.', nuestra('caja') ? 'Nuestra foto de la caja por delante: lo que recibes, la figura dentro de su caja.' : 'La caja por delante, en la imagen del fabricante: lo que recibes, la figura dentro de su caja.', `${p.nombre}${num}: ${nuestra('caja') ? 'nuestra foto' : 'foto del fabricante'} de la caja por delante`],
   ['figura', 'La figura.', 'Fuera de la caja, para ver el detalle. Es la foto de referencia.', `${p.nombre}: la figura fuera de la caja`],
   ['montaje', 'En su mundo.', 'Es un montaje: la figura está redibujada en un decorado de su serie. No es una foto de la pieza.', `Montaje: ${p.nombre} redibujada en un decorado de su serie (no es una foto de la pieza)`],
-  ['base', 'La base.', 'Nuestra foto de la base de la caja.', `${p.nombre}: nuestra foto de la base de la caja`],
+  ['base', 'La base.', nuestra('base') ? 'Nuestra foto de la base de la caja.' : 'La base de la caja, en la imagen del fabricante.', `${p.nombre}: ${nuestra('base') ? 'nuestra foto' : 'foto del fabricante'} de la base de la caja`],
 ].filter(([k]) => p.fotos[k]);
 
 // Los datos para los buscadores. Sin precio no hay oferta (no se inventa un precio).
@@ -162,14 +164,14 @@ const ld = [
               </b>
               La caja viaja dentro de su funda transparente.
             </p>
-            <span class="hueco-protector mono">foto del protector</span>
+            <img class="foto-protector" src="/fotos/protector-cerrado.jpg" alt="Protector plegable oficial de Funko, cerrado, con la corona de Funko" width="925" height="1024" loading="lazy" decoding="async" />
           </div>
         )}
         {p.protector === 'opcional' && p.enAlmacen && (
           <label class="protector casilla" for="protector">
             <input id="protector" type="checkbox" disabled aria-describedby="sin-cesta" />
             <span class="casilla-txt"><b>Añadir protector para esta caja · <span class="nw">+{protector1}</span></b><br />Opcional: una funda transparente a la medida de la caja.</span>
-            <span class="hueco-protector mono">foto del protector</span>
+            <img class="foto-protector" src="/fotos/protector-cerrado.jpg" alt="Protector plegable oficial de Funko, cerrado, con la corona de Funko" width="925" height="1024" loading="lazy" decoding="async" />
           </label>
         )}
 
@@ -212,6 +214,14 @@ const ld = [
               <figcaption><b>{t}</b> {texto}</figcaption>
             </figure>
           ))}
+          {p.protector && (
+            <figure>
+              <span class="foto">
+                <img src="/fotos/protector-abierto.jpg" alt="Protector plegable oficial de Funko, abierto, con la corona de Funko" width="1200" height="1200" loading="lazy" decoding="async" />
+              </span>
+              <figcaption><b>El protector.</b> {p.protector === 'incluido' ? 'El plegable oficial de Funko, incluido en el precio: la caja viaja dentro.' : `El plegable oficial de Funko, a la medida de la caja: si lo quieres, ${protector1}.`}</figcaption>
+            </figure>
+          )}
         </div>
       </section>
     )}
@@ -359,11 +369,10 @@ const ld = [
   .protector p { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 16px; line-height: 1.45; }
   .protector p b { display: flex; align-items: center; gap: 8px; font-size: 17px; }
   .protector svg { flex: none; color: var(--morado); }
-  /* La foto elegida del protector lleva la corona de Funko: no se sube al repo. Va el hueco. */
-  .hueco-protector {
-    flex: none; display: grid; place-items: center; width: 96px; height: 64px; padding: 4px;
-    border-radius: 10px; border: 1px dashed var(--linea); background: #F7F6FA;
-    font-size: 12px; line-height: 1.2; text-align: center; color: var(--tinta-3);
+  /* La foto elegida del protector (Fernando, 20-nov-2026): a la derecha del texto. */
+  .foto-protector {
+    flex: none; display: block; width: 96px; height: 64px; object-fit: contain;
+    border-radius: 10px; border: 1px solid var(--linea); background: #FFFFFF;
   }
   .casilla { align-items: flex-start; border-color: var(--tinta); cursor: not-allowed; }
   .casilla input { flex: none; width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--tinta); }

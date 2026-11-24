@@ -151,3 +151,43 @@ test('lo escrito: en lo escrito no hay precios ni huecos por rellenar', () => {
     assert.ok(!/[[\]]/.test(s), s);
   }
 });
+
+// ── Las fotos de fotos-extra.json ───────────────────────────────────────────────
+import { existsSync } from 'node:fs';
+import { extrasDe, ORIGEN_FABRICANTE, ORIGEN_NUESTRA } from '../src/lib/pieza.js';
+const EXTRAS = leer('../src/data/fotos-extra.json');
+
+test('fotos extra: sustituyen a la de la base y dicen de quién son', () => {
+  const p = aPieza(BUU, { extra: EXTRAS[BUU.clave], figuraSoloConCesion: false });
+  assert.equal(p.fotos.figura.url, '/fotos/889698715560-chase-figura.jpg');
+  assert.equal(p.fotos.figura.origen, ORIGEN_FABRICANTE);
+  assert.equal(p.fotos.caja.origen, ORIGEN_FABRICANTE);
+  assert.equal(p.fotos.base.origen, ORIGEN_NUESTRA);
+  assert.equal(p.vistaInicial, 'figura');
+  // Sin extra, la figura de la base sigue ahí, como imagen de fábrica.
+  const sin = aPieza(BUU, { figuraSoloConCesion: false });
+  assert.ok(/_figura_/.test(sin.fotos.figura.url));
+  assert.equal(sin.fotos.figura.origen, ORIGEN_FABRICANTE);
+});
+
+test('fotos extra: con el interruptor puesto, la figura extra sin cesión confirmada tampoco sale', () => {
+  const p = aPieza(BUU, { extra: EXTRAS[BUU.clave], figuraSoloConCesion: true });
+  assert.equal(p.fotos.figura, null);
+  assert.ok(p.fotos.caja && p.fotos.base);
+});
+
+test('fotos extra: se ignora lo que no se entiende', () => {
+  const x = extrasDe({ figura: { url: '/a.jpg' }, caja: { url: '', origen: 'nuestra' }, base: { url: '/b.jpg', origen: 'otra' } });
+  assert.deepEqual(x, { figura: null, caja: null, base: null });
+});
+
+test('fotos extra: cada clave existe en el catálogo y cada fichero está en public/', () => {
+  const claves = new Set(DATOS.piezas.map((p) => p.clave));
+  for (const [clave, fotos] of Object.entries(EXTRAS)) {
+    if (clave.startsWith('_')) continue;
+    assert.ok(claves.has(clave), `clave sin pieza: ${clave}`);
+    for (const f of Object.values(fotos)) {
+      assert.ok(existsSync(new URL(`../public${f.url}`, import.meta.url)), `falta ${f.url}`);
+    }
+  }
+});

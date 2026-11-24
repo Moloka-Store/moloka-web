@@ -16,11 +16,13 @@ const { pieza: p, llega } = Astro.props;
 const ORDEN = ['caja', 'figura', 'montaje', 'base'] as const;
 const ETIQUETA = { caja: 'Caja', figura: 'Figura', montaje: 'Montaje', base: 'Base' };
 const conNumero = p.numero ? ` n.º ${p.numero}` : '';
+// «Nuestra foto» solo cuando la hicimos nosotros; si es la imagen de fábrica, se dice.
+const deQuien = (k) => (p.fotos[k]?.origen === 'nuestra' ? 'nuestra foto' : 'foto del fabricante');
 const ALT = {
-  caja: `${p.nombre}${conNumero}: nuestra foto de la caja por delante`,
+  caja: `${p.nombre}${conNumero}: ${deQuien('caja')} de la caja por delante`,
   figura: `${p.nombre}: la figura fuera de la caja`,
   montaje: `Montaje: ${p.nombre} redibujada en un decorado de su serie (no es una foto de la pieza)`,
-  base: `${p.nombre}: nuestra foto de la base de la caja`,
+  base: `${p.nombre}: ${deQuien('base')} de la base de la caja`,
 };
 const hay = ORDEN.filter((k) => p.fotos[k]);
 const inicial = p.vistaInicial;
@@ -147,8 +149,9 @@ const referencia = p.fotos.figura ? 'la de la figura' : p.fotos.caja ? 'la de la
     border-radius: 17px; overflow: hidden; background: var(--papel); color: var(--tinta);
   }
 
-  /* Las fotos, enteras y sin tocar, en un panel cuadrado. Se ve la de la vista elegida. */
-  .arte { position: relative; aspect-ratio: 1 / 1; background: var(--blanco); }
+  /* Las fotos, enteras y sin tocar. Se ve la de la vista elegida. */
+  /* Más alto que ancho, como el cromo del dibujo (5 / 7,7 con su pie): la figura lo llena. */
+  .arte { position: relative; aspect-ratio: 4 / 5; background: var(--blanco); }
   .capa {
     position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain;
     opacity: 0; visibility: hidden; transition: opacity .25s; background: var(--blanco);
