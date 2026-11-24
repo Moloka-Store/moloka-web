@@ -1,8 +1,209 @@
 {
  "_léeme": "Fotos buenas que aún no están en la base, por clave. Cada una sustituye a la de la base del mismo tipo (figura, caja, base). url: el fichero en public/fotos/; origen: «fabricante» (imagen de fábrica o de catálogo) o «nuestra» (foto hecha por nosotros). Se lee solo por src/lib/catalogo.js. Cuando estén en la base, salen de aquí.",
  "889698715560-chase": {
-  "figura": { "url": "/fotos/889698715560-chase-figura.jpg", "origen": "fabricante" },
-  "caja": { "url": "/fotos/889698715560-chase-caja.jpg", "origen": "fabricante" },
-  "base": { "url": "/fotos/889698715560-chase-base.jpg", "origen": "nuestra" }
+  "figura": {
+   "url": "/fotos/889698715560-chase-figura.jpg",
+   "origen": "fabricante"
+  },
+  "caja": {
+   "url": "/fotos/889698715560-chase-caja.jpg",
+   "origen": "fabricante"
+  },
+  "base": {
+   "url": "/fotos/889698715560-chase-base.jpg",
+   "origen": "nuestra"
+  }
+ },
+ "889698610100-chase": {
+  "figura": {
+   "url": "/fotos/889698610100-chase-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698632218-chase": {
+  "figura": {
+   "url": "/fotos/889698632218-chase-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698838221": {
+  "figura": {
+   "url": "/fotos/889698838221-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698602945-chase": {
+  "caja": {
+   "url": "/fotos/889698602945-chase-caja.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698867986-chase": {
+  "caja": {
+   "url": "/fotos/889698867986-chase-caja.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698363181": {
+  "caja": {
+   "url": "/fotos/889698363181-caja.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698828451": {
+  "figura": {
+   "url": "/fotos/889698828451-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698477079": {
+  "figura": {
+   "url": "/fotos/889698477079-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698913881": {
+  "figura": {
+   "url": "/fotos/889698913881-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698658935": {
+  "figura": {
+   "url": "/fotos/889698658935-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698786478": {
+  "figura": {
+   "url": "/fotos/889698786478-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698880930": {
+  "figura": {
+   "url": "/fotos/889698880930-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698545419": {
+  "figura": {
+   "url": "/fotos/889698545419-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698769440": {
+  "figura": {
+   "url": "/fotos/889698769440-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698872126": {
+  "figura": {
+   "url": "/fotos/889698872126-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698769136": {
+  "figura": {
+   "url": "/fotos/889698769136-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698828086": {
+  "figura": {
+   "url": "/fotos/889698828086-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698421928": {
+  "figura": {
+   "url": "/fotos/889698421928-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698756976": {
+  "figura": {
+   "url": "/fotos/889698756976-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698907439": {
+  "figura": {
+   "url": "/fotos/889698907439-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698581493": {
+  "figura": {
+   "url": "/fotos/889698581493-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698489317": {
+  "caja": {
+   "url": "/fotos/889698489317-caja.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698581523": {
+  "figura": {
+   "url": "/fotos/889698581523-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698879385": {
+  "figura": {
+   "url": "/fotos/889698879385-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698470964": {
+  "figura": {
+   "url": "/fotos/889698470964-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698623896": {
+  "figura": {
+   "url": "/fotos/889698623896-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698880961": {
+  "figura": {
+   "url": "/fotos/889698880961-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698880992": {
+  "figura": {
+   "url": "/fotos/889698880992-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698852814": {
+  "figura": {
+   "url": "/fotos/889698852814-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698879422": {
+  "figura": {
+   "url": "/fotos/889698879422-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698819596": {
+  "figura": {
+   "url": "/fotos/889698819596-figura.webp",
+   "origen": "fabricante"
+  }
+ },
+ "889698827270": {
+  "figura": {
+   "url": "/fotos/889698827270-figura.webp",
+   "origen": "fabricante"
+  }
  }
 }
