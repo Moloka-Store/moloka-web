@@ -79,7 +79,8 @@ export function direccionesDe(lista) {
   const porClave = new Map();
   const usadas = new Set();
   for (const p of lista) {
-    let slug = slugDe(p);
+    // La dirección sale del nombre de la caja, no del que se enseña: no cambia al escribirlo.
+    let slug = slugDe({ ...p, nombre: p.nombreCaja ?? p.nombre });
     if (!slug) throw new Error(`La pieza ${p.clave} se queda sin dirección`);
     if (usadas.has(slug) && p.ean) slug = `${slug}-${p.ean}`;
     if (usadas.has(slug)) throw new Error(`Dirección repetida: /funko/${slug} (${p.clave})`);
@@ -124,9 +125,19 @@ function escritoDe(f) {
   const textoLista = Array.isArray(f.texto) ? f.texto.filter((t) => typeof t === 'string' && t.trim()) : [];
   const pegatinas = Array.isArray(f.pegatinas)
     ? f.pegatinas.filter((x) => x && typeof x.texto === 'string' && x.texto.trim())
-        .map((x) => ({ texto: x.texto, significado: typeof x.significado === 'string' ? x.significado : null }))
+        .map((x) => ({
+          texto: x.texto,
+          significado: typeof x.significado === 'string' ? x.significado : null,
+          imagen: typeof x.imagen === 'string' && x.imagen.trim() ? x.imagen : null,
+        }))
     : [];
+  const txt = (v) => (typeof v === 'string' && v.trim() ? v : null);
   return {
+    nombre: txt(f.nombre),
+    nombreCaja: txt(f.nombre_caja),
+    linea: txt(f.linea),
+    caja: txt(f.caja),
+    porQueReverso: txt(f.por_que_reverso),
     numero: typeof f.numero === 'string' && /^\d{1,4}$/.test(f.numero) ? f.numero : null,
     anio: Number.isInteger(f.anio) ? f.anio : null,
     rareza: typeof f.rareza === 'string' && f.rareza.trim() ? f.rareza : null,
@@ -164,7 +175,10 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
   const e = escritoDe(escrito);
   const s = serieDe(p.nombre);
   const esChase = p.es_chase === true || CHASE_EN_LA_WEB.has(p.clave);
-  const nombre = nombreLimpio(p.nombre);
+  // El nombre de la caja (limpio del alta) y el que se enseña: el escrito en español si lo
+  // hay (fichas.json), como en el dibujo; si no, el de la caja.
+  const nombreCaja = nombreLimpio(p.nombre);
+  const nombre = (e && e.nombre) || nombreCaja;
   const numero = numeroDe(p.nombre) || (e && e.numero) || null;
   const anioDatos = typeof p.lanzamiento === 'string' && /^\d{4}/.test(p.lanzamiento)
     ? Number(p.lanzamiento.slice(0, 4)) : null;
@@ -183,6 +197,9 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
     clave: p.clave,
     nombreOriginal: p.nombre,
     nombre,
+    nombreCaja,
+    // Funko: todo lo que lleva su prefijo de código de barras (889698).
+    esFunko: typeof p.ean === 'string' && p.ean.startsWith('889698'),
     numero,
     serie: s ? s.serie : null,
     licencia: s ? s.licencia : null,

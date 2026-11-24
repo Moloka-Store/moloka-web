@@ -189,7 +189,7 @@ test('fotos extra: cada clave existe en el catálogo y cada fichero está en pub
     if (clave.startsWith('_')) continue;
     assert.ok(claves.has(clave), `clave sin pieza: ${clave}`);
     for (const [tipo, f] of Object.entries(fotos)) {
-      assert.ok(existsSync(new URL(`../public${f.url}`, import.meta.url)), `falta ${f.url}`);
+      if (!/^https?:\/\//.test(f.url)) assert.ok(existsSync(new URL(`../public${f.url}`, import.meta.url)), `falta ${f.url}`);
       assert.ok(typeof f.fuente === 'string' && f.fuente.trim(), `${clave} ${tipo}: sin fuente`);
       if (f.origen === ORIGEN_FABRICANTE) assert.match(f.fuente, /https?:\/\//, `${clave} ${tipo}: la fuente de fábrica lleva su dirección`);
       if (f.origen === ORIGEN_NUESTRA) assert.equal(f.fuente, 'almacén', `${clave} ${tipo}`);
@@ -240,4 +240,30 @@ test('Angus Young sale como chase en la web: marco, La Cámara, protector inclui
   assert.equal(todas.filter((p) => p.url === angus.url).length, 1);
   // Solo esta pieza tiene la excepción.
   assert.deepEqual([...CHASE_EN_LA_WEB], ['889698363181']);
+});
+
+// ── El nombre que se enseña y el de la caja ─────────────────────────────────────
+test('nombre: se enseña el escrito en español y la dirección y los buscadores siguen con el de la caja', () => {
+  const todas = catalogoDe(DATOS.piezas, { fichas: FICHAS, precios: PRECIOS, figuraSoloConCesion: false });
+  const buu = todas.find((p) => p.clave === '889698715560-chase');
+  assert.equal(buu.nombre, 'Super Buu con fantasma');
+  assert.equal(buu.nombreCaja, 'Super Buu With Ghost');
+  assert.equal(buu.url, '/funko/super-buu-with-ghost-1464-chase'); // la dirección no cambia
+  assert.equal(buu.escrito.linea, 'Pop! Animation');
+  assert.equal(buu.escrito.nombreCaja, 'Super Buu with Ghost');
+  assert.ok(buu.escrito.caja);
+  assert.equal(buu.escrito.pegatinas[0].imagen, '/fotos/pegatina-limited-glow-chase-edition.png');
+  assert.ok(existsSync(new URL('../public/fotos/pegatina-limited-glow-chase-edition.png', import.meta.url)));
+  // Sin nombre escrito, el que se enseña es el de la caja.
+  const vito = todas.find((p) => p.clave === '889698615297');
+  assert.equal(vito.nombre, vito.nombreCaja);
+  assert.equal(vito.esFunko, true);
+});
+
+test('búsqueda: Super Buu se encuentra por el nombre en español y por el de la caja', async () => {
+  const { datosDeBusqueda } = await import('../src/lib/listado.js');
+  const buu = catalogoDe(DATOS.piezas, { fichas: FICHAS, figuraSoloConCesion: false }).find((p) => p.clave === '889698715560-chase');
+  const d = datosDeBusqueda(buu);
+  assert.ok(d.texto.includes('fantasma'));
+  assert.ok(d.texto.includes('with ghost'));
 });
