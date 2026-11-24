@@ -8,7 +8,6 @@
 // nada y lo dicen. La cesta llega en su propio tramo.
 import Cromos from '../../layouts/Cromos.astro';
 import CromoFicha from '../../components/cromos/CromoFicha.astro';
-import Cromo from '../../components/cromos/Cromo.astro';
 import { piezas, paraListado, rarasEnAlmacen, deLaMismaHoja, precioTexto, PRECIO_PROTECTOR } from '../../lib/catalogo.js';
 
 export function getStaticPaths() {
@@ -25,6 +24,12 @@ const titulo = `${p.nombre}${num}${p.esChase ? ' · Chase' : ''}`;
 const protector1 = precioTexto(PRECIO_PROTECTOR);
 // «Super Buu con fantasma, el chase que brilla en la oscuridad», como el dibujo, si se sabe qué cambia.
 const tituloPieza = p.esChase && e?.rareza ? `${p.nombre}, el chase que ${e.rareza}` : titulo;
+// En el texto, el nombre de la caja va en cursiva, como en el dibujo.
+const conCursiva = (t) => {
+  const n = e?.nombreCaja;
+  if (!n || !t.includes(n)) return [{ texto: t, cursiva: false }];
+  return t.split(n).flatMap((x, i) => (i === 0 ? [{ texto: x, cursiva: false }] : [{ texto: n, cursiva: true }, { texto: x, cursiva: false }]));
+};
 
 // Para los buscadores: personaje, número y «Chase» delante; la serie después; la tienda una vez.
 const tituloPagina = `Funko Pop! ${p.nombreCaja}${p.numero ? ` ${p.numero}` : ''}${p.esChase ? ' Chase' : ''}${p.serie ? ` – ${p.serie}` : ''} | MOLOKA`;
@@ -49,7 +54,7 @@ const migas = [
 
 // De la misma hoja: su licencia. Sin licencia (o si es la única de ella), lo raro (o lo
 // demás) del almacén.
-const MAX_HOJA = 8;
+const MAX_HOJA = 4; // cuatro cromos, como el dibujo
 const misma = deLaMismaHoja(p);
 const hoja = misma?.length
   ? { titulo: `Hoja de ${p.licencia}`, total: misma.length + 1, lista: misma, href: `/funko?q=${encodeURIComponent(p.licencia)}`, ver: `Ver los ${misma.length + 1} de ${p.licencia}` }
@@ -147,15 +152,15 @@ const ld = [
 
         <div class="precio">
           {p.precioTexto
-            ? <><span class="dis cifra">{p.precioTexto}</span><span class="iva">IVA incluido · envío 4,95 €, gratis desde 60 €, lo ves antes de pagar</span></>
+            ? <><span class="dis cifra">{p.precioTexto}</span><span class="iva">IVA incluido · envío 4,95 €, lo ves antes de pagar</span></>
             : <span class="sin-precio">precio por poner</span>}
         </div>
 
         {p.enAlmacen
           ? (
             <div class="estado">
-              <span class="estado-1"><span class="punto" aria-hidden="true"></span>En el almacén · <span data-fecha-ficha>{LLEGA}</span></span>
-              <span class="estado-2">Pedido antes de las 13:00 de lunes a viernes, sale ese día.</span>
+              <span class="estado-1"><span class="punto" aria-hidden="true"></span><span>Lo tenemos · <span data-fecha-ficha-min>{LLEGA.toLowerCase()}</span></span></span>
+              <span class="estado-2">Está en nuestro almacén. Pedido antes de las 13:00 de lunes a viernes, sale ese día.</span>
             </div>
           )
           : (
@@ -195,7 +200,7 @@ const ld = [
         <div class="dos-tarjetas">
           <a href="/envios" class="tarjeta">
             <span class="tarjeta-t">Envíos</span>
-            <span>4,95 € a domicilio en la península, gratis desde 60 €</span>
+            <span>4,95 €, gratis desde 60 €{p.enAlmacen && <> · <span data-fecha-ficha-min>{LLEGA.toLowerCase()}</span></>}</span>
           </a>
           <a href="/devoluciones" class="tarjeta">
             <span class="tarjeta-t">Devoluciones</span>
@@ -218,7 +223,7 @@ const ld = [
         <div class="galeria">
           {FOTOS_GALERIA.map(([k, t, texto, alt]) => (
             <figure>
-              <span class={`foto${k === 'montaje' ? ' oscura' : ''}`}>
+              <span class={`foto f-${k}${k === 'montaje' ? ' oscura' : ''}`}>
                 <img src={p.fotos[k].url} alt={alt} width={p.fotos[k].ancho} height={p.fotos[k].alto} loading="lazy" decoding="async" />
               </span>
               <figcaption><b>{t}</b> {texto}</figcaption>
@@ -240,11 +245,15 @@ const ld = [
       <section class="caja bloque">
         <div class="panel">
           <p class="mono antetitulo-c">LA PIEZA</p>
-          <h2 class="dis">{tituloPieza}</h2>
-          {e.texto.map((t) => <p class="texto-pieza">{t}</p>)}
-          <p class="texto-pieza">
-            {p.precioTexto ? `Cuesta ${p.precioTexto} con IVA` : 'El precio está por poner'}{p.protector === 'incluido' && ', con protector incluido'}{p.enAlmacen && <>; está en nuestro almacén y <span data-fecha-ficha-min>{LLEGA.toLowerCase()}</span></>}.
-          </p>
+          <h2 class="dis titulo-pieza">{tituloPieza}</h2>
+          {e.texto.map((t, i) => (
+            <p class="texto-pieza">
+              {conCursiva(t).map((trozo) => (trozo.cursiva ? <i>{trozo.texto}</i> : trozo.texto))}
+              {i === 0 && <>
+                {' '}{p.precioTexto ? `Cuesta ${p.precioTexto} con IVA` : 'El precio está por poner'}{p.protector === 'incluido' && ' y con protector incluido'}{p.enAlmacen && <>, está en nuestro almacén y <span data-fecha-ficha-min>{LLEGA.toLowerCase()}</span></>}.
+              </>}
+            </p>
+          ))}
         </div>
       </section>
     )}
@@ -300,12 +309,35 @@ const ld = [
             </div>
             {hoja.total && <p class="hoja-n">{hoja.total} en el almacén</p>}
           </div>
-          <ul class="rejilla" role="list">
-            {/* Como el dibujo: la pieza que se está viendo, la primera y marcada «Estás aquí». */}
-            <li><Cromo pieza={p} aqui /></li>
-            {hoja.lista.slice(0, MAX_HOJA - 1).map((x) => <li><Cromo pieza={x} /></li>)}
+          {/* Como el dibujo: cromos pequeños (foto, número y rareza, nombre y estado), sin precio
+              ni giro; el primero, la pieza que se está viendo, marcada «Estás aquí». */}
+          <ul class="minis-hoja" role="list">
+            {[p, ...hoja.lista.slice(0, MAX_HOJA - 1)].map((x) => {
+              const aqui = x.clave === p.clave;
+              const foto = aqui ? (x.fotos.figura || x.fotos.caja || x.fotos.montaje) : (x.fotos.montaje || x.fotos.figura || x.fotos.caja);
+              const oscura = foto && foto === x.fotos.montaje;
+              const etiqueta = [x.numero && `n.º ${x.numero}`, x.esChase && 'Chase'].filter(Boolean).join(' · ');
+              const Tag = aqui ? 'div' : 'a';
+              return (
+                <li>
+                  <Tag href={aqui ? undefined : x.url} class={`mini-hoja marco ${x.esChase ? 'oro' : 'liso'}`} aria-current={aqui ? 'page' : undefined}>
+                    <span class="mini-hoja-dentro">
+                      <span class={`mini-hoja-foto${oscura ? ' oscura' : ''}${foto ? '' : ' vacia'}`}>
+                        {foto ? <img src={foto.url} alt="" loading="lazy" decoding="async" /> : <span class="mono">foto por hacer</span>}
+                      </span>
+                      <span class="mini-hoja-txt">
+                        {etiqueta && <span class="mono mini-hoja-num">{etiqueta}</span>}
+                        <span class="mini-hoja-nombre">{x.nombre}</span>
+                        {aqui
+                          ? <span class="mini-hoja-estado aqui">Estás aquí</span>
+                          : <span class="mini-hoja-estado">Lo tenemos · <span data-fecha-ficha-min>{LLEGA.toLowerCase()}</span></span>}
+                      </span>
+                    </span>
+                  </Tag>
+                </li>
+              );
+            })}
           </ul>
-          <a href={hoja.href} class="boton tinta ver-hoja">{hoja.ver} <span aria-hidden="true">→</span></a>
         </div>
       </section>
     )}
@@ -322,7 +354,7 @@ const ld = [
         </div>
         <div>
           <p class="dis promesa-t">La caja</p>
-          <p>Caja de coleccionista: la revisamos antes de enviarla, sin golpes ni esquinas dobladas.{p.protector === 'incluido' && ' Viaja en su protector, incluido en el precio.'}{p.protector === 'opcional' && ` Si quieres, con protector por ${protector1}.`}</p>
+          <p>Caja de coleccionista: la revisamos antes de enviarla, sin golpes ni esquinas dobladas{p.protector === 'incluido' ? ', y viaja en su protector.' : '.'}{p.protector === 'opcional' && ` Si quieres, con protector por ${protector1}.`} Si una caja tiene una marca, se vende aparte, con su foto y más barata.</p>
         </div>
       </div>
     </section>
@@ -423,12 +455,15 @@ const ld = [
   .galeria figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
   .foto { display: block; aspect-ratio: 1 / 1; border-radius: 20px; overflow: hidden; background: var(--blanco); border: 1px solid var(--linea); }
   .foto.oscura { background: var(--tinta); }
-  .foto img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 18px; }
-  .foto.oscura img { padding: 0; }
+  .foto img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 22px; }
+  .foto.f-base img { padding: 14px; }
+  .foto.oscura img { padding: 0; object-fit: cover; }
   .galeria figcaption { font-size: 16px; line-height: 1.45; }
 
   .panel { padding: 30px; border-radius: 22px; background: var(--blanco); border: 1px solid var(--linea); }
   .texto-pieza { margin: 16px 0 0; max-width: 78ch; font-size: 18px; line-height: 1.6; }
+  /* Como el dibujo: el título de «La pieza», más pequeño y estrecho. */
+  .titulo-pieza { margin: 10px 0 0; max-width: 900px; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.15; }
 
   .tecnica-y-rareza { display: flex; flex-wrap: wrap; gap: 24px; }
   .tecnica { flex: 1.2 1 420px; min-width: 0; }
@@ -459,11 +494,23 @@ const ld = [
     padding-bottom: 18px; border-bottom: 2px solid var(--tinta);
   }
   .hoja-n { margin: 0; font-size: 20px; font-weight: 700; }
-  .rejilla {
+  /* Los cromos pequeños de la hoja, como el dibujo. */
+  .minis-hoja {
     margin: 22px 0 0; padding: 0; list-style: none;
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px;
   }
-  .ver-hoja { margin-top: 24px; }
+  .mini-hoja { display: block; height: 100%; padding: 8px; border-radius: 18px; color: var(--tinta); text-decoration: none; }
+  .mini-hoja-dentro { display: flex; flex-direction: column; height: 100%; border-radius: 11px; overflow: hidden; background: var(--papel); }
+  .mini-hoja-foto { display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--blanco); }
+  .mini-hoja-foto img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+  .mini-hoja-foto.oscura { background: var(--tinta); }
+  .mini-hoja-foto.oscura img { object-fit: cover; padding: 0; }
+  .mini-hoja-foto.vacia { display: grid; place-items: center; font-size: 13px; color: var(--tinta-3); }
+  .mini-hoja-txt { display: flex; flex-direction: column; gap: 2px; padding: 10px; }
+  .mini-hoja-num { font-size: 13px; font-weight: 700; }
+  .mini-hoja-nombre { font-size: 15px; font-weight: 700; line-height: 1.25; }
+  .mini-hoja-estado { font-size: 14px; font-weight: 700; color: var(--verde); }
+  .mini-hoja-estado.aqui { color: var(--morado); }
 
   .promesas {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px;
@@ -481,7 +528,7 @@ const ld = [
     .bloque { padding-top: 44px; }
     .ultimo { padding-bottom: 56px; }
     .panel { padding: 22px 18px; }
-    .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .minis-hoja { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
     .tecnica table { font-size: 16px; }
     .tecnica th { white-space: normal; width: 38%; }
     .texto-pieza { font-size: 17px; }

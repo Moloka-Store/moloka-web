@@ -23,10 +23,8 @@ interface Props {
     url: string;
   };
   carga?: 'lazy' | 'eager';
-  // En «De la misma hoja» de una ficha, el cromo de la pieza que se está viendo.
-  aqui?: boolean;
 }
-const { pieza: p, carga = 'lazy', aqui = false } = Astro.props;
+const { pieza: p, carga = 'lazy' } = Astro.props;
 const marco = p.esChase ? 'marco oro' : 'marco liso';
 const conNumero = p.numero ? `, número ${p.numero}` : '';
 const panel = p.montaje ? null : p.fotoPanel ?? (p.fotoCaja ? { url: p.fotoCaja.url, que: 'caja' as const } : null);
@@ -51,10 +49,8 @@ const caja = panel;
           <div class="texto lam">
             {p.serie && <span class="serie">{p.serie}</span>}
             <span class="nombre dis">{p.nombre}</span>
-            {aqui
-              ? <span class="estado aqui">Estás aquí</span>
-              : <><span class="estado">En el almacén</span>
-                <span class="llega" data-llega>Llega en 2 a 4 días laborables</span></>}
+            <span class="estado">En el almacén</span>
+            <span class="llega" data-llega>Llega en 2 a 4 días laborables</span>
             <div class="fila">
               {p.precioTexto
                 ? <span class="precio mono">{p.precioTexto}</span>
@@ -168,7 +164,6 @@ const caja = panel;
   .serie { font-size: 14px; color: var(--tinta-3); }
   .nombre { font-size: 15px; line-height: 1.2; font-weight: 700; overflow-wrap: anywhere; }
   .estado { margin-top: 4px; font-size: 14px; font-weight: 700; color: var(--verde); }
-  .estado.aqui { color: var(--morado); }
   .llega { font-size: 14px; line-height: 1.3; color: var(--verde); }
   .fila { margin-top: auto; padding-top: 8px; display: flex; align-items: center; gap: 8px; }
   .precio { flex: 1 1 auto; min-width: 0; font-size: 17px; font-weight: 700; }
