@@ -196,3 +196,48 @@ test('fotos extra: cada clave existe en el catálogo y cada fichero está en pub
     }
   }
 });
+
+// ── El precio de la web (precios-web.json) ──────────────────────────────────────
+const PRECIOS = leer('../src/data/precios-web.json');
+
+test('precio de la web: manda sobre el de la copia y, sin él, queda el de la copia', () => {
+  const vito = DATOS.piezas.find((p) => p.clave === '889698615297');
+  assert.equal(vito.precio_venta, 22.99);
+  const conWeb = aPieza(vito, { precioWeb: PRECIOS[vito.clave] });
+  assert.equal(conWeb.precio, 15.95);
+  assert.equal(conWeb.precioTexto, '15,95 €');
+  assert.equal(aPieza(vito).precio, 22.99);
+  assert.equal(aPieza(BUU).precio, null);
+});
+
+test('precio de la web: cada clave tiene pieza, cada precio acaba en ,95 y los chase van en sus escalones', () => {
+  const porClave = new Map(DATOS.piezas.map((p) => [p.clave, p]));
+  for (const [clave, precio] of Object.entries(PRECIOS)) {
+    if (clave.startsWith('_')) continue;
+    assert.ok(porClave.has(clave), `clave sin pieza: ${clave}`);
+    assert.ok(Number.isFinite(precio) && Math.round(precio * 100) % 100 === 95, `${clave}: ${precio}`);
+    if (porClave.get(clave).es_chase) assert.ok(precio === 29.95 || precio === 34.95 || precio >= 44.95, `chase ${clave}: ${precio}`);
+  }
+  const todas = catalogoDe(DATOS.piezas, { fichas: FICHAS, precios: PRECIOS, figuraSoloConCesion: false });
+  // Sin precio todavía: Reiner Braun 1996.
+  assert.deepEqual(todas.filter((p) => p.precio == null).map((p) => p.clave), ['889698828451']);
+});
+
+// ── Chase en la web aunque la base no lo marque (Angus Young) ───────────────────
+import { CHASE_EN_LA_WEB } from '../src/lib/pieza.js';
+
+test('Angus Young sale como chase en la web: marco, La Cámara, protector incluido y escalón de chase', () => {
+  const fila = DATOS.piezas.find((p) => p.clave === '889698363181');
+  assert.equal(fila.es_chase, false); // la base no lo marca, y no se toca
+  assert.ok(CHASE_EN_LA_WEB.has(fila.clave));
+  const todas = catalogoDe(DATOS.piezas, { fichas: FICHAS, precios: PRECIOS, figuraSoloConCesion: false });
+  const angus = todas.find((p) => p.clave === '889698363181');
+  assert.equal(angus.esChase, true);
+  assert.equal(angus.protector, 'incluido');
+  assert.equal(angus.precio, 34.95);
+  assert.ok(angus.url.endsWith('-chase'));
+  // Su dirección no choca con la de ninguna otra pieza.
+  assert.equal(todas.filter((p) => p.url === angus.url).length, 1);
+  // Solo esta pieza tiene la excepción.
+  assert.deepEqual([...CHASE_EN_LA_WEB], ['889698363181']);
+});

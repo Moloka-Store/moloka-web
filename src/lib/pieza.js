@@ -24,6 +24,14 @@ export function figuraVisible(foto, soloConCesion) {
   return !soloConCesion || foto.cesion === CESION_CONFIRMADA;
 }
 
+// ── Chase en la web aunque la base no lo marque ─────────────────────────────────
+// Angus Young de AC/DC (la unidad de la gorra con cuernos, ASIN B07NGK9RFZ): en la base no
+// lleva `es_chase` porque es la excepción que se vende en Amazon con anuncio propio, y la
+// app deja fuera de todo lo de Amazon a lo que lleva `es_chase`. Eso no se toca. En la web
+// sale como chase: marco, La Cámara y protector incluido (Fernando, 24-nov-2026: «Si Angus
+// Young ponemos el chase en la web»).
+export const CHASE_EN_LA_WEB = new Set(['889698363181']);
+
 // ── El tamaño de la caja ────────────────────────────────────────────────────────
 // Caja de tamaño especial (donde el protector no cabe): solo la que el nombre dice que es
 // de un formato grande. `caja_cm` NO vale para esto: son las medidas del paquete con el
@@ -134,7 +142,10 @@ function escritoDe(f) {
  * - `figuraSoloConCesion`: el interruptor (ver catalogo.js).
  * - `slug`: su trozo de dirección (de `direccionesDe`).
  */
-export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = null, extra = null } = {}) {
+export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = null, extra = null, precioWeb } = {}) {
+  // El precio de la web (precios-web.json) manda; si la pieza no está ahí, el de la copia.
+  const precio = typeof precioWeb === 'number' && precioWeb > 0 ? precioWeb
+    : typeof p.precio_venta === 'number' ? p.precio_venta : null;
   const fotosWeb = (p.fotos_web || []).filter(conUrl);
   const fotosCaja = (p.fotos_caja || []).filter(conUrl);
   const x = extrasDe(extra);
@@ -152,7 +163,7 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
 
   const e = escritoDe(escrito);
   const s = serieDe(p.nombre);
-  const esChase = p.es_chase === true;
+  const esChase = p.es_chase === true || CHASE_EN_LA_WEB.has(p.clave);
   const nombre = nombreLimpio(p.nombre);
   const numero = numeroDe(p.nombre) || (e && e.numero) || null;
   const anioDatos = typeof p.lanzamiento === 'string' && /^\d{4}/.test(p.lanzamiento)
@@ -178,8 +189,8 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
     esChase,
     marca: typeof p.marca === 'string' && p.marca.trim() ? p.marca : null,
     ean: typeof p.ean === 'string' && p.ean.trim() ? p.ean.trim() : null,
-    precio: typeof p.precio_venta === 'number' ? p.precio_venta : null,
-    precioTexto: precioTexto(p.precio_venta),
+    precio,
+    precioTexto: precioTexto(precio),
     enAlmacen: p.en_almacen === true,
     anio: anioDatos || (e && e.anio) || null,
     protector: protectorDe({ esChase, nombre: p.nombre }),
@@ -199,8 +210,8 @@ export function aPieza(p, { escrito = null, figuraSoloConCesion = true, slug = n
  * El catálogo entero: cada fila pasada a pieza, con su dirección única.
  * `fichas` es lo escrito de cada pieza, por clave (las claves que empiezan por «_» son notas).
  */
-export function catalogoDe(filas, { fichas = {}, extras = {}, figuraSoloConCesion = true } = {}) {
-  const sinDireccion = filas.map((p) => aPieza(p, { escrito: fichas[p.clave], extra: extras[p.clave], figuraSoloConCesion }));
+export function catalogoDe(filas, { fichas = {}, extras = {}, precios = {}, figuraSoloConCesion = true } = {}) {
+  const sinDireccion = filas.map((p) => aPieza(p, { escrito: fichas[p.clave], extra: extras[p.clave], precioWeb: precios[p.clave], figuraSoloConCesion }));
   const direcciones = direccionesDe(sinDireccion);
   return sinDireccion.map((p) => {
     const slug = direcciones.get(p.clave);

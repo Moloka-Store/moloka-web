@@ -6,12 +6,14 @@
 // adelante leerá de la base, y las páginas no deben enterarse: lo que exporta este
 // módulo es el contrato. Cómo se pasa cada fila a pieza está en pieza.js.
 //
-// Reglas: no se inventa nada. Sin precio, `precio` es null y se enseña «precio por
-// poner». La única rareza que dan los datos es `es_chase`. El número y la serie salen
+// El precio es el de la web (`src/data/precios-web.json`); si una pieza no lo tiene, el
+// de la copia. Reglas: no se inventa nada. Sin precio, `precio` es null y se enseña
+// «precio por poner». La única rareza que dan los datos es `es_chase`. El número y la serie salen
 // del nombre solo cuando es inequívoco (ver nombres.js); si no, null.
 import datos from '../data/catalogo.json';
 import fichas from '../data/fichas.json';
 import extras from '../data/fotos-extra.json';
+import precios from '../data/precios-web.json';
 import { catalogoDe } from './pieza.js';
 import { ordenListado } from './listado.js';
 
@@ -26,7 +28,7 @@ export { precioTexto, PRECIO_PROTECTOR } from './pieza.js';
 // fuente oficial de fotos-extra.json. Hoy las tapa si su cesión no es «confirmada».
 export const FIGURA_SOLO_CON_CESION = false;
 
-const PIEZAS = catalogoDe(datos.piezas, { fichas, extras, figuraSoloConCesion: FIGURA_SOLO_CON_CESION });
+const PIEZAS = catalogoDe(datos.piezas, { fichas, extras, precios, figuraSoloConCesion: FIGURA_SOLO_CON_CESION });
 const POR_CLAVE = new Map(PIEZAS.map((p) => [p.clave, p]));
 
 /** Dirección de la ficha de una pieza, por su clave. */
