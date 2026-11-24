@@ -132,7 +132,7 @@ test('lo escrito: solo Super Buu lleva; el número del dibujo solo entra si el n
   const buu = todas.find((p) => p.clave === BUU.clave);
   assert.equal(buu.numero, '1464');
   assert.equal(buu.anio, 2023);
-  assert.equal(buu.escrito.pegatinas.length, 1);
+  assert.equal(buu.escrito.pegatinas.length, 2); // Glow Chase y Chalice, comprobadas en nuestra caja
   assert.equal(todas.filter((p) => p.escrito).length, 1);
   // Un número en el nombre manda sobre el escrito.
   const conNumero = aPieza({ clave: 'k', nombre: 'Goku 865', fotos_web: [] }, { escrito: { numero: '1' } });
@@ -251,9 +251,15 @@ test('nombre: se enseña el escrito en español y la dirección y los buscadores
   assert.equal(buu.url, '/funko/super-buu-with-ghost-1464-chase'); // la dirección no cambia
   assert.equal(buu.escrito.linea, 'Pop! Animation');
   assert.equal(buu.escrito.nombreCaja, 'Super Buu with Ghost');
-  assert.ok(buu.escrito.caja);
-  assert.equal(buu.escrito.pegatinas[0].imagen, '/fotos/pegatina-limited-glow-chase-edition.png');
-  assert.ok(existsSync(new URL('../public/fotos/pegatina-limited-glow-chase-edition.png', import.meta.url)));
+  // Sin medidas ni peso de la caja (Fernando, 24-nov-2026).
+  assert.equal('caja' in buu.escrito, false);
+  assert.equal(FICHAS['889698715560-chase'].caja, undefined);
+  // Las dos pegatinas de nuestra caja, con su imagen recortada de la de fábrica.
+  assert.deepEqual(buu.escrito.pegatinas.map((x) => x.texto), ['Limited Glow Chase Edition', 'Chalice Collectibles Exclusive']);
+  for (const x of buu.escrito.pegatinas) assert.ok(existsSync(new URL(`../public${x.imagen}`, import.meta.url)), x.imagen);
+  assert.equal(buu.escrito.pegatinas[0].redonda, true);
+  assert.equal(buu.escrito.pegatinas[1].redonda, false);
+  for (const x of FICHAS['889698715560-chase'].pegatinas) assert.match(x.imagen_fuente, /https?:\/\//);
   // Sin nombre escrito, el que se enseña es el de la caja.
   const vito = todas.find((p) => p.clave === '889698615297');
   assert.equal(vito.nombre, vito.nombreCaja);
